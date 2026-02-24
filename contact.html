@@ -4,167 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juan Tribaldos | Portfolio</title>
-    <style>
-        /* VARIABLES Y CONFIGURACIÓN GLOBAL */
-        :root {
-           --body-font-size: 1.4rem;
-            --body-line-height: 1.214em; /* Aumentado ligeramente para mejor lectura de párrafos */
-            --color-background: #a5a5a5; 
-            --color-foreground: #000000;
-            --input-font-size: max(var(--body-font-size), 1.6rem);
-            --select-font-size: var(--input-font-size);
-            --input-width: 100%;
-            --icon-primary-color-caret-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
-        }
-
-        html {
-            box-sizing: border-box;
-            font-size: 62.5%; 
-            height: 100%;
-        }
-
-        *, *:before, *:after {
-            box-sizing: inherit;
-        }
-
-        body {
-            background-color: var(--color-background);
-            color: var(--color-foreground);
-            font-family: "Times New Roman", Times, serif;
-            font-size: var(--body-font-size);
-            line-height: var(--body-line-height);
-            margin: 0;
-            min-height: 100%;
-            text-rendering: optimizeLegibility;
-        }
-
-        /* ESTRUCTURA DEL HEADER */
-        .header-nav {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background-color: var(--color-background);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        /* ESTILOS DE LOS SELECTORES */
-        .select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-color: #ffffff;
-            border: 1px solid #000;
-            border-radius: 0;
-            color: #000000;
-            display: block;
-            font: inherit;
-            margin: 0;
-            outline: none;
-            padding: .5rem .7rem;
-            width: var(--input-width);
-            cursor: pointer;
-        }
-
-        .select--has-caret {
-            background-position: right .9rem top 50%, 0 0;
-            background-repeat: no-repeat, repeat;
-            background-size: 1.5rem auto, 100%;
-        }
-
-        .select option {
-            background-color: #ffffff;
-            color: #000000;
-            padding: .5rem;
-            margin: .5rem 0;
-        }
-
-        .select option:checked {
-            background-color: #000000;
-            color: #ffffff;
-        }
-
-        .select--primary-color-caret {
-            background-image: var(--icon-primary-color-caret-url);
-            height: 3rem;
-            font-size: var(--select-font-size);
-            line-height: 1.15;
-            padding-right: 3.5rem;
-        }
-
-        /* ESTILOS DEL CONTENIDO ABOUT */
-        .about-container {
-            max-width: 600px; /* Limita el ancho para que sea cómodo de leer */
-            margin: 4rem auto; /* Centra el contenedor y da espacio arriba/abajo */
-            padding: 0 2rem;
-            text-align: left; /* Alineación clásica para textos largos */
-        }
-
-        .about-text {
-            margin-bottom: 2rem;
-            font-size: 1.8rem; /* Un poco más grande para el cuerpo del texto */
-            line-height: 1.5;
-        }
-
-        /* RESPONSIVIDAD PARA MÓVILES */
-        @media (max-width: 768px) {
-            .header-nav {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .about-container {
-                margin: 2rem auto;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="header-nav">
-        <select class="select select--has-caret select--primary-color-caret" 
-        onchange="if(this.value) { window.location.href=this.value; this.value=''; }" 
-        aria-label="Contact">
-    <option value="index.html">Juan Tribaldos</option>
-    <option value="about.html">About</option>
-    <option value="" disabled selected>Contact</option>
-    <option value="guestbook.html">Guestbook</option>
-    </select>       
+        <div class="custom-select-container">
+            <div class="select-trigger">Contact</div>
+            <ul class="select-options">
+                <li data-value="index.html">Juan Tribaldos</li>
+                <li data-value="about.html">About</li>
+                <li disabled>Contact</li>
+                <li data-value="guestbook.html">Guestbook</li>
+            </ul>
+        </div>       
 
-        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Interiores">
-            <option value="" disabled selected>Interiores</option>
-            <option value="/laurel-dd">Laurel DD</option>
-            <option value="/casa-aromo">Casa Aromo</option>
-            <option value="/casa-ikaros">Casa Ikaros</option>
-            <option value="/casa-naia">Casa Naia</option>
-            <option value="/casa-rosada">Casa Rosada</option>
-            <option value="/casa-tula">Casa Tula</option>
-            <option value="/perozah">Perozah</option>
-        </select>
+        <div class="custom-select-container">
+            <div class="select-trigger">Interiores</div>
+            <ul class="select-options">
+                <li disabled>Interiores</li>
+                <li data-value="/laurel-dd">Laurel DD</li>
+                <li data-value="/casa-aromo">Casa Aromo</li>
+                <li data-value="/casa-ikaros">Casa Ikaros</li>
+                <li data-value="/casa-naia">Casa Naia</li>
+                <li data-value="/casa-rosada">Casa Rosada</li>
+                <li data-value="/casa-tula">Casa Tula</li>
+                <li data-value="/perozah">Perozah</li>
+            </ul>
+        </div>
 
-        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Exploraciones">
-            <option value="" disabled selected>Exploraciones</option>
-            <option value="/pleroma">Pléroma</option>
-            <option value="/liminal">Liminal</option>
-            <option value="/materia-prima">Materia Prima</option>
-        </select>
+        <div class="custom-select-container">
+            <div class="select-trigger">Exploraciones</div>
+            <ul class="select-options">
+                <li disabled>Exploraciones</li>
+                <li data-value="/pleroma">Pléroma</li>
+                <li data-value="/liminal">Liminal</li>
+                <li data-value="/materia-prima">Materia Prima</li>
+            </ul>
+        </div>
 
-        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Archivo">
-            <option value="" disabled selected>Archivo</option>
-            <option value="/art">Art</option>
-            <option value="/residencia-salita-2025">Residencia Salita Temporal 2025</option>
-        </select>
+        <div class="custom-select-container">
+            <div class="select-trigger">Archivo</div>
+            <ul class="select-options">
+                <li disabled>Archivo</li>
+                <li data-value="/art">Art</li>
+                <li data-value="/residencia-salita-2025">Residencia Salita Temporal 2025</li>
+            </ul>
+        </div>
     </header>
 
     <main>
         <section class="about-container">
             <p class="about-text">
-             <a href="https://www.instagram.com/juan_tribaldos/" target="_blank">@juan_tribaldos</a>
+                <a href="https://www.instagram.com/juan_tribaldos/" target="_blank">@juan_tribaldos</a>
                 <br>
                 <a href="mailto:jatribaldos20@gmail.com" target="_blank">jatribaldos20@gmail.com</a>
             </p>
         </section>
     </main>
 
+    <script>
+        // Lógica para abrir/cerrar menús
+        document.querySelectorAll('.select-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                const options = trigger.nextElementSibling;
+                document.querySelectorAll('.select-options').forEach(opt => {
+                    if (opt !== options) opt.classList.remove('open');
+                });
+                options.classList.toggle('open');
+                e.stopPropagation();
+            });
+        });
+
+        // Lógica para navegar al hacer clic en las opciones
+        document.querySelectorAll('.select-options li').forEach(option => {
+            option.addEventListener('click', () => {
+                const val = option.getAttribute('data-value');
+                if (val && !option.hasAttribute('disabled')) {
+                    window.location.href = val;
+                }
+            });
+        });
+
+        // Cerrar menús al hacer clic fuera
+        window.addEventListener('click', () => {
+            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
+        });
+    </script>
 </body>
 </html>
