@@ -167,8 +167,8 @@ body {
 }
 
 .about-text a {
-    color: inherit;
-    text-decoration: underline;
+    color: #1e7b3b;
+    text-decoration: none;
 }
 
 /* RESPONSIVE */
