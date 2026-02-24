@@ -9,7 +9,7 @@
         :root {
             --body-font-size: 1.4rem;
             --body-line-height: 1.214em;
-            --color-background: #FFFED7; 
+            --color-background: #a5a5a5; 
             --color-foreground: #000000;
             --input-font-size: max(var(--body-font-size), 1.6rem);
             --select-font-size: var(--input-font-size);
@@ -42,16 +42,18 @@
         .header-nav {
             display: flex;
             gap: 1rem;
-            padding: 1rem;
-            border-bottom: 1px solid var(--color-foreground);            
+            padding: 1rem;       
             position: sticky;
             top: 0;
             z-index: 10;
-            background-color: var(--color-background);
+            
         }
 
         /* ESTILOS DE LOS SELECTORES */
         .select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
             background-color: #ffffff;
             border: 1px solid #000;
             border-radius: 0;
@@ -67,12 +69,21 @@
         }
 
         .select--has-caret {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
             background-position: right .9rem top 50%, 0 0;
             background-repeat: no-repeat, repeat;
             background-size: 1.5rem auto, 100%;
+        }
+
+        .select option {
+            background-color: #ffffff;
+            color: #000000;
+            padding: .5rem;
+            margin: .5rem 0;
+        }
+
+        .select option:checked {
+            background-color: #000000;
+            color: #ffffff;
         }
 
         .select--primary-color-caret {
@@ -148,6 +159,8 @@
             <option value="Europe/Madrid" id="opt-bcn">Cargando Barcelona...</option>
         </select>
     </div>
+
+    <script src="draw.js"></script>
 
     <script>
         const optSJ = document.getElementById('opt-sj');
