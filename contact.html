@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos | Portfolio</title>
+    <style>
+        /* VARIABLES Y CONFIGURACIÓN GLOBAL */
+        :root {
+            --body-font-size: 1.4rem;
+            --body-line-height: 1.6em; /* Aumentado ligeramente para mejor lectura de párrafos */
+            --color-background: #FFFED7; 
+            --color-foreground: #000000;
+            --input-font-size: max(var(--body-font-size), 1.6rem);
+            --select-font-size: var(--input-font-size);
+            --input-width: 100%;
+            --icon-primary-color-caret-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        html {
+            box-sizing: border-box;
+            font-size: 62.5%; 
+            height: 100%;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            font-family: "Times New Roman", Times, serif;
+            font-size: var(--body-font-size);
+            line-height: var(--body-line-height);
+            margin: 0;
+            min-height: 100%;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* ESTRUCTURA DEL HEADER */
+        .header-nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: var(--color-background);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* ESTILOS DE LOS SELECTORES */
+        .select {
+            background-color: #ffffff;
+            border: 1px solid #000;
+            border-radius: 0;
+            color: #000000;
+            display: block;
+            font: inherit;
+            margin: 0;
+            outline: none;
+            padding: .5rem .7rem;
+            width: var(--input-width);
+            cursor: pointer;
+        }
+
+        .select--has-caret {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: right .9rem top 50%, 0 0;
+            background-repeat: no-repeat, repeat;
+            background-size: 1.5rem auto, 100%;
+        }
+
+        .select--primary-color-caret {
+            background-image: var(--icon-primary-color-caret-url);
+            height: 3rem;
+            font-size: var(--select-font-size);
+            line-height: 1.15;
+            padding-right: 3.5rem;
+        }
+
+        /* ESTILOS DEL CONTENIDO ABOUT */
+        .about-container {
+            max-width: 600px; /* Limita el ancho para que sea cómodo de leer */
+            margin: 4rem auto; /* Centra el contenedor y da espacio arriba/abajo */
+            padding: 0 2rem;
+            text-align: left; /* Alineación clásica para textos largos */
+        }
+
+        .about-text {
+            margin-bottom: 2rem;
+            font-size: 1.8rem; /* Un poco más grande para el cuerpo del texto */
+            line-height: 1.5;
+        }
+
+        /* RESPONSIVIDAD PARA MÓVILES */
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .about-container {
+                margin: 2rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-nav">
+        <select class="select select--has-caret select--primary-color-caret" 
+        onchange="if(this.value) { window.location.href=this.value; this.value=''; }" 
+        aria-label="Contact">
+    <option value="index.html">Juan Tribaldos</option>
+    <option value="about.html">About</option>
+    <option value="" disabled selected>Contact</option>
+    <option value="guestbook.html">Guestbook</option>
+    </select>       
+
+        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Interiores">
+            <option value="" disabled selected>Interiores</option>
+            <option value="/laurel-dd">Laurel DD</option>
+            <option value="/casa-aromo">Casa Aromo</option>
+            <option value="/casa-ikaros">Casa Ikaros</option>
+            <option value="/casa-naia">Casa Naia</option>
+            <option value="/casa-rosada">Casa Rosada</option>
+            <option value="/casa-tula">Casa Tula</option>
+            <option value="/perozah">Perozah</option>
+        </select>
+
+        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Exploraciones">
+            <option value="" disabled selected>Exploraciones</option>
+            <option value="/pleroma">Pléroma</option>
+            <option value="/liminal">Liminal</option>
+            <option value="/materia-prima">Materia Prima</option>
+        </select>
+
+        <select class="select select--has-caret select--primary-color-caret" onchange="if(this.value) window.location.href=this.value" aria-label="Archivo">
+            <option value="" disabled selected>Archivo</option>
+            <option value="/art">Art</option>
+            <option value="/residencia-salita-2025">Residencia Salita Temporal 2025</option>
+        </select>
+    </header>
+
+    <main>
+        <section class="about-container">
+            <p class="about-text">
+             <a href="https://www.instagram.com/juan_tribaldos/" target="_blank">@juan_tribaldos</a>
+                <br>
+                <a href="mailto:jatribaldos20@gmail.com" target="_blank">jatribaldos20@gmail.com</a>
+            </p>
+        </section>
+    </main>
+
+</body>
+</html>

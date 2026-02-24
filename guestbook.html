@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos | Portfolio</title>
+    <style>
+        /* VARIABLES Y CONFIGURACIÓN GLOBAL */
+        :root {
+            --body-font-size: 1.4rem;
+            --body-line-height: 1.214em;
+            --color-background: #FFFED7; 
+            --color-foreground: #000000;
+            --input-font-size: max(var(--body-font-size), 1.6rem);
+            --select-font-size: var(--input-font-size);
+            --input-width: 100%;
+            --icon-primary-color-caret-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        html {
+            box-sizing: border-box;
+            font-size: 62.5%; 
+            height: 100%;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            font-family: "Times New Roman", Times, serif;
+            font-size: var(--body-font-size);
+            line-height: var(--body-line-height);
+            margin: 0;
+            min-height: 100%;
+            text-rendering: optimizeLegibility;
+            overflow: hidden; /* Evita scroll para que el guestbook sea el fondo */
+        }
+
+        /* GUESTBOOK CANVAS BACKGROUND */
+        #gbCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            display: block;
+        }
+
+        /* NAVEGACIÓN */
+        .header-nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: transparent;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .select {
+            background-color: #ffffff;
+            border: 1px solid #000;
+            border-radius: 0;
+            color: #000000;
+            display: block;
+            font: inherit;
+            margin: 0;
+            outline: none;
+            padding: .5rem .7rem;
+            width: var(--input-width);
+            cursor: pointer;
+        }
+
+        .select--has-caret {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: right .9rem top 50%, 0 0;
+            background-repeat: no-repeat, repeat;
+            background-size: 1.5rem auto, 100%;
+            background-image: var(--icon-primary-color-caret-url);
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gbCanvas"></canvas>
+
+    <header class="header-nav">
+        <select class="select select--has-caret" onchange="if(this.value) { window.location.href=this.value; }">
+            <option value="index.html">Juan Tribaldos</option>
+            <option value="about.html">About</option>
+            <option value="contact.html">Contact</option>
+            <option value="" disabled selected>Guestbook</option>
+        </select>       
+
+        <select class="select select--has-caret" onchange="if(this.value) window.location.href=this.value">
+            <option value="" disabled selected>Interiores</option>
+            <option value="/laurel-dd">Laurel DD</option>
+            <option value="/casa-aromo">Casa Aromo</option>
+            <option value="/casa-ikaros">Casa Ikaros</option>
+            <option value="/casa-naia">Casa Naia</option>
+            <option value="/casa-rosada">Casa Rosada</option>
+            <option value="/casa-tula">Casa Tula</option>
+            <option value="/perozah">Perozah</option>
+        </select>
+
+        <select class="select select--has-caret" onchange="if(this.value) window.location.href=this.value">
+            <option value="" disabled selected>Exploraciones</option>
+            <option value="/pleroma">Pléroma</option>
+            <option value="/liminal">Liminal</option>
+            <option value="/materia-prima">Materia Prima</option>
+        </select>
+
+        <select class="select select--has-caret" onchange="if(this.value) window.location.href=this.value">
+            <option value="" disabled selected>Archivo</option>
+            <option value="/art">Art</option>
+            <option value="/residencia-salita-2025">Residencia Salita Temporal 2025</option>
+        </select>
+    </header>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // TUS CREDENCIALES
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHo5KM-RwA4fa0XeM_y3P66xZ9AGrwRUE",
+            authDomain: "guestbook-jt.firebaseapp.com",
+            databaseURL: "https://guestbook-jt-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "guestbook-jt",
+            storageBucket: "guestbook-jt.firebasestorage.app",
+            messagingSenderId: "676074383664",
+            appId: "1:676074383664:web:7a5d5ddf4053268b30c0f5"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dbRef = ref(db, 'contenido_mundo');
+
+        const FONT_SIZE = 20;
+        const FONT_FACE = "Times New Roman, serif";
+        
+        class BackgroundGuestBook {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.cellW = 0;
+                this.cellH = FONT_SIZE + 2;
+                this.content = {}; 
+                this.cursor = { x: 2, y: 5 };
+
+                this.init();
+            }
+
+            init() {
+                this.adjustSize();
+                window.addEventListener('resize', () => this.adjustSize());
+                
+                // ESCUCHAR CAMBIOS REALTIME
+                onValue(dbRef, (snapshot) => {
+                    const data = snapshot.val();
+                    this.content = data || {};
+                    this.render();
+                });
+
+                window.addEventListener('keydown', (e) => {
+                    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) e.preventDefault();
+                    if (e.key.length === 1) {
+                        this.write(e.key);
+                    } else {
+                        this.handleSpecialKeys(e);
+                    }
+                });
+
+                window.addEventListener('mousedown', (e) => {
+                    if(e.target.tagName !== 'SELECT') {
+                        this.cursor.x = Math.floor(e.clientX / this.cellW);
+                        this.cursor.y = Math.floor(e.clientY / this.cellH);
+                        this.render();
+                    }
+                });
+            }
+
+            adjustSize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
+                this.cellW = this.ctx.measureText('m').width; 
+                this.render();
+            }
+
+            handleSpecialKeys(e) {
+                switch(e.key) {
+                    case 'Backspace':
+                        this.moveCursor(-1, 0);
+                        this.saveToFirebase(this.cursor.x, this.cursor.y, null);
+                        break;
+                    case 'Enter':
+                        this.cursor.x = 0;
+                        this.moveCursor(0, 1);
+                        break;
+                    case 'ArrowLeft':  this.moveCursor(-1, 0); break;
+                    case 'ArrowRight': this.moveCursor(1, 0); break;
+                    case 'ArrowUp':    this.moveCursor(0, -1); break;
+                    case 'ArrowDown':  this.moveCursor(0, 1); break;
+                }
+                this.render();
+            }
+
+            moveCursor(dx, dy) {
+                this.cursor.x = Math.max(0, this.cursor.x + dx);
+                this.cursor.y = Math.max(0, this.cursor.y + dy);
+            }
+
+            write(char) {
+                this.saveToFirebase(this.cursor.x, this.cursor.y, char);
+                this.moveCursor(1, 0);
+            }
+
+            saveToFirebase(x, y, char) {
+                const key = `${x}_${y}`;
+                const charRef = ref(db, 'contenido_mundo/' + key);
+                set(charRef, char); 
+            }
+
+            render() {
+                this.ctx.fillStyle = "#FFFED7";
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                this.ctx.fillRect(this.cursor.x * this.cellW, this.cursor.y * this.cellH, this.cellW, this.cellH);
+
+                this.ctx.fillStyle = "#000";
+                this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
+                this.ctx.textBaseline = "top";
+
+                for (const [coord, char] of Object.entries(this.content)) {
+                    const [x, y] = coord.split('_').map(Number);
+                    if (char) this.ctx.fillText(char, x * this.cellW, y * this.cellH);
+                }
+            }
+        }
+
+        new BackgroundGuestBook('gbCanvas');
+    </script>
+</body>
+</html>
