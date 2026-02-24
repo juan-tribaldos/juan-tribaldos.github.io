@@ -52,7 +52,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: transparent; /* Permite ver el fondo/canvas */
+    background-color: transparent; 
 }
 
 /* CONTENEDOR DEL SELECTOR PERSONALIZADO (Caja Blanca) */
@@ -81,10 +81,10 @@ body {
     overflow: hidden;
 }
 
-/* LISTA DESPLEGABLE */
+/* LISTA DESPLEGABLE GENERAL (Hacia abajo) */
 .select-options {
     position: absolute;
-    top: 97%;
+    top: 95%; /* Casi solapado con el borde inferior */
     left: 0;
     right: 0;
     background: var(--white);
@@ -129,7 +129,15 @@ body {
     min-width: 220px;
 }
 
-/* COMPATIBILIDAD CON SELECTS NATIVOS (Si aún usas la etiqueta <select>) */
+/* DESPLIEGUE HACIA ARRIBA (Específico para el Reloj) */
+.time-selector-wrapper .select-options {
+    top: auto;            /* Anula el top: 97% */
+    bottom: 97%;         /* Lo posiciona arriba del trigger */
+    border-top: 1px solid #000; 
+    border-bottom: none;  /* El borde inferior es el del trigger */
+}
+
+/* COMPATIBILIDAD CON SELECTS NATIVOS */
 .select {
     -webkit-appearance: none;
     appearance: none;
@@ -144,17 +152,7 @@ body {
     background-size: 1.5rem auto;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .header-nav { 
-        flex-direction: column; 
-        gap: 0.5rem; 
-    }
-    .custom-select-container { 
-        max-width: 100%; 
-    }
-}
-
+/* CONTENIDO ABOUT / CONTACT */
 .about-container {
     max-width: 600px;
     margin: 4rem auto;
@@ -171,4 +169,30 @@ body {
 .about-text a {
     color: inherit;
     text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .header-nav { 
+        flex-direction: column; 
+        gap: 0.5rem; 
+    }
+    .custom-select-container { 
+        max-width: 100%; 
+    }
+}
+
+/* Lógica de Toggle para el Reloj */
+
+.time-selector-wrapper.mode-sj #opt-sj {
+    display: none;
+}
+.time-selector-wrapper.mode-bcn #opt-bcn {
+    display: none;
+}
+.time-selector-wrapper #opt-bcn {
+    display: none; 
+}
+.time-selector-wrapper.mode-sj #opt-bcn {
+    display: block;
 }

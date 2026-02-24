@@ -12,50 +12,49 @@
         <div class="custom-select-container">
             <div class="select-trigger">Juan Tribaldos</div>
             <ul class="select-options">
-                <li data-value="about.html">About</li>
-                <li data-value="contact.html">Contact</li>
-                <li data-value="guestbook.html">Guestbook</li>
+                <li data-nav="true" data-value="about.html">About</li>
+                <li data-nav="true" data-value="contact.html">Contact</li>
+                <li data-nav="true" data-value="guestbook.html">Guestbook</li>
             </ul>
         </div>
 
         <div class="custom-select-container">
             <div class="select-trigger">Interiores</div>
             <ul class="select-options">
-                <li data-value="/laurel-dd">Laurel DD</li>
-                <li data-value="/casa-aromo">Casa Aromo</li>
-                <li data-value="/casa-ikaros">Casa Ikaros</li>
-                <li data-value="/casa-naia">Casa Naia</li>
-                <li data-value="/casa-rosada">Casa Rosada</li>
-                <li data-value="/casa-tula">Casa Tula</li>
-                <li data-value="/perozah">Perozah</li>
+                <li data-nav="true" data-value="/laurel-dd">Laurel DD</li>
+                <li data-nav="true" data-value="/casa-aromo">Casa Aromo</li>
+                <li data-nav="true" data-value="/casa-ikaros">Casa Ikaros</li>
+                <li data-nav="true" data-value="/casa-naia">Casa Naia</li>
+                <li data-nav="true" data-value="/casa-rosada">Casa Rosada</li>
+                <li data-nav="true" data-value="/casa-tula">Casa Tula</li>
+                <li data-nav="true" data-value="/perozah">Perozah</li>
             </ul>
         </div>
 
         <div class="custom-select-container">
             <div class="select-trigger">Exploraciones</div>
             <ul class="select-options">
-                <li data-value="/pleroma">Pléroma</li>
-                <li data-value="/liminal">Liminal</li>
-                <li data-value="/materia-prima">Materia Prima</li>
+                <li data-nav="true" data-value="/pleroma">Pléroma</li>
+                <li data-nav="true" data-value="/liminal">Liminal</li>
+                <li data-nav="true" data-value="/materia-prima">Materia Prima</li>
             </ul>
         </div>
 
         <div class="custom-select-container">
             <div class="select-trigger">Archivo</div>
             <ul class="select-options">
-                <li data-value="/art">Art</li>
-                <li data-value="/residencia-salita-2025">Residencia Salita Temporal 2025</li>
+                <li data-nav="true" data-value="/art">Art</li>
+                <li data-nav="true" data-value="/residencia-salita-2025">Residencia Salita Temporal 2025</li>
             </ul>
         </div>
     </header>
 
-    <main id="main-content">
-        </main>
+    <main id="main-content"></main>
 
     <div class="time-selector-wrapper">
         <div class="custom-select-container">
             <div class="select-trigger" id="current-time-trigger">Cargando hora...</div>
-            <ul class="select-options">
+            <ul class="select-options" id="time-options">
                 <li id="opt-sj" data-value="America/Costa_Rica">Cargando San José...</li>
                 <li id="opt-bcn" data-value="Europe/Madrid">Cargando Barcelona...</li>
             </ul>
@@ -64,11 +63,10 @@
 
     <script src="draw.js"></script>
     <script>
-        // Manejo de Dropdowns personalizados
+        // 1. Manejo de apertura/cierre de Dropdowns
         document.querySelectorAll('.select-trigger').forEach(trigger => {
             trigger.addEventListener('click', (e) => {
                 const options = trigger.nextElementSibling;
-                // Cerrar otros menús abiertos
                 document.querySelectorAll('.select-options').forEach(opt => {
                     if (opt !== options) opt.classList.remove('open');
                 });
@@ -77,20 +75,36 @@
             });
         });
 
-        // Selección de opciones y navegación
-        document.querySelectorAll('.select-options li').forEach(option => {
-            option.addEventListener('click', () => {
-                const val = option.getAttribute('data-value');
-                if (val) window.location.href = val;
-            });
-        });
+      // Lógica de selección diferenciada
+document.querySelectorAll('.select-options li').forEach(option => {
+    option.addEventListener('click', () => {
+        const isNav = option.getAttribute('data-nav') === 'true';
+        const val = option.getAttribute('data-value');
+        const wrapper = document.querySelector('.time-selector-wrapper');
 
-        // Cerrar dropdowns al hacer clic fuera
+        if (isNav && val) {
+            window.location.href = val;
+        } else {
+            // Actualizar el texto del visor
+            timeTrigger.textContent = option.textContent;
+            
+            // Cambiar la clase del contenedor para filtrar las opciones
+            if (option.id === 'opt-sj') {
+                wrapper.classList.add('mode-sj');
+                wrapper.classList.remove('mode-bcn');
+            } else {
+                wrapper.classList.add('mode-bcn');
+                wrapper.classList.remove('mode-sj');
+            }
+        }
+    });
+});
+
         window.addEventListener('click', () => {
             document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
         });
 
-        // Lógica de Relojes Duales
+        // 3. Lógica de Relojes Duales
         const optSJ = document.getElementById('opt-sj');
         const optBCN = document.getElementById('opt-bcn');
         const timeTrigger = document.getElementById('current-time-trigger');
@@ -102,12 +116,19 @@
             const timeSJ = new Intl.DateTimeFormat('es-CR', { ...options, timeZone: 'America/Costa_Rica' }).format(now);
             const timeBCN = new Intl.DateTimeFormat('es-ES', { ...options, timeZone: 'Europe/Madrid' }).format(now);
 
-            optSJ.textContent = `${timeSJ} - San José (CR)`;
-            optBCN.textContent = `${timeBCN} - Barcelona (ES)`;
+            const textSJ = `${timeSJ} - San José (CR)`;
+            const textBCN = `${timeBCN} - Barcelona (ES)`;
+
+            // Actualizamos el contenido de la lista
+            optSJ.textContent = textSJ;
+            optBCN.textContent = textBCN;
             
-            // Texto inicial del trigger
-            if(timeTrigger.textContent.includes("Cargando")) {
-                timeTrigger.textContent = `${timeBCN} - Barcelona (ES)`;
+            // Actualizamos el visor (trigger) basándonos en lo que ya tiene escrito
+            // para que los segundos sigan corriendo en la ciudad seleccionada
+            if (timeTrigger.textContent.includes("San José")) {
+                timeTrigger.textContent = textSJ;
+            } else if (timeTrigger.textContent.includes("Barcelona") || timeTrigger.textContent.includes("Cargando")) {
+                timeTrigger.textContent = textBCN;
             }
         }
 
