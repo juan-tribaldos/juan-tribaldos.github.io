@@ -168,15 +168,15 @@ body {
 .about-text a {
     color: #0d00ff;
     line-height: 0;
-    text-decoration: underline;
-    text-decoration-thickness: 9px;
+   /* text-decoration: underline;
+    text-decoration-thickness: 9px; */
     
 }
 
 a:hover {
     color: #ffffff;
-    text-decoration: wavy underline;
-    text-decoration-thickness: 15px;
+   /* text-decoration: wavy underline;
+    text-decoration-thickness: 15px; */
 }
 
 .about-figure {
