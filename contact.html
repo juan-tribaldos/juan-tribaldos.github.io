@@ -9,44 +9,7 @@
 <body>
 
     <header class="header-nav">
-        <div class="custom-select-container">
-            <div class="select-trigger">Contact</div>
-            <ul class="select-options">
-                <li data-value="index.html">Juan Tribaldos</li>
-                <li data-value="about.html">About</li>            
-                <li data-value="guestbook.html">Guestbook</li>
-            </ul>
-        </div>       
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Interiores</div>
-            <ul class="select-options">
-                <li data-value="/laurel-dd">Laurel DD</li>
-                <li data-value="/casa-aromo">Casa Aromo</li>
-                <li data-value="/casa-ikaros">Casa Ikaros</li>
-                <li data-value="/casa-naia">Casa Naia</li>
-                <li data-value="/casa-rosada">Casa Rosada</li>
-                <li data-value="/casa-tula">Casa Tula</li>
-                <li data-value="/perozah">Perozah</li>
-            </ul>
-        </div>
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Exploraciones</div>
-            <ul class="select-options">
-                <li data-value="/pleroma">Pléroma</li>
-                <li data-value="/liminal">Liminal</li>
-                <li data-value="/materia-prima">Materia Prima</li>
-            </ul>
-        </div>
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Archivo</div>
-            <ul class="select-options">
-                <li data-value="/art">Art</li>
-                <li data-value="/residencia-salita-2025">Residencia Salita Temporal 2025</li>
-            </ul>
-        </div>
+       <script src="nav.js"></script>      
     </header>
 
     <main>
@@ -73,57 +36,6 @@
 
     </main>
 
-   <script>
-    // 1. Lógica General de Menús (Abrir/Cerrar)
-    document.querySelectorAll('.select-trigger').forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            const options = trigger.nextElementSibling;
-            document.querySelectorAll('.select-options').forEach(opt => {
-                if (opt !== options) opt.classList.remove('open');
-            });
-            options.classList.toggle('open');
-            e.stopPropagation();
-        });
-    });
-
-    // 2. Lógica de Navegación y Filtros
-    // Dentro de tu bloque de script, actualiza la lógica de filtros:
-
-document.querySelectorAll('.select-options li').forEach(option => {
-    option.addEventListener('click', function() {
-        const val = this.getAttribute('data-value');
-        const action = this.getAttribute('data-action');
-        const trigger = this.parentElement.previousElementSibling;
-        const container = this.closest('.image-footer-select'); // Buscamos el contenedor del pie de foto
-
-        if (val) {
-            window.location.href = val;
-        }
-
-        if (action) {
-            const img = document.getElementById('toggleImage');
-            
-            if (action === 'invert') {
-                img.classList.add('inverted');
-                trigger.textContent = 'Portrait_by_Leo-Carvajal.opt02';
-                // Cambiamos las clases del contenedor para ocultar la opción en la lista
-                container.classList.remove('mode-normal');
-                container.classList.add('mode-invert');
-            } else {
-                img.classList.remove('inverted');
-                trigger.textContent = 'Portrait_by_Leo-Carvajal.opt01';
-                // Cambiamos las clases del contenedor
-                container.classList.remove('mode-invert');
-                container.classList.add('mode-normal');
-            }
-        }
-    });
-});
-
-    // Cerrar menús al hacer clic fuera
-    window.addEventListener('click', () => {
-        document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-    });
-</script>
+  
 </body>
 </html>

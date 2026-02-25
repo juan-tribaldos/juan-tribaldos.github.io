@@ -10,47 +10,7 @@
 <body>
 
     <canvas id="gbCanvas"></canvas>
-
-    <header class="header-nav">
-        <div class="custom-select-container">
-            <div class="select-trigger">Guestbook</div>
-            <ul class="select-options">
-                <li data-value="index.html">Juan Tribaldos</li>
-                <li data-value="about.html">About</li>
-                <li data-value="contact.html">Contact</li>                
-            </ul>
-        </div>       
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Interiores</div>
-            <ul class="select-options">
-                <li data-value="/laurel-dd">Laurel DD</li>
-                <li data-value="/casa-aromo">Casa Aromo</li>
-                <li data-value="/casa-ikaros">Casa Ikaros</li>
-                <li data-value="/casa-naia">Casa Naia</li>
-                <li data-value="/casa-rosada">Casa Rosada</li>
-                <li data-value="/casa-tula">Casa Tula</li>
-                <li data-value="/perozah">Perozah</li>
-            </ul>
-        </div>
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Exploraciones</div>
-            <ul class="select-options">
-                <li data-value="/pleroma">Pléroma</li>
-                <li data-value="/liminal">Liminal</li>
-                <li data-value="/materia-prima">Materia Prima</li>
-            </ul>
-        </div>
-
-        <div class="custom-select-container">
-            <div class="select-trigger">Archivo</div>
-            <ul class="select-options">
-                <li data-value="/art">Art</li>
-                <li data-value="/residencia-salita-2025">Residencia Salita Temporal 2025</li>
-            </ul>
-        </div>
-    </header>
+    <script src="nav.js"></script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -276,54 +236,6 @@
     new BackgroundGuestBook('gbCanvas');
 </script>
 
-    <script>
-        // Hide the option that corresponds to the current page file name (so it's excluded)
-        (function () {
-            const current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
-
-            document.querySelectorAll('.select-options').forEach(list => {
-                list.querySelectorAll('li').forEach(li => {
-                    const val = (li.getAttribute('data-value') || '').split('/').pop().toLowerCase();
-                    if (val && val === current) {
-                        li.style.display = 'none';
-                        li.setAttribute('aria-hidden', 'true');
-                        li.setAttribute('data-excluded', 'true');
-                    } else {
-                        li.style.display = '';
-                        li.removeAttribute('aria-hidden');
-                        li.removeAttribute('data-excluded');
-                    }
-                });
-            });
-
-            // Toggle dropdowns
-            document.querySelectorAll('.select-trigger').forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
-                    const options = trigger.nextElementSibling;
-                    document.querySelectorAll('.select-options').forEach(opt => {
-                        if (opt !== options) opt.classList.remove('open');
-                    });
-                    options.classList.toggle('open');
-                    e.stopPropagation();
-                });
-            });
-
-            // Click handlers for visible items only
-            document.querySelectorAll('.select-options').forEach(list => {
-                list.querySelectorAll('li').forEach(option => {
-                    option.addEventListener('click', () => {
-                        if (option.getAttribute('data-excluded') === 'true') return;
-                        const val = option.getAttribute('data-value');
-                        if (val && !option.hasAttribute('disabled')) window.location.href = val;
-                    });
-                });
-            });
-
-            // Close dropdowns on outside click
-            window.addEventListener('click', () => {
-                document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-            });
-        })();
-    </script>
+   
 </body>
 </html>
