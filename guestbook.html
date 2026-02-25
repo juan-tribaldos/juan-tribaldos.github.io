@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juan Tribaldos</title>
     <link rel="stylesheet" href="style.css">
+    <!-- inline styles moved to /Users/canada_loft/Documents/GITHUB/juan-tribaldos.github.io/style.css -->
 </head>
 <body>
 
@@ -71,47 +72,83 @@
 
         const FONT_SIZE = 13;
         const FONT_FACE = "Times New Roman, serif";
-        
+
         class BackgroundGuestBook {
             constructor(canvasId) {
                 this.canvas = document.getElementById(canvasId);
                 this.ctx = this.canvas.getContext('2d');
                 this.cellW = 0;
                 this.cellH = FONT_SIZE + 2;
-                this.content = {}; 
+                this.content = {};
                 this.cursor = { x: 2, y: 5 };
+                this.offset = { x: 0, y: 0 }; // For panning
+                this.isMobile = window.matchMedia("(max-width: 600px)").matches;
+                this.dragging = false;
+                this.lastTouch = null;
                 this.init();
             }
 
             init() {
                 this.adjustSize();
-                window.addEventListener('resize', () => this.adjustSize());
+                window.addEventListener('resize', () => {
+                    this.isMobile = window.matchMedia("(max-width: 600px)").matches;
+                    this.adjustSize();
+                });
                 onValue(dbRef, (snapshot) => {
                     this.content = snapshot.val() || {};
                     this.render();
                 });
 
-                window.addEventListener('keydown', (e) => {
-                    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) e.preventDefault();
-                    if (e.key.length === 1) this.write(e.key);
-                    else this.handleSpecialKeys(e);
-                });
+                if (!this.isMobile) {
+                    window.addEventListener('keydown', (e) => {
+                        if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) e.preventDefault();
+                        if (e.key.length === 1) this.write(e.key);
+                        else this.handleSpecialKeys(e);
+                    });
 
-                window.addEventListener('mousedown', (e) => {
-                    // Evitar que el clic en los selectores mueva el cursor del canvas
-                    if(!e.target.closest('.custom-select-container')) {
-                        this.cursor.x = Math.floor(e.clientX / this.cellW);
-                        this.cursor.y = Math.floor(e.clientY / this.cellH);
-                        this.render();
-                    }
-                });
+                    window.addEventListener('mousedown', (e) => {
+                        if(!e.target.closest('.custom-select-container')) {
+                            // Adjust for header height if needed
+                            const rect = this.canvas.getBoundingClientRect();
+                            const y = e.clientY - rect.top;
+                            this.cursor.x = Math.floor(e.clientX / this.cellW);
+                            this.cursor.y = Math.floor(y / this.cellH);
+                            this.render();
+                        }
+                    });
+                } else {
+                    // Touch events for mobile: pan to explore
+                    this.canvas.addEventListener('touchstart', (e) => {
+                        if (e.touches.length === 1) {
+                            this.dragging = true;
+                            this.lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                        }
+                    });
+                    this.canvas.addEventListener('touchmove', (e) => {
+                        if (this.dragging && e.touches.length === 1) {
+                            const touch = e.touches[0];
+                            const dx = touch.clientX - this.lastTouch.x;
+                            const dy = touch.clientY - this.lastTouch.y;
+                            this.offset.x -= dx / this.cellW;
+                            this.offset.y -= dy / this.cellH;
+                            this.lastTouch = { x: touch.clientX, y: touch.clientY };
+                            this.render();
+                        }
+                        e.preventDefault();
+                    }, { passive: false });
+                    this.canvas.addEventListener('touchend', () => {
+                        this.dragging = false;
+                        this.lastTouch = null;
+                    });
+                }
             }
 
             adjustSize() {
+                // Make canvas fill viewport
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
                 this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
-                this.cellW = this.ctx.measureText('m').width; 
+                this.cellW = this.ctx.measureText('m').width;
                 this.render();
             }
 
@@ -138,20 +175,38 @@
             }
 
             saveToFirebase(x, y, char) {
-                set(ref(db, 'contenido_mundo/' + `${x}_${y}`), char); 
+                set(ref(db, 'contenido_mundo/' + `${x}_${y}`), char);
             }
 
             render() {
                 this.ctx.fillStyle = "#FFFED7";
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                this.ctx.fillRect(this.cursor.x * this.cellW, this.cursor.y * this.cellH, this.cellW, this.cellH);
+
+                let offsetX = this.isMobile ? this.offset.x : 0;
+                let offsetY = this.isMobile ? this.offset.y : 0;
+
+                // Draw cursor highlight only on desktop
+                if (!this.isMobile) {
+                    this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                    this.ctx.fillRect(
+                        (this.cursor.x - offsetX) * this.cellW,
+                        (this.cursor.y - offsetY) * this.cellH,
+                        this.cellW, this.cellH
+                    );
+                }
+
                 this.ctx.fillStyle = "#000";
                 this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
                 this.ctx.textBaseline = "top";
                 for (const [coord, char] of Object.entries(this.content)) {
                     const [x, y] = coord.split('_').map(Number);
-                    if (char) this.ctx.fillText(char, x * this.cellW, y * this.cellH);
+                    if (char) {
+                        this.ctx.fillText(
+                            char,
+                            (x - offsetX) * this.cellW,
+                            (y - offsetY) * this.cellH
+                        );
+                    }
                 }
             }
         }

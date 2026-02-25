@@ -29,29 +29,31 @@ body {
     margin: 0;
     min-height: 100%;
     text-rendering: optimizeLegibility;
-
+    padding-top: 60px; /* add padding so content below the fixed header is visible; adjust if header height changes */
 }
 
 /* GUESTBOOK CANVAS BACKGROUND */
 #gbCanvas {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1;
     display: block;
+    z-index: 0;
 }
 
 /* HEADER Y NAVEGACIÓN */
 .header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 10;
+    background: transparent;
     display: flex;
     gap: 0.5rem;
     padding: 1rem;       
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: transparent; 
 }
 
 /* CONTENEDOR DEL SELECTOR PERSONALIZADO (Caja Blanca) */
@@ -209,6 +211,12 @@ a:hover {
     }
     .custom-select-container { 
         max-width: 100%; 
+    }
+    #gbCanvas {
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
     }
 }
 
