@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-  body {
-    overflow: hidden;
-  }
-</style>
+        body {
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 
@@ -22,85 +22,68 @@
         <div class="custom-select-container">
             <div class="select-trigger" id="current-time-trigger">Cargando hora...</div>
             <ul class="select-options" id="time-options">
-                <li id="opt-sj" data-value="America/Costa_Rica">Cargando San José...</li>
-                <li id="opt-bcn" data-value="Europe/Madrid">Cargando Barcelona...</li>
+                <li id="opt-sj" data-city="sj">Cargando San José...</li>
+                <li id="opt-bcn" data-city="bcn">Cargando Barcelona...</li>
             </ul>
         </div>
     </div>
 
     <script src="draw.js"></script>
     <script>
-        // 3. Lógica de Relojes Duales - Define variables first
+        // Variables para el Reloj Dual
         const optSJ = document.getElementById('opt-sj');
         const optBCN = document.getElementById('opt-bcn');
         const timeTrigger = document.getElementById('current-time-trigger');
         const wrapper = document.querySelector('.time-selector-wrapper');
 
-        // 1. Manejo de apertura/cierre de Dropdowns
-        document.querySelectorAll('.select-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                const options = trigger.nextElementSibling;
-                document.querySelectorAll('.select-options').forEach(opt => {
-                    if (opt !== options) opt.classList.remove('open');
-                });
-                options.classList.toggle('open');
-                e.stopPropagation();
+        // LÓGICA DE SELECCIÓN PARA EL RELOJ
+        // Escuchamos específicamente los clics en las opciones del reloj para no chocar con nav.js
+        document.querySelectorAll('#time-options li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const city = option.getAttribute('data-city');
+
+                if (city === 'sj') {
+                    wrapper.classList.add('mode-sj');
+                    wrapper.classList.remove('mode-bcn');
+                } else if (city === 'bcn') {
+                    wrapper.classList.add('mode-bcn');
+                    wrapper.classList.remove('mode-sj');
+                }
+
+                // Cerramos el menú después de seleccionar
+                option.parentElement.classList.remove('open');
+                e.stopPropagation(); // Evita que otros scripts interfieran
+                updateClocks(); // Actualización inmediata visual
             });
         });
 
-      // Lógica de selección diferenciada
-document.querySelectorAll('.select-options li').forEach(option => {
-    option.addEventListener('click', () => {
-        const isNav = option.getAttribute('data-nav') === 'true';
-        const val = option.getAttribute('data-value');
-
-        if (isNav && val) {
-            window.location.href = val;
-        } else {
-            // Cambiar la clase del contenedor para filtrar las opciones
-            if (option.id === 'opt-sj') {
-                wrapper.classList.add('mode-sj');
-                wrapper.classList.remove('mode-bcn');
-            } else if (option.id === 'opt-bcn') {
-                wrapper.classList.add('mode-bcn');
-                wrapper.classList.remove('mode-sj');
-            }
-            // Cerrar el menú después de seleccionar
-            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-        }
-    });
-});
-
-        window.addEventListener('click', () => {
-            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-        });
-
+        // FUNCIÓN DEL RELOJ
         function updateClocks() {
             const now = new Date();
             const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
             
+            // Obtener horas de las dos zonas
             const timeSJ = new Intl.DateTimeFormat('es-CR', { ...options, timeZone: 'America/Costa_Rica' }).format(now);
             const timeBCN = new Intl.DateTimeFormat('es-ES', { ...options, timeZone: 'Europe/Madrid' }).format(now);
 
             const textSJ = `${timeSJ} - San José (CR)`;
             const textBCN = `${timeBCN} - Barcelona (ES)`;
 
-            // Actualizamos el contenido de la lista
-            optSJ.textContent = textSJ;
-            optBCN.textContent = textBCN;
+            // Actualizar el texto dentro de la lista desplegable
+            if (optSJ) optSJ.textContent = textSJ;
+            if (optBCN) optBCN.textContent = textBCN;
             
-            // Actualizamos el visor (trigger) con el tiempo correspondiente
-            if (wrapper.classList.contains('mode-sj')) {
-                timeTrigger.textContent = textSJ;
-            } else if (wrapper.classList.contains('mode-bcn')) {
+            // Actualizar lo que se ve en el botón (trigger) según el modo activo
+            if (wrapper.classList.contains('mode-bcn')) {
                 timeTrigger.textContent = textBCN;
             } else {
-                // Inicialización: mostrar SJ por defecto si no hay modo establecido
+                // San José por defecto
                 timeTrigger.textContent = textSJ;
-                wrapper.classList.add('mode-sj');
+                if (!wrapper.classList.contains('mode-sj')) wrapper.classList.add('mode-sj');
             }
         }
 
+        // Iniciar el reloj
         setInterval(updateClocks, 1000);
         updateClocks();
     </script>

@@ -11,7 +11,6 @@ function loadNavbar() {
                 <li data-value="guestbook.html">Guestbook</li>
             </ul>
         </div>
-
         <div class="custom-select-container">
             <div class="select-trigger">Interiores</div>
             <ul class="select-options">
@@ -24,7 +23,6 @@ function loadNavbar() {
                 <li data-value="perozah.html">Perozah</li>
             </ul>
         </div>
-
         <div class="custom-select-container">
             <div class="select-trigger">Exploraciones</div>
             <ul class="select-options">
@@ -33,7 +31,6 @@ function loadNavbar() {
                 <li data-value="materia-prima.html">Materia Prima</li>
             </ul>
         </div>
-
         <div class="custom-select-container">
             <div class="select-trigger">Archivo</div>
             <ul class="select-options">
@@ -41,39 +38,38 @@ function loadNavbar() {
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
             </ul>
         </div>
-    </header>
-    `;
+    </header>`;
 
-    // Insertar el HTML al principio del body
     document.body.insertAdjacentHTML('afterbegin', navHTML);
-
-    // Activar la lógica de los dropdowns que ya tenías
     initNavLogic();
 }
 
 function initNavLogic() {
-    document.querySelectorAll('.select-trigger').forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            const options = trigger.nextElementSibling;
+    // Abrir/Cerrar CUALQUIER selector (incluidos Time y Portrait)
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('select-trigger')) {
+            const options = e.target.nextElementSibling;
+            
+            // Cerrar otros abiertos
             document.querySelectorAll('.select-options').forEach(opt => {
                 if (opt !== options) opt.classList.remove('open');
             });
+            
             options.classList.toggle('open');
             e.stopPropagation();
-        });
+        } else {
+            // Cerrar todo si se hace click fuera
+            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
+        }
     });
 
-    document.querySelectorAll('.select-options li').forEach(option => {
-        option.addEventListener('click', () => {
+    // Lógica de navegación SOLO para elementos con data-value
+    document.querySelectorAll('.select-options li[data-value]').forEach(option => {
+        option.addEventListener('click', (e) => {
             const val = option.getAttribute('data-value');
             if (val) window.location.href = val;
         });
     });
-
-    window.addEventListener('click', () => {
-        document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-    });
 }
 
-// Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', loadNavbar);
