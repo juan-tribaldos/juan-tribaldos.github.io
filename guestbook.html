@@ -29,7 +29,7 @@
 </head>
 <body>
 
-    <input type="text" id="mobileInput" autocomplete="off">
+    <input type="text" id="mobileInput" autocomplete="off" font-size="16px">
     <canvas id="gbCanvas"></canvas>
     
     <script src="nav.js"></script>
@@ -52,7 +52,6 @@
     const db = getDatabase(app);
     const dbRef = ref(db, 'canvas_content');
 
-    // --- CONFIGURACIÓN ESTÉTICA ---
     const FONT_SIZE = 13;
     const FONT_FACE = "'Times New Roman', Times, serif";
     
@@ -79,7 +78,7 @@
             this.canvas.height = window.innerHeight;
             this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
             const metrics = this.ctx.measureText("M");
-            this.cellW = metrics.width * 0.9; // Ajuste fino para Times New Roman
+            this.cellW = metrics.width * 0.9;
             this.cellH = FONT_SIZE * 0.9;
             this.render();
         }
@@ -94,13 +93,25 @@
         initListeners() {
             window.addEventListener('resize', () => this.setupCanvas());
 
+            // Variables para distinguir Tap de Drag
+            let startX, startY;
+            let isMoving = false;
+            const MOVE_THRESHOLD = 6; 
+
             const startDrag = (x, y) => {
                 this.isDragging = true;
                 this.lastMousePos = { x, y };
+                startX = x;
+                startY = y;
+                isMoving = false;
             };
 
             const moveDrag = (x, y) => {
                 if (!this.isDragging) return;
+                
+                const dist = Math.hypot(x - startX, y - startY);
+                if (dist > MOVE_THRESHOLD) isMoving = true;
+
                 const dx = (x - this.lastMousePos.x) / this.cellW;
                 const dy = (y - this.lastMousePos.y) / this.cellH;
                 this.offset.x -= dx;
@@ -109,22 +120,25 @@
                 this.render();
             };
 
-            const stopDrag = () => { this.isDragging = false; };
-
-            this.canvas.addEventListener('mousedown', (e) => {
-                if (e.button === 0) {
-                    this.setCursor(e.clientX, e.clientY);
+            const stopDrag = (x, y) => {
+                // Si no se movió significativamente, es un click para posicionar cursor
+                if (!isMoving && x !== undefined) {
+                    this.setCursor(x, y);
                     this.mobileInput.focus(); 
                 }
-                startDrag(e.clientX, e.clientY);
+                this.isDragging = false;
+            };
+
+            // Listeners de Mouse
+            this.canvas.addEventListener('mousedown', (e) => {
+                if (e.button === 0) startDrag(e.clientX, e.clientY);
             });
             window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
-            window.addEventListener('mouseup', stopDrag);
+            window.addEventListener('mouseup', (e) => stopDrag(e.clientX, e.clientY));
 
+            // Listeners Táctiles
             this.canvas.addEventListener('touchstart', (e) => {
                 const touch = e.touches[0];
-                this.setCursor(touch.clientX, touch.clientY);
-                this.mobileInput.focus();
                 startDrag(touch.clientX, touch.clientY);
             }, { passive: false });
 
@@ -134,17 +148,33 @@
                 e.preventDefault();
             }, { passive: false });
 
-            this.canvas.addEventListener('touchend', stopDrag);
+            this.canvas.addEventListener('touchend', (e) => {
+                const touch = e.changedTouches[0];
+                stopDrag(touch.clientX, touch.clientY);
+            });
 
+            // GESTIÓN DE ENTRADA DE TEXTO (Anti-doble letra)
             window.addEventListener('keydown', (e) => {
                 if (e.ctrlKey || e.altKey || e.metaKey) return;
-                this.handleInput(e.key);
+                
+                // Solo procesamos teclas de navegación/borrado que 'input' no captura bien
+                if (e.key === "Enter" || e.key === "Backspace") {
+                    this.handleInput(e.key);
+                }
             });
 
             this.mobileInput.addEventListener('input', (e) => {
-                const char = e.data;
-                if (char) this.handleInput(char);
-                this.mobileInput.value = "";
+                const char = e.data; 
+                if (char) {
+                    // Procesamos cada caracter (por si se pega texto)
+                    for (let c of char) {
+                        this.handleInput(c);
+                    }
+                } else if (e.inputType === "deleteContentBackward") {
+                    // Fallback para borrado en algunos navegadores móviles
+                    this.handleInput("Backspace");
+                }
+                this.mobileInput.value = ""; 
             });
         }
 
@@ -174,7 +204,6 @@
         }
 
         render() {
-            // Fondo color crema/papel
             this.ctx.fillStyle = "#FFFED7"; 
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -194,8 +223,8 @@
                 }
             }
 
-            // Cursor muy sutil para no ensuciar
-            this.ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+            // Cursor visual
+            this.ctx.fillStyle = "rgba(0, 0, 0, 0.12)";
             this.ctx.fillRect(
                 (this.cursor.x - this.offset.x) * this.cellW, 
                 (this.cursor.y - this.offset.y) * this.cellH, 

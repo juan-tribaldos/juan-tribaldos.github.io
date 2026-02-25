@@ -11,16 +11,54 @@
     <script src="nav.js"></script>
 
     <main>
-        <section class="about-container">
-            <div class="about-text">
+        <section class="about-container mode-eng" id="about-section">
+            
+            <div class="about-text lang-eng">
                 <br><br><br>
                 <p>Juan Tribaldos is a photographer based in San José, Costa Rica. His practice combines long-term archival research with the documentation of artists' studios and creative spaces, examining them as sites of memory, labor, and cultural transmission.</p>
                 <p>Alongside his research-driven projects, he works as a photographer specializing in interiors and architecture, bringing a sustained attention to space, structure, and material conditions into both his artistic and commissioned work.</p>
                 <p>He studied Photography at Universidad Creativa (2013) and completed a Diploma in Documentary Filmmaking at the Instituto del Cine in Madrid (2014). His ongoing project, <em>The Studio: A Living Archive</em>, explores artistic ecosystems and cultural memory in Costa Rica.</p>
             </div>
+
+            <div class="about-text lang-es">
+                <br><br><br>
+                <p>Juan Tribaldos es un fotógrafo basado en San José, Costa Rica. Su práctica combina la investigación de archivo a largo plazo con la documentación de estudios de artistas y espacios creativos, examinándolos como sitios de memoria, trabajo y transmisión cultural.</p>
+                <p>Junto a sus proyectos de investigación, trabaja como fotógrafo especializado en interiores y arquitectura, aportando una atención sostenida al espacio, la estructura y las condiciones materiales tanto en su trabajo artístico como por encargo.</p>
+                <p>Estudió Fotografía en la Universidad Creativa (2013) y realizó un Diplomado en Cine Documental en el Instituto del Cine de Madrid (2014). Su proyecto en curso, <em>El Estudio: Un Archivo Vivo</em>, explora los ecosistemas artísticos y la memoria cultural en Costa Rica.</p>
+            </div>
+
+            <div class="custom-select-container image-footer-select" style="max-width: 150px !important;"> 
+                <div class="select-trigger" id="langTrigger">English</div>
+                <ul class="select-options" id="lang-options">
+                    <li id="opt-es" data-lang="es">Español</li>
+                    <li id="opt-eng" data-lang="eng">English</li>
+                </ul>
+            </div>
         </section>
     </main>
 
+    <script>
+        document.querySelectorAll('#lang-options li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const lang = option.getAttribute('data-lang');
+                const section = document.getElementById('about-section');
+                const trigger = document.getElementById('langTrigger');
 
+                if (lang === 'es') {
+                    section.classList.remove('mode-eng');
+                    section.classList.add('mode-es');
+                    trigger.textContent = 'Español';
+                } else {
+                    section.classList.remove('mode-es');
+                    section.classList.add('mode-eng');
+                    trigger.textContent = 'English';
+                }
+
+                // Cerrar el menú (manejado también por nav.js pero reforzamos)
+                option.parentElement.classList.remove('open');
+                e.stopPropagation();
+            });
+        });
+    </script>
 </body>
 </html>

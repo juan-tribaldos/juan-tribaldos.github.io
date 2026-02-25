@@ -178,6 +178,22 @@ body {
     display: none;
 }
 
+/* LÓGICA DE IDIOMAS EN ABOUT */
+
+/* 1. Ocultar el texto que no corresponde */
+.about-container.mode-es .lang-eng { display: none; }
+.about-container.mode-eng .lang-es { display: none; }
+
+/* 2. Ocultar la opción ya seleccionada en el menú desplegable */
+.about-container.mode-es #opt-es { display: none; }
+.about-container.mode-eng #opt-eng { display: none; }
+
+/* Asegurar que el selector de idioma abra hacia arriba como los otros footers */
+.image-footer-select .select-options {
+    top: auto;
+    bottom: 100%;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .header-nav { flex-direction: column; width: auto; }
