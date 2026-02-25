@@ -277,27 +277,53 @@
 </script>
 
     <script>
-        document.querySelectorAll('.select-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                const options = trigger.nextElementSibling;
-                document.querySelectorAll('.select-options').forEach(opt => {
-                    if (opt !== options) opt.classList.remove('open');
+        // Hide the option that corresponds to the current page file name (so it's excluded)
+        (function () {
+            const current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+            document.querySelectorAll('.select-options').forEach(list => {
+                list.querySelectorAll('li').forEach(li => {
+                    const val = (li.getAttribute('data-value') || '').split('/').pop().toLowerCase();
+                    if (val && val === current) {
+                        li.style.display = 'none';
+                        li.setAttribute('aria-hidden', 'true');
+                        li.setAttribute('data-excluded', 'true');
+                    } else {
+                        li.style.display = '';
+                        li.removeAttribute('aria-hidden');
+                        li.removeAttribute('data-excluded');
+                    }
                 });
-                options.classList.toggle('open');
-                e.stopPropagation();
             });
-        });
 
-        document.querySelectorAll('.select-options li').forEach(option => {
-            option.addEventListener('click', () => {
-                const val = option.getAttribute('data-value');
-                if (val && !option.hasAttribute('disabled')) window.location.href = val;
+            // Toggle dropdowns
+            document.querySelectorAll('.select-trigger').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    const options = trigger.nextElementSibling;
+                    document.querySelectorAll('.select-options').forEach(opt => {
+                        if (opt !== options) opt.classList.remove('open');
+                    });
+                    options.classList.toggle('open');
+                    e.stopPropagation();
+                });
             });
-        });
 
-        window.addEventListener('click', () => {
-            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
-        });
+            // Click handlers for visible items only
+            document.querySelectorAll('.select-options').forEach(list => {
+                list.querySelectorAll('li').forEach(option => {
+                    option.addEventListener('click', () => {
+                        if (option.getAttribute('data-excluded') === 'true') return;
+                        const val = option.getAttribute('data-value');
+                        if (val && !option.hasAttribute('disabled')) window.location.href = val;
+                    });
+                });
+            });
+
+            // Close dropdowns on outside click
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
+            });
+        })();
     </script>
 </body>
 </html>

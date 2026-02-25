@@ -187,18 +187,46 @@ a:hover {
     text-align: center;
 }
 
+
+
+/* Contenedor que se ajusta al ancho de la imagen */
+.image-selector-wrapper {
+    display: inline-block;
+    position: relative;
+    max-width: 30%; /* Mantiene el tamaño que definiste para la imagen */
+    width: 100%;
+}
+
+/* Forzamos que la imagen ocupe el 100% de su contenedor */
 .about-image {
     display: block;
-    max-width: 20%;
     width: 100%;
-    height: auto;
-    margin: 0 auto 2rem auto;
-    border: 1px solid #000;
+    max-width: 100%; /* Sobrescribe el 20% previo para que mande el wrapper */
+    margin: 0;
+    transition: filter 0.3s ease;
+}
+
+/* Clase para controlar el filtro */
+.about-image.inverted {
     filter: invert(100%);
 }
 
-.about-image:hover {
-    filter: invert(0%);
+/* Ajustes del selector para que sea un pie de foto */
+.image-footer-select {
+    max-width: 100% !important; /* Se ajusta al ancho de la imagen */
+}
+
+.image-footer-select .select-trigger {
+    border-top: none; /* Evita doble borde con la imagen */
+    justify-content: space-between;
+}
+
+/* Despliegue hacia arriba para el pie de foto */
+.image-footer-select .select-options {
+    top: auto;
+    bottom: 100%;
+    border-top: 1px solid #000;
+    border-bottom: none;
 }
 
 
