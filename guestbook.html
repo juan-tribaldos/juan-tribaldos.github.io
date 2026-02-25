@@ -192,7 +192,7 @@
         }
 
         drawMinimap() {
-            const size = 150; // Tamaño visual del minimapa
+            const size = 100; // Tamaño visual del minimapa
             const padding = 20;
             const mx = this.canvas.width - size - padding;
             const my = this.canvas.height - size - padding;
@@ -200,7 +200,7 @@
             // Fondo y borde estilo "Select"
             this.ctx.fillStyle = "#ffffff";
             this.ctx.strokeStyle = "#000000";
-            this.ctx.lineWidth = 1;
+            this.ctx.lineWidth = 0.5;
             this.ctx.fillRect(mx, my, size, size);
             this.ctx.strokeRect(mx, my, size, size);
 
