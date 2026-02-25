@@ -5,19 +5,17 @@
     --color-background: #a5a5a5; 
     --color-foreground: #000000;
     --white: #ffffff;
-    /* Iconos y Tipografía */
+    /* Optimizado: Agrupamos el tamaño de fuente para inputs si lo usas luego */
     --input-font-size: max(var(--body-font-size), 1.6rem);
     --caret-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
-html { 
+*, *:before, *:after { 
     box-sizing: border-box; 
-    font-size: 62.5%; 
-    height: 100%; 
 }
 
-*, *:before, *:after { 
-    box-sizing: inherit; 
+html { 
+    font-size: 62.5%; 
 }
 
 body {
@@ -27,29 +25,29 @@ body {
     font-size: var(--body-font-size);
     line-height: var(--body-line-height);
     margin: 0;
-    min-height: 100%;
+    min-height: 100vh;
     text-rendering: optimizeLegibility;
-    padding-top: 60px; /* add padding so content below the fixed header is visible; adjust if header height changes */
-    
+    padding-top: 60px;
+    overflow-x: hidden; /* Evita scrolls horizontales accidentales */
 }
 
-/* GUESTBOOK CANVAS BACKGROUND */
+/* GUESTBOOK CANVAS */
 #gbCanvas {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: block;
     z-index: 0;
 }
 
-/* HEADER Y NAVEGACIÓN */
+/* NAVEGACIÓN */
 .header-nav {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 10;
     background: transparent;
     display: flex;
@@ -57,7 +55,7 @@ body {
     padding: 1rem;       
 }
 
-/* CONTENEDOR DEL SELECTOR PERSONALIZADO (Caja Blanca) */
+/* SELECTORES PERSONALIZADOS */
 .custom-select-container {
     position: relative;
     width: 100%;
@@ -65,56 +63,45 @@ body {
     user-select: none;
 }
 
-/* LA CAJA BLANCA (TRIGGER) */
 .select-trigger {
-    background: var(--white);
+    background: var(--white) var(--caret-icon) no-repeat right .9rem center / 1.5rem auto;
     border: 1px solid #000;
     padding: .5rem 3.5rem .5rem .7rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     height: 2rem;
-    background-image: var(--caret-icon);
-    background-repeat: no-repeat;
-    background-position: right .9rem center;
-    background-size: 1.5rem auto;
     font-size: 1.4rem;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* LISTA DESPLEGABLE GENERAL (Hacia abajo) */
 .select-options {
     position: absolute;
-    top: 95%; /* Casi solapado con el borde inferior */
+    top: 95%;
     left: 0;
     right: 0;
     background: var(--white);
     border: 1px solid #000;
     border-top: none;
     display: none;
-    z-index: 999;
+    z-index: 1001; /* Asegurar que esté por encima de todo */
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.select-options.open { 
-    display: block; 
-}
+.select-options.open { display: block; }
 
 .select-options li {
     padding: .6rem .7rem;
     cursor: pointer;
-    border-bottom: 0px solid #eee;
     background: var(--white);
     font-size: 1.4rem;
     color: #000;
 }
 
-.select-options li:hover { 
-    background-color: #f0f0f0; 
-}
+.select-options li:hover { background-color: #f0f0f0; }
 
 .select-options li[disabled] {
     color: #999;
@@ -122,7 +109,7 @@ body {
     font-style: italic;
 }
 
-/* SELECTOR DE TIEMPO (BOTTOM LEFT) */
+/* SELECTOR DE TIEMPO (BOTTOM LEFT) Y PIE DE FOTO */
 .time-selector-wrapper {
     position: fixed;
     bottom: 2rem;
@@ -131,30 +118,16 @@ body {
     min-width: 220px;
 }
 
-/* DESPLIEGUE HACIA ARRIBA (Específico para el Reloj) */
-.time-selector-wrapper .select-options {
-    top: auto;            /* Anula el top: 97% */
-    bottom: 97%;         /* Lo posiciona arriba del trigger */
+/* Unificación de menús que abren hacia arriba */
+.time-selector-wrapper .select-options,
+.image-footer-select .select-options {
+    top: auto;
+    bottom: 100%; /* Ajustado a 100% para evitar gaps */
     border-top: 1px solid #000; 
-    border-bottom: none;  /* El borde inferior es el del trigger */
+    border-bottom: none;
 }
 
-/* COMPATIBILIDAD CON SELECTS NATIVOS */
-.select {
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: var(--white);
-    border: 1px solid #000;
-    border-radius: 0;
-    padding: .5rem .7rem;
-    font: inherit;
-    background-image: var(--caret-icon);
-    background-position: right .9rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5rem auto;
-}
-
-/* CONTENIDO ABOUT / CONTACT */
+/* IMÁGENES Y CONTENIDO ABOUT */
 .about-container {
     max-width: 1500px;
     margin: 9rem auto;
@@ -168,98 +141,46 @@ body {
     line-height: 1.5;
 }
 
-.about-text a {
-    color: #0d00ff;
-    line-height: 0;
-   /* text-decoration: underline;
-    text-decoration-thickness: 9px; */
-    
+.about-text a { 
+    color: #0d00ff; 
+    text-decoration: underline; /* Mejora la accesibilidad */
 }
+.about-text a:hover { color: #ffffff; }
 
-a:hover {
-    color: #ffffff;
-   /* text-decoration: wavy underline;
-    text-decoration-thickness: 15px; */
-}
-
-.about-figure {
-    margin: 0 1rem;
-    text-align: center;
-}
-
-
-
-/* Contenedor que se ajusta al ancho de la imagen */
 .image-selector-wrapper {
     display: inline-block;
     position: relative;
-    max-width: 30%; /* Mantiene el tamaño que definiste para la imagen */
+    max-width: 30%;
     width: 100%;
 }
 
-/* Forzamos que la imagen ocupe el 100% de su contenedor */
 .about-image {
     display: block;
     width: 100%;
-    max-width: 100%; /* Sobrescribe el 20% previo para que mande el wrapper */
-    margin: 0;
-    transition: filter 0.3s ease;
+    height: auto;
 }
 
-/* Clase para controlar el filtro */
-.about-image.inverted {
-    filter: invert(100%);
+.about-image.inverted { filter: invert(100%); }
+
+.image-footer-select { max-width: 100% !important; }
+
+/* LÓGICA DE VISIBILIDAD DE OPCIONES (TOGGLE) */
+/* Ocultamos la opción que ya está activa en cada selector */
+.image-footer-select.mode-normal #opt-normal,
+.image-footer-select.mode-invert #opt-invert,
+.time-selector-wrapper.mode-sj #opt-sj,
+.time-selector-wrapper.mode-bcn #opt-bcn { 
+    display: none; 
 }
 
-/* Ajustes del selector para que sea un pie de foto */
-.image-footer-select {
-    max-width: 100% !important; /* Se ajusta al ancho de la imagen */
+/* Estado inicial del reloj: si no tiene modo, mostramos SJ por defecto y ocultamos BCN */
+.time-selector-wrapper:not(.mode-sj):not(.mode-bcn) #opt-bcn {
+    display: none;
 }
-
-.image-footer-select .select-trigger {
-    border-top: none; /* Evita doble borde con la imagen */
-    justify-content: space-between;
-}
-
-/* Despliegue hacia arriba para el pie de foto */
-.image-footer-select .select-options {
-    top: auto;
-    bottom: 100%;
-    border-top: 1px solid #000;
-    border-bottom: none;
-}
-
-
-
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .header-nav { 
-        flex-direction: column; 
-        gap: 0.5rem; 
-    }
-    .custom-select-container { 
-        max-width: 100%; 
-    }
-    #gbCanvas {
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-    }
-}
-
-/* Lógica de Toggle para el Reloj */
-
-.time-selector-wrapper.mode-sj #opt-sj {
-    display: none;
-}
-.time-selector-wrapper.mode-bcn #opt-bcn {
-    display: none;
-}
-.time-selector-wrapper #opt-bcn {
-    display: none; 
-}
-.time-selector-wrapper.mode-sj #opt-bcn {
-    display: block;
+    .header-nav { flex-direction: column; width: auto; }
+    .custom-select-container { max-width: 100%; }
+    .image-selector-wrapper { max-width: 100%; } /* Las fotos crecen en móvil */
 }
