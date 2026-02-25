@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos - Archivo</title>
+    
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* 1. ANCHO DE LA TABLA MÁS PEQUEÑO */
+        main {
+            padding: 100px 20px;
+            max-width: 700px; /* Reducido de 1200px a 800px */
+            margin: 0 auto;
+        }
+
+        #arena-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12px;
+            border: 1px solid #000;
+            background-color: #fff;
+            margin-bottom: 30px; /* Espacio antes de la imagen */
+        }
+
+        /* Encabezado */
+        #arena-table thead th {
+            background-color: #d1d1d1;
+            border: 1px solid #000;
+            padding: 8px 12px;
+            text-align: left;
+            
+        }
+
+        /* Celdas */
+        #arena-table td {
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            vertical-align: middle;
+            color: #000;
+        }
+
+        /* Zebra Striping */
+        #arena-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #arena-table tbody tr:hover {
+            background-color: #27f053;
+        }
+
+        .table-thumb {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            display: block;
+            border: 1px solid #999;
+        }
+
+        .view-link {
+            color: #0000EE;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .viewing-status {
+            color: #666;
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* 2. VISOR DEBAJO DE LA TABLA */
+        #image-display-area {
+            width: 100%;
+            display: none; /* Se oculta hasta que se cargue una imagen */
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #image-display-area img {
+            width: 100%; /* Ocupa todo el ancho de la tabla (800px) */
+            height: auto;
+            
+        }
+
+        /* Ajuste para móviles */
+        @media (max-width: 600px) {
+            #arena-table th:nth-child(3), 
+            #arena-table td:nth-child(3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main>
+        <table id="arena-table">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">*</th>
+                    <th>Title</th>
+                    <th style="width: 120px;">Size (bytes)</th>
+                    <th style="width: 100px;">View</th>
+                </tr>
+            </thead>
+            <tbody id="arena-tbody">
+                </tbody>
+        </table>
+        
+        <div id="image-display-area">
+            <img id="active-image" src="" alt="Selected image">
+        </div>
+    </main>
+
+    <script>
+        /* --- INTEGRACIÓN API ARE.NA --- */
+        $(function() {
+            const CHANNEL_SLUG = 'interiores_casa-ikaros'; 
+            const API_BASE = 'https://api.are.na/v2';
+
+            async function fetchArenaBlocks() {
+                try {
+                    const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+                    const data = await response.json();
+                    return data.contents.filter(block => block.class === 'Image');
+                } catch (error) {
+                    console.error("Error cargando Are.na:", error);
+                    return [];
+                }
+            }
+
+            async function getRealFileSize(imageUrl, element) {
+                try {
+                    const response = await fetch(imageUrl);
+                    if (!response.ok) return;
+                    const blob = await response.blob();
+                    element.innerText = blob.size.toLocaleString('de-DE');
+                } catch (error) {
+                    element.innerText = "---";
+                }
+            }
+
+            async function init() {
+                const blocks = await fetchArenaBlocks();
+                const $tbody = $('#arena-tbody');
+
+                blocks.forEach((block) => {
+                    const imageUrl = block.image.display.url;
+                    const title = block.title || "Untitled";
+                    const sizeId = `size-${block.id}`;
+                    
+                    const rowHtml = `
+                        <tr>
+                            <td><img src="${imageUrl}" class="table-thumb" alt="thumb"></td>
+                            <td>${title}</td>
+                            <td id="${sizeId}">calculating...</td>
+                            <td>
+                                <span class="view-link" data-url="${imageUrl}">Load image</span>
+                            </td>
+                        </tr>`;
+                    
+                    const $row = $(rowHtml);
+                    $tbody.append($row);
+
+                    getRealFileSize(imageUrl, document.getElementById(sizeId));
+
+                    // Evento Click para MOSTRAR ABAJO
+                    $row.find('.view-link').on('click', function() {
+                        const url = $(this).data('url');
+                        
+                        // Reset de estados visuales en la tabla
+                        $('.view-link').text('Load image').removeClass('viewing-status');
+                        $(this).text('Viewing').addClass('viewing-status');
+                        
+                        // Actualizar la imagen de abajo y mostrar el contenedor
+                        $('#active-image').attr('src', url);
+                        $('#image-display-area').css('display', 'flex');
+
+                        // Scroll suave opcional hacia la imagen cargada
+                        window.scrollTo({
+                            top: $('#image-display-area').offset().top - 50,
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
