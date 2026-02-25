@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+ 
+
+</head>
+<body>
+
+    <header class="header-nav">
+        <div class="custom-select-container">
+            <div class="select-trigger">About</div>
+            <ul class="select-options">
+                <li data-value="index.html">Juan Tribaldos</li>
+                <li data-value="contact.html">Contact</li>
+                <li data-value="guestbook.html">Guestbook</li>
+            </ul>
+        </div>
+        <div class="custom-select-container">
+            <div class="select-trigger">Exploraciones</div>
+            <ul class="select-options">
+                <li data-value="/pleroma">Pléroma</li>
+                <li data-value="/liminal">Liminal</li>
+                <li data-value="/materia-prima">Materia Prima</li>
+            </ul>
+        </div>
+        </header>
+
+    <main>
+        <ul id="arena-container" style="position: relative; list-style: none; padding: 0; margin: 0; width: 100%;"></ul>
+        
+        <div id="info" style="position: fixed; bottom: 20px; right: 20px; z-index: 2000; pointer-events: none;"></div>
+        <div id="fullscreen-viewer" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:5000; cursor:pointer; align-items:center; justify-content:center;"></div>
+    </main>
+
+    <script>
+        /* --- LÓGICA DE NAVEGACIÓN (TUS SCRIPTS) --- */
+        document.querySelectorAll('.select-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                const options = trigger.nextElementSibling;
+                document.querySelectorAll('.select-options').forEach(opt => {
+                    if (opt !== options) opt.classList.remove('open');
+                });
+                options.classList.toggle('open');
+                e.stopPropagation();
+            });
+        });
+
+        document.querySelectorAll('.select-options li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const val = option.getAttribute('data-value');
+                if (val) window.location.href = val;
+                e.stopPropagation();
+            });
+        });
+
+        window.addEventListener('click', () => {
+            document.querySelectorAll('.select-options').forEach(opt => opt.classList.remove('open'));
+        });
+
+        /* --- INTEGRACIÓN API ARE.NA --- */
+        $(function() {
+            const CHANNEL_SLUG = 'exploraciones_materia-prima'; // Canal actualizado
+            const API_BASE = 'https://api.are.na/v2';
+
+            function applyChaosLogic(element, index) {
+                const $el = $(element);
+                const windowWidth = $(window).width();
+                const isMobile = windowWidth < 768;
+                const itemWidth = isMobile ? 150 : 300;
+                
+                // Posicionamiento aleatorio (Lógica de Caos)
+                const posx = Math.random() * (windowWidth - itemWidth - 40);
+                const spacing = isMobile ? 100 : 150;
+                const variation = isMobile ? 40 : 80;
+                const posy = (index * spacing) + (Math.random() * variation);
+
+                $el.css({
+                    'position': 'absolute',
+                    'left': Math.max(20, posx) + 'px',
+                    'top': posy + 'px',
+                    'width': itemWidth + 'px',
+                    'opacity': 1,
+                    'z-index': Math.floor(Math.random() * 100)
+                });
+
+                // Hacerlo arrastrable
+                $el.draggable({ stack: ".work-item" });
+
+                // Hover para información
+                $el.hover(
+                    function() {
+                        const title = $(this).attr('data-title');
+                        $('#info').html(`<div style="background:white; padding:5px; border:1px solid black;">${title}</div>`);
+                    },
+                    function() { $('#info').html(''); }
+                );
+
+                // Click para Fullscreen
+                $el.on('click', function() {
+                    if ($(this).hasClass('ui-draggable-dragging')) return;
+                    const imgSrc = $(this).find('img').attr('src');
+                    $('#fullscreen-viewer').html(`<img src="${imgSrc}" style="max-width:90%; max-height:90%;">`).css('display', 'flex');
+                });
+            }
+
+            async function fetchArenaBlocks() {
+                try {
+                    const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+                    const data = await response.json();
+                    return data.contents.filter(block => block.class === 'Image');
+                } catch (error) {
+                    console.error("Error cargando Are.na:", error);
+                    return [];
+                }
+            }
+
+            async function init() {
+                const blocks = await fetchArenaBlocks();
+                const $container = $('#arena-container');
+                let maxBottom = 0;
+
+                blocks.forEach((block, i) => {
+                    const imageUrl = block.image.display.url;
+                    const title = block.title || "Sin título";
+                    
+                    const html = `<li class="work-item" data-title="${title}" style="cursor:grab; list-style:none;">
+                                    <img src="${imageUrl}" style="width:100%; pointer-events:none;" />
+                                  </li>`;
+                    
+                    const $newItem = $(html);
+                    $container.append($newItem);
+                    applyChaosLogic($newItem, i);
+                    
+                    const currentBottom = (i * 150) + 500;
+                    if (currentBottom > maxBottom) maxBottom = currentBottom;
+                });
+                $container.css('height', (maxBottom + 300) + 'px');
+            }
+
+            $('#fullscreen-viewer').on('click', function() { $(this).hide(); });
+
+            init();
+        });
+    </script>
+</body>
+</html>
