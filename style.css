@@ -30,7 +30,7 @@ body {
     min-height: 100%;
     text-rendering: optimizeLegibility;
     padding-top: 60px; /* add padding so content below the fixed header is visible; adjust if header height changes */
-    overflow: hidden;
+    
 }
 
 /* GUESTBOOK CANVAS BACKGROUND */
