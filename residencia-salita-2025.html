@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos | Residencia Salita</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* Layout Principal */
+        main {
+            display: flex;
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            overflow: hidden; /* Evita el scroll doble en el body */
+            padding-top: 60px; /* Ajusta según la altura de tu nav.js */
+        }
+
+        /* Columna de Texto */
+        .text-column {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto; /* Scroll independiente para el texto */
+            border-right: 1px solid #eee;
+            background-color: #fff;
+        }
+
+        .text-content {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-size: 14px;
+            text-align: justify;
+        }
+
+        .text-content h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .text-content h2 {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .references {
+            margin-top: 60px;
+            font-size: 11px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        /* Columna de Galería (Are.na) */
+        .gallery-column {
+            flex: 1;
+            overflow-y: auto; /* Scroll independiente para las fotos */
+            padding: 40px;
+            background-color: #fafafa;
+        }
+
+        #arena-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 columnas de fotos */
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .work-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .work-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(0%);
+            transition: filter 0.3s ease;
+        }
+
+        .caption {
+            font-size: 10px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+            }
+            .text-column, .gallery-column {
+                height: auto;
+                overflow: visible;
+                flex: none;
+                width: 100%;
+            }
+            #arena-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Visor Fullscreen */
+        #fullscreen-viewer {
+            display:none; 
+            position: fixed; 
+            top:0; left:0; 
+            width:100%; height:100%; 
+            background:rgba(255,255,255,0.98); 
+            z-index:9999; 
+            cursor:pointer; 
+            align-items:center; 
+            justify-content:center;
+        }
+    </style>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main>
+        <section class="text-column">
+            <article class="text-content">
+                <h1>SOLVE ET COAGULA</h1>
+                <h2>El estudio como huella y dispositivo</h2>
+                
+                <p>Hay una foto en especial que Juan señala cada vez que comparte su paso por la salita: la primera imagen que marca el inicio de su historia con temporal_. Curiosamente, no es una foto de ningún estudio, pared u obra en particular, sino una polaroid con luz y plantas; de esas fotos bonitas que quedan como la gente suele imaginar que queda una polaroid, siempre a punto de desvanecerse...</p>
+
+                <p>Durante los últimos cinco años de su carrera como fotógrafo, Tribaldos ha tenido la oportunidad de visitar numerosos estudios de artistas en Costa Rica...</p>
+                
+                <p>Una polaroid es el punto de partida y también completa el círculo...</p>
+
+                <p><strong>Texto por Cristina Ramírez León</strong></p>
+
+                <div class="references">
+                    <p><strong>Referencias:</strong><br>
+                    _Derrida, J. (1997). Mal de archivo. Editorial Trotta<br>
+                    _Farge, A. (2017). El sabor del archivo. Fondo de Cultura Económica.<br>
+                    _Guasch, A. M. (2011). Arte y archivo (1920–2010): Genealogías, tipologías y discontinuidades. Ediciones Akal.<br>
+                    _Hall, J. (2012). The Artist’s Studio: A Cultural History. Thames & Hudson.</p>
+                </div>
+            </article>
+        </section>
+
+        <section class="gallery-column">
+            <ul id="arena-container">
+                </ul>
+        </section>
+
+        <div id="fullscreen-viewer"></div>
+    </main>
+
+    <script>
+        $(function() {
+            // CAMBIO DE SLUG SOLICITADO
+            const CHANNEL_SLUG = 'residencia-salita-2025'; 
+            const API_BASE = 'https://api.are.na/v2';
+
+            async function fetchArenaBlocks() {
+                try {
+                    const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+                    const data = await response.json();
+                    return data.contents.filter(block => block.class === 'Image');
+                } catch (error) {
+                    console.error("Error cargando Are.na:", error);
+                    return [];
+                }
+            }
+
+            async function getRealFileSize(imageUrl, element) {
+                try {
+                    const response = await fetch(imageUrl);
+                    const blob = await response.blob();
+                    element.innerText = blob.size.toLocaleString() + " bytes";
+                } catch (e) { element.innerText = ""; }
+            }
+
+            async function init() {
+                const blocks = await fetchArenaBlocks();
+                const $container = $('#arena-container');
+
+                blocks.forEach((block) => {
+                    const imageUrl = block.image.display.url;
+                    const title = block.title || "";
+                    const sizeId = `size-${block.id}`;
+                    
+                    const html = `
+                        <li class="work-item">
+                            <img src="${imageUrl}" alt="${title}" />
+                            <div class="caption">
+                                <div>${title}</div>
+                                <div id="${sizeId}" style="opacity:0.5; font-size:9px;"></div>
+                            </div>
+                        </li>`;
+                    
+                    const $newItem = $(html);
+                    $container.append($newItem);
+                    getRealFileSize(imageUrl, document.getElementById(sizeId));
+                    
+                    $newItem.on('click', function() {
+                        $('#fullscreen-viewer').html(`<img src="${imageUrl}" style="max-width:90%; max-height:90%;">`).css('display', 'flex');
+                    });
+                });
+            }
+
+            $('#fullscreen-viewer').on('click', function() { $(this).hide(); });
+            init();
+        });
+    </script>
+</body>
+</html>
