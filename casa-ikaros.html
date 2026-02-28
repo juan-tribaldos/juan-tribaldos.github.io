@@ -89,8 +89,11 @@
 
         /* Ajuste para móviles */
         @media (max-width: 600px) {
-            #arena-table th:nth-child(3), 
-            #arena-table td:nth-child(3) {
+            /* Hide Artist and Size columns on small screens */
+            #arena-table th:nth-child(4),
+            #arena-table td:nth-child(4),
+            #arena-table th:nth-child(5),
+            #arena-table td:nth-child(5) {
                 display: none;
             }
         }
@@ -106,6 +109,8 @@
                 <tr>
                     <th style="width: 40px;">*</th>
                     <th>Title</th>
+                    <th style="width: 80px;">Year</th>
+                    <th style="width: 160px;">Artist</th>
                     <th style="width: 120px;">Size (bytes)</th>
                     <th style="width: 100px;">View</th>
                 </tr>
@@ -155,11 +160,15 @@
                     const imageUrl = block.image.display.url;
                     const title = block.title || "Untitled";
                     const sizeId = `size-${block.id}`;
-                    
+                    const year = block.created_at ? new Date(block.created_at).getFullYear() : "";
+                    const artist = (block.user && (block.user.name || block.user.username || block.user.slug)) ? (block.user.name || block.user.username || block.user.slug) : "—";
+
                     const rowHtml = `
                         <tr>
                             <td><img src="${imageUrl}" class="table-thumb" alt="thumb"></td>
                             <td>${title}</td>
+                            <td>${year}</td>
+                            <td>${artist}</td>
                             <td id="${sizeId}">calculating...</td>
                             <td>
                                 <span class="view-link" data-url="${imageUrl}">Load image</span>
