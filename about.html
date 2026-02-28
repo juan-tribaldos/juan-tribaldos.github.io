@@ -11,7 +11,7 @@
     <script src="nav.js"></script>
 
     <main>
-        <section class="about-container mode-eng" id="about-section">
+        <section class="about-container mode-es" id="about-section">
             
             <div class="about-text lang-eng">
                 <br><br><br>
@@ -28,13 +28,33 @@
             </div>
 
             <div class="custom-select-container image-footer-select" style="max-width: 150px !important;"> 
-                <div class="select-trigger" id="langTrigger">English</div>
+                <div class="select-trigger" id="langTrigger">Español</div>
                 <ul class="select-options" id="lang-options">
                     <li id="opt-es" data-lang="es">Español</li>
                     <li id="opt-eng" data-lang="eng">English</li>
                 </ul>
             </div>
+
+            <p class="about-text" style="margin-top: 2rem;">
+                <a href="https://www.instagram.com/juan_tribaldos/" target="_blank">@juan_tribaldos</a>
+                <br> 
+                <a href="mailto:jatribaldos20@gmail.com" target="_blank">→ E-mail ←</a>
+            </p>
         </section>
+
+        <figure class="about-figure">
+            <div class="image-selector-wrapper">
+                <img id="toggleImage" class="about-image inverted" src="https://d2w9rnfcy7mm78.cloudfront.net/41932345/original_d4d4999f49978bcc5e806a2fa3a8976e.jpg?1766254443&bc=0" alt="Image">
+                
+                <div class="custom-select-container image-footer-select mode-invert"> 
+                    <div class="select-trigger" id="filterTrigger">Portrait_by_Leo-Carvajal.opt02</div>
+                    <ul class="select-options" id="portrait-options">
+                        <li id="opt-normal" data-action="normal">Portrait_by_Leo-Carvajal.opt01</li>
+                        <li id="opt-invert" data-action="invert">Portrait_by_Leo-Carvajal.opt02</li>
+                    </ul>
+                </div>
+            </div>
+        </figure>
     </main>
 
     <script>
@@ -56,6 +76,40 @@
 
                 // Cerrar el menú (manejado también por nav.js pero reforzamos)
                 option.parentElement.classList.remove('open');
+                e.stopPropagation();
+            });
+        });
+
+        // Lógica específica para el filtro de la imagen y visibilidad de opciones
+        document.querySelectorAll('#portrait-options li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const action = option.getAttribute('data-action');
+                const img = document.getElementById('toggleImage');
+                const trigger = document.getElementById('filterTrigger');
+                const container = option.closest('.image-footer-select');
+
+                if (action === 'invert') {
+                    // Aplicar Filtro Invertido
+                    img.classList.add('inverted');
+                    trigger.textContent = 'Portrait_by_Leo-Carvajal.opt02';
+                    
+                    // Actualizar clases del contenedor para el CSS
+                    container.classList.remove('mode-normal');
+                    container.classList.add('mode-invert');
+                } else {
+                    // Quitar Filtro (Normal)
+                    img.classList.remove('inverted');
+                    trigger.textContent = 'Portrait_by_Leo-Carvajal.opt01';
+                    
+                    // Actualizar clases del contenedor para el CSS
+                    container.classList.remove('mode-invert');
+                    container.classList.add('mode-normal');
+                }
+
+                // Cerrar el menú desplegable
+                option.parentElement.classList.remove('open');
+                
+                // Evitar que el clic se propague a otros elementos
                 e.stopPropagation();
             });
         });
