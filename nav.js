@@ -6,8 +6,8 @@ function loadNavbar() {
             <div class="select-trigger">Juan Tribaldos</div>
             <ul class="select-options">
                 <li data-value="index.html">Juan Tribaldos</li>
-                <li data-value="about.html">About</li>
-                <li data-value="guestbook.html">Guestbook</li>
+                <li data-value="about.html">Info</li>
+                <li data-value="guestbook.html">Libro_de_visitas</li>
             </ul>
         </div>
         <div class="custom-select-container">

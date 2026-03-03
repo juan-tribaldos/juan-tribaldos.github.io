@@ -48,10 +48,10 @@
                 <img id="toggleImage" class="about-image inverted" src="assets/original_d4d4999f49978bcc5e806a2fa3a8976e.jpg" alt="Image">
                 
                 <div class="custom-select-container image-footer-select mode-invert"> 
-                    <div class="select-trigger" id="filterTrigger">Portrait_by_Leo-Carvajal.opt02</div>
+                    <div class="select-trigger" id="filterTrigger">Retrato_por_Leo-Carvajal.opt02</div>
                     <ul class="select-options" id="portrait-options">
-                        <li id="opt-normal" data-action="normal">Portrait_by_Leo-Carvajal.opt01</li>
-                        <li id="opt-invert" data-action="invert">Portrait_by_Leo-Carvajal.opt02</li>
+                        <li id="opt-normal" data-action="normal">Retrato_por_Leo-Carvajal.opt01</li>
+                        <li id="opt-invert" data-action="invert">Retrato_por_Leo-Carvajal.opt02</li>
                     </ul>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 if (action === 'invert') {
                     // Aplicar Filtro Invertido
                     img.classList.add('inverted');
-                    trigger.textContent = 'Portrait_by_Leo-Carvajal.opt02';
+                    trigger.textContent = 'Retrato_por_Leo-Carvajal.opt02';
                     
                     // Actualizar clases del contenedor para el CSS
                     container.classList.remove('mode-normal');
@@ -100,7 +100,7 @@
                 } else {
                     // Quitar Filtro (Normal)
                     img.classList.remove('inverted');
-                    trigger.textContent = 'Portrait_by_Leo-Carvajal.opt01';
+                    trigger.textContent = 'Retrato_por_Leo-Carvajal.opt01';
                     
                     // Actualizar clases del contenedor para el CSS
                     container.classList.remove('mode-invert');
