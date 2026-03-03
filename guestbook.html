@@ -75,14 +75,29 @@
         }
 
         setupCanvas() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
-            const metrics = this.ctx.measureText("M");
-            this.cellW = metrics.width * 0.9;
-            this.cellH = FONT_SIZE * 0.9;
-            this.render();
-        }
+    const dpr = window.devicePixelRatio || 1; // Detecta la densidad de pantalla
+    const displayWidth = window.innerWidth;
+    const displayHeight = window.innerHeight;
+
+    // 1. Ajustamos el tamaño interno (los píxeles reales del dibujo)
+    this.canvas.width = displayWidth * dpr;
+    this.canvas.height = displayHeight * dpr;
+
+    // 2. Ajustamos el tamaño visual con CSS para que encaje en la pantalla
+    this.canvas.style.width = displayWidth + 'px';
+    this.canvas.style.height = displayHeight + 'px';
+
+    // 3. Escalamos el contexto para que el resto del código no necesite cambios
+    this.ctx.scale(dpr, dpr);
+
+    // Configuramos la fuente después de escalar
+    this.ctx.font = `${FONT_SIZE}px ${FONT_FACE}`;
+    const metrics = this.ctx.measureText("M");
+    this.cellW = metrics.width * 0.9;
+    this.cellH = FONT_SIZE * 0.9;
+    
+    this.render();
+}
 
         syncData() {
             onValue(dbRef, (snapshot) => {
