@@ -28,10 +28,10 @@ body {
     min-height: 100vh;
     text-rendering: optimizeLegibility;
     padding-top: 30px;
-    overflow-x: hidden; /* Evita scrolls horizontales accidentales */
+    overflow-x: hidden; 
 }
 
-/* GUESTBOOK CANVAS */
+
 #gbCanvas {
     position: absolute;
     top: 0;
@@ -42,7 +42,7 @@ body {
     z-index: 0;
 }
 
-/* NAVEGACIÓN */
+
 .header-nav {
     position: fixed;
     top: 0;
@@ -55,7 +55,7 @@ body {
     padding: 1rem;       
 }
 
-/* SELECTORES PERSONALIZADOS */
+
 .custom-select-container {
     position: relative;
     width: 100%;
@@ -85,7 +85,7 @@ body {
     border: 1px solid #000;
     border-top: none;
     display: none;
-    z-index: 1001; /* Asegurar que esté por encima de todo */
+    z-index: 1001; 
     margin: 0;
     padding: 0;
     list-style: none;
@@ -109,7 +109,7 @@ body {
     font-style: italic;
 }
 
-/* SELECTOR DE TIEMPO (BOTTOM LEFT) Y PIE DE FOTO */
+
 .time-selector-wrapper {
     position: fixed;
     bottom: 2rem;
@@ -118,16 +118,16 @@ body {
     min-width: 220px;
 }
 
-/* Unificación de menús que abren hacia arriba */
+
 .time-selector-wrapper .select-options,
 .image-footer-select .select-options {
     top: auto;
-    bottom: 100%; /* Ajustado a 100% para evitar gaps */
+    bottom: 100%; 
     border-top: 1px solid #000; 
     border-bottom: none;
 }
 
-/* IMÁGENES Y CONTENIDO ABOUT */
+
 main {
     display: flex;
     gap: 2rem;
@@ -151,7 +151,7 @@ main {
 
 .about-text a { 
     color: #0d00ff; 
-    text-decoration: underline; /* Mejora la accesibilidad */
+    text-decoration: underline; 
 }
 .about-text a:hover { color: #ffffff; }
 
@@ -181,8 +181,7 @@ main {
 
 .image-footer-select { max-width: 100% !important; }
 
-/* LÓGICA DE VISIBILIDAD DE OPCIONES (TOGGLE) */
-/* Ocultamos la opción que ya está activa en cada selector */
+
 .image-footer-select.mode-normal #opt-normal,
 .image-footer-select.mode-invert #opt-invert,
 .time-selector-wrapper.mode-sj #opt-sj,
@@ -190,41 +189,36 @@ main {
     display: none; 
 }
 
-/* Estado inicial del reloj: si no tiene modo, mostramos SJ por defecto y ocultamos BCN */
+
 .time-selector-wrapper:not(.mode-sj):not(.mode-bcn) #opt-bcn {
     display: none;
 }
 
-/* LÓGICA DE IDIOMAS EN ABOUT */
 
-/* 1. Ocultar el texto que no corresponde */
 .about-container.mode-es .lang-eng { display: none; }
 .about-container.mode-eng .lang-es { display: none; }
 
-/* 2. Ocultar la opción ya seleccionada en el menú desplegable */
 .about-container.mode-es #opt-es { display: none; }
 .about-container.mode-eng #opt-eng { display: none; }
 
-/* Asegurar que el selector de idioma abra hacia arriba como los otros footers */
 .image-footer-select .select-options {
     top: auto;
     bottom: 100%;
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 768px) {
     .header-nav { flex-direction: column; width: auto; }
     .custom-select-container { max-width: 100%; }
-    .image-selector-wrapper { max-width: 100%; } /* Las fotos crecen en móvil */
+    .image-selector-wrapper { max-width: 100%; } 
 }
 
 main {
-        /* Invierte el orden: la imagen (segundo elemento) sube, 
-           el texto (primer elemento) baja */
+      
         flex-direction: column-reverse; 
-        margin: 10rem auto; /* Reducimos margen superior en móvil */
-        gap: 1rem; /* Espacio entre la imagen y el texto */
-    } 
+        margin: 10rem auto; 
+        gap: 1rem; 
+    }
 
     .about-container {
         width: 100%;
