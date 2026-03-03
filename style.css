@@ -217,3 +217,31 @@ main {
     .custom-select-container { max-width: 100%; }
     .image-selector-wrapper { max-width: 100%; } /* Las fotos crecen en móvil */
 }
+
+main {
+        /* Invierte el orden: la imagen (segundo elemento) sube, 
+           el texto (primer elemento) baja */
+        flex-direction: column-reverse; 
+        margin: 10rem auto; /* Reducimos margen superior en móvil */
+        gap: 1rem; /* Espacio entre la imagen y el texto */
+    }
+
+    .about-container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .about-figure {
+        max-width: 90%; /* La imagen ocupa todo el ancho en móvil */
+        width: 100%;
+        justify-content: center; /* Centramos la imagen si fuera más pequeña */
+    }
+
+    .image-selector-wrapper { 
+        max-width: 100%; 
+    }
+
+    /* Opcional: Ajustar los <br> excesivos en móvil */
+    .about-text br {
+        display: none;
+    }
