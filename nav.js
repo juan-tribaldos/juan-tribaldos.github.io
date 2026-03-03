@@ -21,7 +21,7 @@ function loadNavbar() {
                 <li data-value="casa-tula.html">Casa Tula</li>
                 <li data-value="perozah.html">Perozah</li>
             </ul>
-        </div>
+        </div> 
         <div class="custom-select-container">
             <div class="select-trigger">Exploraciones</div>
             <ul class="select-options">
@@ -33,7 +33,7 @@ function loadNavbar() {
         <div class="custom-select-container">
             <div class="select-trigger">Archivo</div>
             <ul class="select-options">
-                <li data-value="art.html">Art</li>
+                <li data-value="casa-ikaros.html">Tabla</li>
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
             </ul>
         </div>
