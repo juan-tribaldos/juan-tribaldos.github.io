@@ -27,19 +27,26 @@
         #arena-table tbody tr:hover { background-color: #f9f9f9; }
         
         .view-link, .view-link-img, .back-btn { color: #0800ff; text-decoration: underline; cursor: pointer; }
-        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; }
+        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #000 !important; text-decoration: none; font-weight: bold; }
 
-        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 20px; border-top: 0px solid #000; padding-top: 20px; }
+        /* Estado cuando una imagen está siendo visualizada */
+        .viewing-status { 
+            color: #8f8f8f !important; 
+            text-decoration: none !important; 
+            cursor: default; 
+        }
+
+        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 20px; padding-top: 20px; }
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<script src="nav.js"></script>
+    <script src="nav.js"></script>
 
     <main>
-        <div class="back-btn" style="color: #000000;" id="go-back">← Back</div>
+        <div class="back-btn" id="go-back">← Back</div>
         
         <table id="arena-table">
             <thead>
@@ -70,6 +77,7 @@ $(function() {
     let isAscending = true;
     let currentSortCol = -1;
 
+    // Obtener tamaño real del archivo (HEAD request)
     async function getRealFileSize(url) {
         try {
             const response = await fetch(url, { method: 'HEAD' });
@@ -78,6 +86,7 @@ $(function() {
         } catch (e) { return "---"; }
     }
 
+    // Extraer etiquetas de la descripción del canal
     function extractFromDescription(desc, key, defaultValue) {
         if (!desc || typeof desc !== 'string') return defaultValue;
         const regex = new RegExp(`${key}_\\s*([^\\n\\r<]+)`, 'i');
@@ -104,6 +113,7 @@ $(function() {
         currentSortCol = -1;
     }
 
+    // VISTA 1: ÍNDICE GENERAL
     function renderIndex() {
         $('#go-back').hide();
         $('#image-display-area').hide();
@@ -134,14 +144,16 @@ $(function() {
         });
     }
 
+    // VISTA 2: CONTENIDO DEL CANAL
     async function renderChannel(index) {
         const channel = allData[index];
         $('#go-back').show();
+        $('#image-display-area').hide(); // Reset visor al entrar
         $('#h-title').html('File Title <span class="sort-arrow">↕</span>');
         $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
         resetSortArrows();
 
-        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="7">Calculando tamaños...</td></tr>');
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="7">Calculando tamaños de archivo...</td></tr>');
         
         const rawDesc = channel.metadata?.description || channel.description?.plain || "";
         const artist = extractFromDescription(rawDesc, 'Artist', "---");
@@ -151,7 +163,7 @@ $(function() {
         let rowsHtml = '';
         for (const block of channel.contents) {
             if (block.class !== 'Image') continue;
-            const blockTitle = block.title || "Untitled Block";
+            const blockTitle = block.title || "Untitled";
             const realSize = await getRealFileSize(block.image.display.url);
 
             rowsHtml += `
@@ -168,7 +180,7 @@ $(function() {
         $tbody.empty().append(rowsHtml);
     }
 
-    // --- LÓGICA DE SORTING UNIVERSAL ---
+    // LÓGICA DE ORDENAMIENTO UNIVERSAL
     $('#arena-table thead th[data-column]').on('click', function() {
         const column = $(this).data('column');
         const $tbody = $('#arena-tbody');
@@ -185,7 +197,6 @@ $(function() {
         $(this).find('.sort-arrow').text(isAscending ? '↑' : '↓');
 
         $rows.sort(function(a, b) {
-            // Limpiamos puntos y unidades para comparar números reales (bytes o items)
             let valA = $(a).children('td').eq(column).text().replace(/\./g, '').split(' ')[0].toLowerCase();
             let valB = $(b).children('td').eq(column).text().replace(/\./g, '').split(' ')[0].toLowerCase();
 
@@ -198,14 +209,33 @@ $(function() {
         $.each($rows, function(index, row) { $tbody.append(row); });
     });
 
-    // EVENTOS DE NAVEGACIÓN
-    $(document).on('click', '.view-link', function() { renderChannel($(this).data('index')); });
-    $(document).on('click', '.view-link-img', function() {
-        $('#display-title').text($(this).data('title'));
-        $('#active-image').attr('src', $(this).data('url'));
-        $('#image-display-area').css('display', 'flex');
-        window.scrollTo({ top: $('#image-display-area').offset().top - 20, behavior: 'smooth' });
+    // CLIC EN PROYECTO (ÍNDICE)
+    $(document).on('click', '.view-link', function() { 
+        renderChannel($(this).data('index')); 
     });
+
+    // CLIC EN IMAGEN (DENTRO DEL PROYECTO)
+    $(document).on('click', '.view-link-img', function() {
+        const $btn = $(this);
+        const url = $btn.data('url');
+        const title = $btn.data('title');
+
+        // Reset de textos de acción
+        $('.view-link-img').text('View').removeClass('viewing-status');
+        
+        // Aplicar estado "Viewing"
+        $btn.text('Viewing').addClass('viewing-status');
+
+        $('#display-title').text(title);
+        $('#active-image').attr('src', url);
+        $('#image-display-area').css('display', 'flex');
+
+        window.scrollTo({ 
+            top: $('#image-display-area').offset().top - 20, 
+            behavior: 'smooth' 
+        });
+    });
+
     $('#go-back').on('click', renderIndex);
 
     init();

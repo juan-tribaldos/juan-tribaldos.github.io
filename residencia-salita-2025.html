@@ -5,33 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juan Tribaldos</title>
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">    
     <link rel="icon" href="assets/IMG_9979.ico">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-        /* Layout Principal */
-
-        
-
-        main {
-            display: flex; 
-            height: 100vh; /* Ocupa toda la altura de la ventana */
-            overflow: hidden; /* Evita el scroll doble en el body */
-            padding-top: 60px; /* Ajusta según la altura de tu nav.js */
+        /* 1. RESET Y ESTRUCTURA BASE */
+        * {
+            box-sizing: border-box;
         }
 
-        /* Columna de Texto */
-        .text-column {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto; 
-            border-right: 1px solid #00000000;
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Evita el scroll global de la ventana */
             
         }
 
+        /* 2. LAYOUT DE COLUMNAS */
+        main {
+            display: flex; 
+            flex-direction: row; /* Fuerza la disposición en horizontal */
+            height: calc(100vh - 60px); /* Altura total menos el nav */
+            margin-top: 60px; /* Espacio para el nav fijo */
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Columna Izquierda: Texto */
+        .text-column {
+            flex: 1; /* Ocupa el 50% del ancho */
+            height: 100%;
+            overflow-y: auto; /* Scroll independiente */
+            padding: 60px 40px;
+            background-color: #c2c2c2;
+            
+        }
+
+        /* Columna Derecha: Galería */
+        .gallery-column {
+            flex: 1; /* Ocupa el otro 50% del ancho */
+            height: 100%;
+            overflow-y: auto; /* Scroll independiente */
+            padding: 40px;
+            background-color: #c2c2c2;
+        }
+
+        /* 3. ESTILOS DE CONTENIDO */
         .text-content {
-            max-width: 600px;
+            max-width: 550px;
             margin: 0 auto;
             line-height: 1.6;
             font-size: 14px;
@@ -39,10 +63,10 @@
         }
 
         .text-content h1 {
-            font-size: 16px;
+            font-size: 18px;
             margin-bottom: 5px;
             letter-spacing: 2px;
-
+            text-transform: uppercase;
         }
 
         .text-content h2 {
@@ -55,21 +79,15 @@
         .references {
             margin-top: 60px;
             font-size: 11px;
-            color: #000000;
+            color: #666;
+            
             padding-top: 20px;
         }
 
-        /* Columna de Galería (Are.na) */
-        .gallery-column {
-            flex: 1;
-            overflow-y: auto; /* Scroll independiente para las fotos */
-            padding: 40px;
-            background-color: #c2c2c2;
-        }
-
+        /* 4. GRID DE ARE.NA */
         #arena-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 columnas de fotos */
+            grid-template-columns: 1fr 1fr; /* 2 fotos por fila dentro de la columna */
             gap: 20px;
             list-style: none;
             padding: 0;
@@ -79,29 +97,34 @@
         .work-item {
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
+            cursor: pointer;
         }
 
         .work-item img {
             width: 100%;
             height: auto;
             display: block;
-            filter: grayscale(0%);
-            transition: filter 0.3s ease;
+            transition: opacity 0.3s ease;
+        }
+
+        .work-item img:hover {
+            opacity: 0.8;
         }
 
         .caption {
             font-size: 10px;
             margin-top: 8px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Responsive */
+        /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
         @media (max-width: 900px) {
             main {
                 flex-direction: column;
                 height: auto;
                 overflow: visible;
+                margin-top: 60px;
             }
             .text-column, .gallery-column {
                 height: auto;
@@ -110,11 +133,11 @@
                 width: 100%;
             }
             #arena-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Una foto por fila en móvil */
             }
         }
 
-        /* Visor Fullscreen */
+        /* 6. VISOR FULLSCREEN */
         #fullscreen-viewer {
             display:none; 
             position: fixed; 
@@ -125,6 +148,11 @@
             cursor:pointer; 
             align-items:center; 
             justify-content:center;
+        }
+        #fullscreen-viewer img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -137,23 +165,35 @@
             <article class="text-content">
                 
                 <h2>El estudio como huella y dispositivo</h2>
-                
-                <p>Hay una foto en especial que Juan señala cada vez que comparte su paso por la salita: la primera imagen que marca el inicio de su historia con temporal_. Curiosamente, no es una foto de ningún estudio, pared u obra en particular, sino una polaroid con luz y plantas; de esas fotos bonitas que quedan como la gente suele imaginar que queda una polaroid, siempre a punto de desvanecerse...</p>
 
-                <p>Durante los últimos cinco años de su carrera como fotógrafo, Tribaldos ha tenido la oportunidad de visitar numerosos estudios de artistas en Costa Rica...</p>
-                
-                <p>Una polaroid es el punto de partida y también completa el círculo...</p>
-                <br><br>
+<p>Hay una foto en especial que Juan señala cada vez que comparte su paso por la salita: la primera imagen que marca el inicio de su historia con temporal. Curiosamente, no es una foto de ningún estudio, pared u obra en particular, sino una polaroid con luz y plantas; de esas fotos bonitas que quedan como la gente suele imaginar que queda una polaroid, siempre a punto de desvanecerse. Pídanle a Juan que se las muestre, a menos que la encuentren ustedes mismxs.</p>
 
-                <p><em>Texto por Cristina Ramírez León</em></p>
+<p>Durante los últimos cinco años de su carrera como fotógrafo, Tribaldos ha tenido la oportunidad de visitar numerosos estudios de artistas en Costa Rica, documentando no solo sus obras, sino también los espacios y objetos que conforman sus entornos de trabajo. Estas visitas han surgido tanto de proyectos autogestionados, como temporal (2018–2021), como de encargos realizados por galeristas, gestores, espacios de arte o lxs mismxs artistas.</p>
+
+<p>Lo que comenzó como un ejercicio de documentación se transformó, con el tiempo, en una búsqueda más profunda. En un contexto cultural donde la infraestructura para el arte es limitada y los archivos sobre procesos artísticos son escasos, documentar estos espacios se vuelve también un gesto de cuidado. Este proyecto propone crear un archivo público que registre los lugares y formas en que se produce arte, aportando a la memoria colectiva y abriendo nuevas preguntas sobre sus narrativas y vínculos con el entorno.</p>
+
+<p>El estudio del artista no es solo un espacio de producción: es un archivo de lo cotidiano, un orden y desorden que rige su propia lógica interna; un territorio habitado por capas afectivas, decisiones invisibles y huellas que no siempre buscan ser vistas. En cada estudio hay algo de ruina y algo de nacimiento. Este proyecto le ha permitido a Tribaldos construir un archivo visual de los estudios, las obras en proceso, retratos de artistas y la atmósfera íntima de esos lugares pocas veces accesibles para el público. Es un intento por registrar no tanto el resultado, sino el proceso; no tanto la obra, sino las condiciones que la permiten.</p>
+
+<p>Solve et Coagula es una máxima alquímica que habla de descomponer para transformar. Aquí, quizá, se traduce en el gesto de desmontar imaginarios heredados de la documentación artística y rearticularlos desde nuevas relaciones o posiciones críticas. Este despliegue en la salita, este metarchivo, nos permite dos miradas: por un lado, la construcción del archivo del estudio del artista, ese lugar donde todo —o gran parte del todo— ocurre; y por otro, el proceso de Juan, un proceso menos obvio, hecho de decisiones estéticas, sobre todo a través del uso de la fotografía análoga, con un estilo que revela una total libertad.</p>
+
+<p>También se cruzan en este archivo sus colaboraciones con amigxs cercanxs — Roberto, Erick, Óscar, por mencionar algunos nombres —, su entusiasmo a la hora de compartir y recibir visitas en la salita, y los tecnicismos de su oficio, que atraviesan de manera discreta pero constante todo este recorrido.</p>
+
+<p>Juan convirtió la salita en un archivo, pero es también un archivo de su proceso de archivo. Todo esto parece un no-lugar. La salita como no-lugar. Como a veces las casas son también los estudios. Como dice Arlette Farge en El sabor del archivo, el archivo no es solo fuente de conocimiento, sino también de vértigo. El vértigo de encontrarse con rastros que interpelan, que no siempre se comprenden, que se resisten a la lógica cronológica o narrativa. Lo que se conserva, lo que se olvida, lo que aparece por azar: todo ello configura una arquitectura emocional que define cada espacio de trabajo.</p>
+
+<p>El archivo que aquí se propone es también una invitación a pensar en el archivo mismo. Derrida (1997) plantea que el archivo no es neutral, y que toda creación de archivo implica también una política del porvenir. En su visión, cuando hablamos de los archivos también estamos hablando del futuro. El archivo no es solo un depósito del pasado, sino una fuerza que organiza lo que viene: quién tendrá acceso, cómo se interpretará la historia, qué será recordado u olvidado. Al guardar, seleccionar y reinterpretar la memoria, estamos también moldeando cómo será comprendida, usada o desafiada por quienes vendrán después. En el arte, por ejemplo, los archivos pueden ser tanto una cápsula del tiempo como una plataforma de especulación.</p>
+
+<p>Este archivo no se construye únicamente con documentos, sino con restos: con polvo, con manchas, con rastros en las fotografías que son un poco producto del azar, con la luz que cae a cierta hora del día sobre una esquina cualquiera. Este ensayo visual propone una cartografía emocional del estudio del artista: un mapeo de sus escondites, del paso del tiempo y de sus rituales. Un archivo que busca abrir preguntas: ¿cómo se construye una práctica artística?, ¿qué espacios la sostienen?, ¿cómo podemos leer estos lugares no solo como arquitectura, sino como testimonio de una sensibilidad?</p>
+
+<p>Una polaroid es el punto de partida y también lo que completa el círculo. La historia de esta salita temporal en Abra está relacionada con su llegada a la salita en temporal, en el año 2018, cuando Juan trabajó con Luciano y Sergio Leiva, en el inicio de las visitas al estudio de Luciano. El círculo de las políticas de la memoria versus las políticas del olvido.</p>
+
+<p><em>Texto por Cristina Ramírez León</em></p>
 
                 <div class="references">
                     <p>Referencias:<br>
                     _Derrida, J. (1997). Mal de archivo. Editorial Trotta<br>
                     _Farge, A. (2017). El sabor del archivo. Fondo de Cultura Económica.<br>
-                    _Guasch, A. M. (2011). Arte y archivo (1920–2010): Genealogías, tipologías y discontinuidades. Ediciones Akal.<br>
-                    _Hall, J. (2012). The Artist’s Studio: A Cultural History. Thames & Hudson.</p>
-                    <br><br>
+                    _Guasch, A. M. (2011). Arte y archivo (1920–2010). Ediciones Akal.<br>
+                    _Hall, J. (2012). The Artist’s Studio. Thames & Hudson.</p>
                 </div>
             </article>
         </section>
@@ -168,13 +208,14 @@
 
     <script>
         $(function() {
-            // CAMBIO DE SLUG SOLICITADO
-            const CHANNEL_SLUG = 'residencia-salita-2025'; 
+            // Verifica que este slug sea idéntico al de tu URL en Are.na
+            const CHANNEL_SLUG = 'archivo_residencia-salita-2025'; 
             const API_BASE = 'https://api.are.na/v2';
 
             async function fetchArenaBlocks() {
                 try {
                     const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+                    if (!response.ok) throw new Error("Canal no encontrado");
                     const data = await response.json();
                     return data.contents.filter(block => block.class === 'Image');
                 } catch (error) {
@@ -183,43 +224,40 @@
                 }
             }
 
-            async function getRealFileSize(imageUrl, element) {
-                try {
-                    const response = await fetch(imageUrl);
-                    const blob = await response.blob();
-                    element.innerText = blob.size.toLocaleString() + " bytes";
-                } catch (e) { element.innerText = ""; }
-            }
-
             async function init() {
                 const blocks = await fetchArenaBlocks();
                 const $container = $('#arena-container');
 
+                if (blocks.length === 0) {
+                    $container.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
+                    return;
+                }
+
                 blocks.forEach((block) => {
-                    const imageUrl = block.image.display.url;
+                    const imageUrl = block.image.large.url;
                     const title = block.title || "";
-                    const sizeId = `size-${block.id}`;
                     
                     const html = `
                         <li class="work-item">
-                            <img src="${imageUrl}" alt="${title}" />
+                            <img src="${imageUrl}" alt="${title}" loading="lazy" />
                             <div class="caption">
                                 <div>${title}</div>
-                                <div id="${sizeId}" style="opacity:0.5; font-size:9px;"></div>
                             </div>
                         </li>`;
                     
                     const $newItem = $(html);
                     $container.append($newItem);
-                    getRealFileSize(imageUrl, document.getElementById(sizeId));
                     
                     $newItem.on('click', function() {
-                        $('#fullscreen-viewer').html(`<img src="${imageUrl}" style="max-width:90%; max-height:90%;">`).css('display', 'flex');
+                        $('#fullscreen-viewer').html(`<img src="${imageUrl}">`).css('display', 'flex');
                     });
                 });
             }
 
-            $('#fullscreen-viewer').on('click', function() { $(this).hide(); });
+            $('#fullscreen-viewer').on('click', function() { 
+                $(this).hide().empty(); 
+            });
+
             init();
         });
     </script>
