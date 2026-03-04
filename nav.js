@@ -6,12 +6,12 @@ function loadNavbar() {
             <div class="select-trigger">Juan Tribaldos</div>
             <ul class="select-options">
                 <li data-value="index.html">Juan Tribaldos</li>
-                <li data-value="about.html">Info</li>
-                <li data-value="guestbook.html">Libro_de_visitas</li>
+                <li data-value="about.html">About</li>
+                <li data-value="guestbook.html">Guestbook</li>
             </ul>
         </div>
         <div class="custom-select-container">
-            <div class="select-trigger">Interiores</div>
+            <div class="select-trigger">Interiors</div>
             <ul class="select-options">
                 <li data-value="laurel-dd.html">Laurel DD</li>
                 <li data-value="casa-aromo.html">Casa Aromo</li>
@@ -23,7 +23,7 @@ function loadNavbar() {
             </ul>
         </div> 
         <div class="custom-select-container">
-            <div class="select-trigger">Exploraciones</div>
+            <div class="select-trigger">Explorations</div>
             <ul class="select-options">
                 <li data-value="pleroma.html">Pléroma</li>
                 <li data-value="liminal.html">Liminal</li>
@@ -31,7 +31,7 @@ function loadNavbar() {
             </ul>
         </div>
         <div class="custom-select-container">
-            <div class="select-trigger">Archivo</div>
+            <div class="select-trigger">Archive</div>
             <ul class="select-options">
                 <li data-value="tabla.html">Tabla</li>
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
