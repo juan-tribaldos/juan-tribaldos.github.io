@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/IMG_9979.ico">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    /* --- VARIABLES --- */
+    :root {
+        --white: #ffffff;
+        --black: #000000;
+        --caret-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    /* --- BASE GRID --- */
+    #arena-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 30px;
+        padding: 80px 20px;
+        list-style: none;
+        margin: 0 auto;
+        max-width: 1200px;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .work-item {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .work-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .caption {
+        font-family: inherit;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+    }
+
+    .file-size {
+        color: var(--black);
+        margin-top: 4px;
+        font-size: 10px;
+    }
+
+    /* --- CONTROLES LATERALES --- */
+    .side-controls-wrapper {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 110px; /* Ancho consistente para selectores */
+    }
+
+    /* --- MODOS DE DISEÑO --- */
+
+    /* Opción 1: Títulos Gigantes */
+    .mode-wide-titles .image-title {
+        font-size: 7vw;
+        line-height: 0.8;
+        font-weight: bold;
+        letter-spacing: -3px;
+        word-break: break-all;
+        display: block;
+        margin-top: 5px;
+        text-transform: uppercase;
+    }
+
+    /* Opción 2: Compacto */
+    .mode-compact #arena-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+        max-width: 600px;
+        gap: 15px;
+    }
+    .mode-compact .caption { font-size: 8px; }
+
+    /* --- FILTROS THRESHOLD --- */
+    .filter-th-1 img { filter: grayscale(1) contrast(30) brightness(1); }
+    .filter-th-2 img { filter: grayscale(1) contrast(100) brightness(0.8); }
+    .filter-th-3 img { filter: grayscale(1) contrast(500) brightness(0.5); }
+
+    /* --- FULLSCREEN VIEWER --- */
+    #fullscreen-viewer {
+        display: none; 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        background: rgba(255, 255, 255, 0.98); 
+        z-index: 9999; 
+        cursor: pointer; 
+        align-items: center; 
+        justify-content: center;
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+        #arena-container { 
+            grid-template-columns: 1fr; 
+            padding-top: 120px; 
+        }
+        .mode-wide-titles .image-title { 
+            font-size: 15vw; 
+        }
+        .side-controls-wrapper { 
+            right: 10px; 
+        }
+    }
+</style>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main>
+        <ul id="arena-container"></ul>
+        <div id="fullscreen-viewer"></div>
+    </main>
+
+   <div class="side-controls-wrapper">
+        <div class="custom-select-container">
+            <div class="select-trigger" id="view-trigger">Default</div>
+            <ul class="select-options">
+                <li data-type="view" data-mode="default">Default</li>
+                <li data-type="view" data-mode="mode-wide-titles">Wide Titles</li>
+                <li data-type="view" data-mode="mode-compact">Compact</li>
+            </ul>
+        </div>
+
+        <div class="custom-select-container">
+            <div class="select-trigger" id="filter-trigger">None</div>
+            <ul class="select-options">
+                <li data-type="filter" data-mode="default">None</li>
+                <li data-type="filter" data-mode="filter-th-1">Threshold 01</li>
+                <li data-type="filter" data-mode="filter-th-2">Threshold 02</li>
+                <li data-type="filter" data-mode="filter-th-3">Threshold 03</li>
+            </ul>
+        </div>
+    </div>
+
+<script>
+$(function() {
+    /* --- LÓGICA DE SELECTORES --- */
+    $('.select-trigger').on('click', function(e) {
+        // Cerramos otros selectores abiertos
+        $('.select-options').not($(this).next()).removeClass('open');
+        $(this).next('.select-options').toggleClass('open');
+        e.stopPropagation();
+    });
+
+    $('.select-options li').on('click', function() {
+        const type = $(this).data('type');
+        const mode = $(this).data('mode');
+        const label = $(this).text();
+
+        if (type === 'view') {
+            $('#view-trigger').text(label);
+            $('body').removeClass('mode-wide-titles mode-compact');
+            if (mode !== 'default') $('body').addClass(mode);
+        } else if (type === 'filter') {
+            $('#filter-trigger').text(label);
+            $('body').removeClass('filter-th-1 filter-th-2 filter-th-3');
+            if (mode !== 'default') $('body').addClass(mode);
+        }
+
+        $('.select-options').removeClass('open');
+    });
+
+    $(window).on('click', function() {
+        $('.select-options').removeClass('open');
+    });
+
+    /* --- INTEGRACIÓN ARE.NA --- */
+    const CHANNEL_SLUG = 'bahia-xhsljfyecdu'; 
+    const API_BASE = 'https://api.are.na/v2';
+
+    async function fetchArenaBlocks() {
+        try {
+            const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+            const data = await response.json();
+            return data.contents.filter(block => block.class === 'Image');
+        } catch (error) { return []; }
+    }
+
+    async function getRealFileSize(imageUrl, element) {
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            element.innerText = blob.size.toLocaleString() + " bytes";
+        } catch (e) {}
+    }
+
+    async function init() {
+        const blocks = await fetchArenaBlocks();
+        const $container = $('#arena-container');
+
+        blocks.forEach((block) => {
+            const imageUrl = block.image.display.url;
+            const title = block.title || "Untitled";
+            const sizeId = `size-${block.id}`;
+            
+            const html = `
+                <li class="work-item">
+                    <img src="${imageUrl}" alt="${title}" loading="lazy" />
+                    <div class="caption">
+                        <div class="image-title">${title}</div>
+                        <div class="file-size" id="${sizeId}">Loading size...</div>
+                    </div>
+                </li>`;
+            
+            const $newItem = $(html);
+            $container.append($newItem);
+            getRealFileSize(imageUrl, document.getElementById(sizeId));
+            
+            $newItem.on('click', function() {
+                $('#fullscreen-viewer').html(`<img src="${imageUrl}" style="max-width:90%; max-height:90%;">`).css('display', 'flex');
+            });
+        });
+    }
+
+    $('#fullscreen-viewer').on('click', function() { $(this).hide(); });
+    init();
+});
+</script>
+</body>
+</html>

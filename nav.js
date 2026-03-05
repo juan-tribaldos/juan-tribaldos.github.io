@@ -28,13 +28,10 @@ function loadNavbar() {
         <div class="custom-select-container">
             <div class="select-trigger">Interiors</div>
             <ul class="select-options">
-                <li data-value="laurel-dd.html">Laurel DD</li>
-                <li data-value="casa-aromo.html">Casa Aromo</li>
-                <li data-value="casa-ikaros.html">Casa Ikaros</li>
-                <li data-value="casa-naia.html">Casa Naia</li>
-                <li data-value="casa-rosada.html">Casa Rosada</li>
-                <li data-value="casa-tula.html">Casa Tula</li>
-                <li data-value="perozah.html">Perozah</li>
+                <li data-value="casa-aromo.html">Aromo</li>
+                <li data-value="casa-bahia.html">Bahia</li>
+                <li data-value="casa-zapotal.html">Zapotal</li>
+                <li data-value="casa-catalinas.html">Catalinas</li>
             </ul>
         </div> 
     </header>`;
