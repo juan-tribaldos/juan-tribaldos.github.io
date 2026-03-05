@@ -13,13 +13,13 @@ function loadNavbar() {
         <div class="custom-select-container">
             <div class="select-trigger">Explorations</div>
             <ul class="select-options">
-                <li data-value="pleroma.html">Pléroma</li>
+                <li data-value="notas-al-margen.html">Notas al Margen</li>
                 <li data-value="liminal.html">Liminal</li>
                 <li data-value="materia-prima.html">Materia Prima</li>
             </ul>
         </div>
         <div class="custom-select-container">
-            <div class="select-trigger">Research/Archive</div>
+            <div class="select-trigger">Research / Archive</div>
             <ul class="select-options">
                 <li data-value="tabla.html">Tabla</li>
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
