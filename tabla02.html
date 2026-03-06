@@ -106,96 +106,51 @@
 
     <script src="nav.js"></script>
 
-    <script src="config-arena.js"></script>
+<script src="config-arena.js"></script>
+<script src="arena-manager.js"></script>
+<script src="table-render.js"></script>
 
 <script>
-    // MOTOR DE DATOS: Carga los canales definidos en config-arena.js
-    async function fetchAllChannels() {
-        try {
-            const requests = ARENA_CONFIG.channels.map(slug => 
-                fetch(`https://api.are.na/v2/channels/${slug}/contents?per=100`).then(res => res.json())
-            );
-
-            const results = await Promise.all(requests);
-            const combined = results.flatMap(data => data.contents || []);
-
-            return combined.map(item => ({
-                Title: item.title || 'Untitled',
-                Type: item.class || 'N/A',
-                Date: item.created_at ? new Date(item.created_at).toLocaleDateString('es-ES') : '-',
-                RawDate: item.created_at || '',
-                Class: item.base_class || 'N/A',
-                Link: item.source ? item.source.url : (item.attachment ? item.attachment.url : `https://www.are.na/block/${item.id}`)
-            }));
-        } catch (error) {
-            console.error("Error cargando Are.na:", error);
-            return [];
-        }
-    }
-
-    // INTERFAZ: Dibuja la tabla usando activeColumns de config-arena.js
-    function renderTable(data) {
-        const headRow = document.getElementById('table-headers');
-        const tbody = document.getElementById('table-body');
-
-        headRow.innerHTML = activeColumns.map(col => `
-            <th onclick="handleSort('${col}')">
-                ${col.toUpperCase()} 
-                <span class="sort-indicator">${sortCol === col ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
-            </th>
-        `).join('');
-
-        tbody.innerHTML = data.map(item => `
-            <tr>
-                ${activeColumns.map(col => {
-                    if (col === 'Link') return `<td><a class="arena-link" href="${item[col]}" target="_blank">VIEW ↗</a></td>`;
-                    return `<td>${item[col] || '-'}</td>`;
-                }).join('')}
-            </tr>
-        `).join('');
-    }
-
-    // SELECTOR DE COLUMNAS
-    function initColumnSelectors() {
+    document.addEventListener('DOMContentLoaded', async () => {
+        // 1. Crear los selectores de columnas (Checkboxes)
         const container = document.getElementById('columnSelectors');
-        container.innerHTML = ARENA_CONFIG.allColumns.map(col => `
-            <label>
-                <input type="checkbox" ${activeColumns.includes(col) ? 'checked' : ''} 
-                       onchange="toggleColumn('${col}')">
-                ${col}
-            </label>
-        `).join('');
-    }
+        if (container) {
+            container.innerHTML = ARENA_CONFIG.allColumns.map(col => `
+                <label>
+                    <input type="checkbox" ${activeColumns.includes(col) ? 'checked' : ''} 
+                           onchange="toggleColumn('${col}')">
+                    ${col}
+                </label>
+            `).join('');
+        }
 
+        // 2. Configurar el buscador
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            // filterData y debounce vienen de arena-manager.js
+            searchInput.addEventListener('input', debounce((e) => {
+                const filtered = filterData(e.target.value);
+                renderTable(filtered);
+            }, 300));
+        }
+        
+        // 3. Cargar los datos de los canales
+        currentData = await fetchArenaItems(); 
+        
+        // 4. Dibujar la tabla inicial
+        renderTable(currentData);
+    });
+
+    // Función auxiliar para los checkboxes que llama a renderTable (de table-render.js)
     function toggleColumn(col) {
         if (activeColumns.includes(col)) {
             if (activeColumns.length > 1) activeColumns = activeColumns.filter(c => c !== col);
         } else {
             activeColumns.push(col);
         }
-        savePrefs(); // Función de config-arena.js
+        savePrefs(); // Viene de config-arena.js
         renderTable(currentData);
     }
-
-    // ORDENACIÓN
-    function handleSort(col) {
-        if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-        else { sortCol = col; sortDir = 'asc'; }
-        
-        currentData.sort((a, b) => {
-            let vA = a[col], vB = b[col];
-            if (col === 'Date') { vA = a.RawDate; vB = b.RawDate; }
-            return sortDir === 'asc' ? vA.localeCompare(vB) : vB.localeCompare(vA);
-        });
-        renderTable(currentData);
-    }
-
-    // INICIO
-    document.addEventListener('DOMContentLoaded', async () => {
-        initColumnSelectors();
-        currentData = await fetchAllChannels();
-        handleSort('Date'); 
-    });
 </script>
 </body>
 </html>
