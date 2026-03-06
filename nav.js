@@ -33,6 +33,7 @@ function loadNavbar() {
             <ul class="select-options">
                 <li data-value="tabla.html">Tabla</li>
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
+                <li data-value="tabla02.html">Tabla 02</li>
             </ul>
         </div>
         
