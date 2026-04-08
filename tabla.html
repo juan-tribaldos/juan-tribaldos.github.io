@@ -108,7 +108,7 @@ $(function() {
         if (!desc || typeof desc !== 'string') return defaultValue;
         const regex = new RegExp(`${key}_\\s*([^\\n\\r<]+)`, 'i');
         const match = desc.match(regex);
-        return match ? match[1].trim() : defaultValue;
+        return match ? match[1].trim().replace(/\*\*/g, '').replace(/[*_]/g, '') : defaultValue;
     }
 
     async function init() {
