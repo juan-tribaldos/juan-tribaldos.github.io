@@ -2,7 +2,7 @@
 :root {
     --body-font-size: 1.4rem;
     --body-line-height: 1.214em;
-    --color-background: #a5a5a5;
+    --color-background: #ededed;
     --color-foreground: #000000;
     --white: #ffffff;
     /* Optimizado: Agrupamos el tamaño de fuente para inputs si lo usas luego */
