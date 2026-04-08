@@ -17,6 +17,7 @@ function loadNavbar() {
                 <li data-value="casa-aromo.html">Aromo</li>
                 <li data-value="casa-bahia.html">Bahia</li>
                 <li data-value="casa-catalinas.html">Catalinas</li>
+                <li data-value="casa-harmony.html">Harmony</li>
                 <li data-value="surf-cottage.html">Surf Cottage</li>                
             </ul>
         </div> 
