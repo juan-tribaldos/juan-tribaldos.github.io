@@ -12,7 +12,6 @@
 <style>
     /* --- VARIABLES --- */
     :root {
-        --color-background: #ededed;
         --white: #ffffff;
         --black: #000000;
         --caret-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -72,12 +71,14 @@
 
     /* Opción 1: Títulos Gigantes */
     .mode-wide-titles .image-title {
-        font-size: 5vw;
-        line-height: 0.8;        
+        font-size: 7vw;
+        line-height: 0.8;
+        font-weight: bold;
         letter-spacing: -3px;
         word-break: break-all;
         display: block;
-        margin-top: 5px;        
+        margin-top: 5px;
+        text-transform: uppercase;
     }
 
     /* Opción 2: Compacto */
@@ -135,7 +136,6 @@
             <div class="select-trigger" id="view-trigger">Default</div>
             <ul class="select-options">
                 <li data-type="view" data-mode="default">Default</li>
-                <li data-type="view" data-mode="mode-wide-titles">Wide Titles</li>
                 <li data-type="view" data-mode="mode-compact">Compact</li>
             </ul>
         </div>
