@@ -25,7 +25,7 @@
         .sort-arrow { font-size: 10px; margin-left: 5px; opacity: 1; }
         #arena-table td { border: 1px solid #000000; padding: 6px 12px; vertical-align: middle; color: #000; }
         .table-thumb { width: 35px; height: 35px; object-fit: cover; display: block; border: 0px solid #999; }
-        #arena-table tbody tr:hover { background-color: #7c7c7c; }
+        #arena-table tbody tr:hover { background-color: #dad8d8; }
         
         .view-link, .view-link-img { color: #0800ff; text-decoration: underline; cursor: pointer; }
         .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #000 !important; text-decoration: underline; font-weight: bold; }
@@ -48,6 +48,33 @@
         #search-bar::placeholder { color: #999; font-style: regular; }
         #last-updated { position: absolute; top: 80; right: 0; font-family: 'Times New Roman', serif; font-size: 11px; color: #666; }
     </style>
+    <style>
+        @media (max-width: 768px) {
+            #table-scroll-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #search-wrapper {
+                position: fixed;
+                top: 150px;
+                left: 0;
+                width: 50%;
+                z-index: 11;
+            }
+            #last-updated {
+                position: fixed;
+                top: 150px;
+                right: 0;
+                z-index: 12;
+            }
+            #search-bar {
+                flex: 1;
+            }
+            #table-container {
+                padding-top: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -62,7 +89,7 @@
                 <label for="search-bar">Search:</label>
                 <input type="text" id="search-bar" placeholder="Database search...">
             </div>
-            <table id="arena-table">
+            <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
                 <tr id="header-row">
                     <th style="width: 40px;">*</th>
@@ -76,7 +103,7 @@
                 </tr>
             </thead>
             <tbody id="arena-tbody"></tbody>
-            </table>
+            </table></div>
         </div>
         
         <div id="image-display-area">
