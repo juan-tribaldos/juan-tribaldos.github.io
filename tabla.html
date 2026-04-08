@@ -41,8 +41,12 @@
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
         
-        #table-container { position: relative; margin-bottom: 20px; }
-        #last-updated { position: absolute; top: 50px; right: 0; font-family: 'Times New Roman', serif; font-size: 11px; color: #666; }
+        #table-container { position: relative; margin-bottom: 20px; padding-top: 46px; }
+        #search-wrapper { position: absolute; top: 80; left: 0; display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #d1d1d1; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.12); font-family: 'Times New Roman', serif; }
+        #search-wrapper label { font-size: 12px; color: #000; }
+        #search-bar { padding: 6px 6px; font-family: 'Times New Roman', serif; font-size:  12px; border: 1px solid #000; width: 200px; outline: none; }
+        #search-bar::placeholder { color: #999; font-style: regular; }
+        #last-updated { position: absolute; top: 80; right: 0; font-family: 'Times New Roman', serif; font-size: 11px; color: #666; }
     </style>
 </head>
 <body>
@@ -54,6 +58,10 @@
         
         <div id="table-container">
             <div id="last-updated"></div>
+            <div id="search-wrapper">
+                <label for="search-bar">Search:</label>
+                <input type="text" id="search-bar" placeholder="Database search...">
+            </div>
             <table id="arena-table">
             <thead>
                 <tr id="header-row">
@@ -130,6 +138,24 @@ $(function() {
         currentSortCol = -1;
     }
 
+    // Función de búsqueda
+    function applySearchFilter() {
+        const searchTerm = $('#search-bar').val().toLowerCase();
+        const $rows = $('#arena-tbody tr');
+        if (searchTerm === '') {
+            $rows.show();
+        } else {
+            $rows.each(function() {
+                const rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    }
+
     // VISTA 1: ÍNDICE GENERAL
     function renderIndex() {
         $('#go-back').hide();
@@ -161,6 +187,7 @@ $(function() {
                 </tr>`;
             $tbody.append(row);
         });
+        applySearchFilter();
     }
 
     // VISTA 2: CONTENIDO DEL CANAL
@@ -199,6 +226,7 @@ $(function() {
                 </tr>`;
         }
         $tbody.empty().append(rowsHtml);
+        applySearchFilter();
     }
 
     // LÓGICA DE ORDENAMIENTO UNIVERSAL
@@ -232,6 +260,7 @@ $(function() {
         });
 
         $.each($rows, function(index, row) { $tbody.append(row); });
+        applySearchFilter();
     });
 
     // CLIC EN PROYECTO (ÍNDICE)
@@ -262,6 +291,9 @@ $(function() {
     });
 
     $('#go-back').on('click', renderIndex);
+
+    // Event listener for search bar
+    $('#search-bar').on('keyup', applySearchFilter);
 
     formatLastUpdated();
     init();
