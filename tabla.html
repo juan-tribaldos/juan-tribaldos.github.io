@@ -56,6 +56,7 @@
                     <th data-column="1" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
                     <th data-column="2" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
                     <th data-column="3" id="h-location">Location <span class="sort-arrow">↕</span></th>
+                    <th data-column="6" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
                     <th style="width: 100px;" data-column="4" id="h-items">Items <span class="sort-arrow">↕</span></th>
                     <th style="width: 80px;" data-column="5" id="h-year">Year <span class="sort-arrow">↕</span></th>
                     <th style="width: 80px;">Action</th>
@@ -72,7 +73,7 @@
 
     <script>
 $(function() {
-    const CHANNELS_SLUGS = ['interiores_casa-ikaros', 'archivo_residencia-salita-2025', 'exploraciones_materia-prima']; 
+    const CHANNELS_SLUGS = ['archivo-residencia-salita-2025', 'period-underscore-period-period-period-period-dash', 'exploraciones_materia-prima']; 
     const API_BASE = 'https://api.are.na/v2';
     let allData = [];
     let isAscending = true;
@@ -97,7 +98,7 @@ $(function() {
 
     async function init() {
         const $tbody = $('#arena-tbody');
-        $tbody.html('<tr><td colspan="7">Consultando archivo...</td></tr>');
+        $tbody.html('<tr><td colspan="8">Consultando archivo...</td></tr>');
         
         for (const slug of CHANNELS_SLUGS) {
             try {
@@ -129,6 +130,7 @@ $(function() {
             const artist = extractFromDescription(rawDesc, 'Artist', "---");
             const location = extractFromDescription(rawDesc, 'Location', "---");
             const year = extractFromDescription(rawDesc, 'Year', "---");
+            const keywords = extractFromDescription(rawDesc, 'Keywords', "---");
             const firstImage = channel.contents.find(b => b.class === 'Image');
 
             const row = `
@@ -137,6 +139,7 @@ $(function() {
                     <td><strong>${channel.title}</strong></td>
                     <td>${artist}</td>
                     <td>${location}</td>
+                    <td>${keywords}</td>
                     <td>${channel.length}</td>
                     <td>${year}</td>
                     <td><span class="view-link" data-index="${index}">Load project</span></td>
@@ -154,12 +157,13 @@ $(function() {
         $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
         resetSortArrows();
 
-        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="7">Calculando tamaños de archivo...</td></tr>');
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
         
         const rawDesc = channel.metadata?.description || channel.description?.plain || "";
         const artist = extractFromDescription(rawDesc, 'Artist', "---");
         const location = extractFromDescription(rawDesc, 'Location', "---");
         const year = extractFromDescription(rawDesc, 'Year', "---");
+        const keywords = extractFromDescription(rawDesc, 'Keywords', "---");
 
         let rowsHtml = '';
         for (const block of channel.contents) {
@@ -173,6 +177,7 @@ $(function() {
                     <td>${blockTitle}</td>
                     <td>${artist}</td>
                     <td>${location}</td>
+                    <td>${keywords}</td>
                     <td>${realSize}</td>
                     <td>${year}</td>
                     <td><span class="view-link-img" data-url="${block.image.display.url}" data-title="${blockTitle}">View</span></td>
