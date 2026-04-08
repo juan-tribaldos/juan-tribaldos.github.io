@@ -40,6 +40,9 @@
         #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 20px; padding-top: 20px; }
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
+        
+        #table-container { position: relative; margin-bottom: 20px; }
+        #last-updated { position: absolute; top: -30px; right: 0; font-family: 'Times New Roman', serif; font-size: 12px; color: #666; }
     </style>
 </head>
 <body>
@@ -49,21 +52,24 @@
     <main>
         <div class="back-btn" id="go-back">← Back</div>
         
-        <table id="arena-table">
+        <div id="table-container">
+            <div id="last-updated"></div>
+            <table id="arena-table">
             <thead>
                 <tr id="header-row">
                     <th style="width: 40px;">*</th>
-                    <th data-column="1" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
-                    <th data-column="2" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
-                    <th data-column="3" id="h-location">Location <span class="sort-arrow">↕</span></th>
-                    <th data-column="6" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
-                    <th style="width: 100px;" data-column="4" id="h-items">Items <span class="sort-arrow">↕</span></th>
-                    <th style="width: 80px;" data-column="5" id="h-year">Year <span class="sort-arrow">↕</span></th>
+                    <th data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
+                    <th data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
+                    <th data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
+                    <th data-column="4" data-numeric="false" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
+                    <th style="width: 100px;" data-column="5" data-numeric="true" id="h-items">Items <span class="sort-arrow">↕</span></th>
+                    <th style="width: 80px;" data-column="6" data-numeric="true" id="h-year">Year <span class="sort-arrow">↕</span></th>
                     <th style="width: 80px;">Action</th>
                 </tr>
             </thead>
             <tbody id="arena-tbody"></tbody>
-        </table>
+            </table>
+        </div>
         
         <div id="image-display-area">
             <h3 id="display-title"></h3>
@@ -78,6 +84,15 @@ $(function() {
     let allData = [];
     let isAscending = true;
     let currentSortCol = -1;
+    
+    // Format and display last updated date
+    function formatLastUpdated() {
+        const lastMod = new Date(document.lastModified);
+        const month = String(lastMod.getMonth() + 1).padStart(2, '0');
+        const day = String(lastMod.getDate()).padStart(2, '0');
+        const year = lastMod.getFullYear();
+        $('#last-updated').text(`Last updated ${month}/${day}/${year}`);
+    }
 
     // Obtener tamaño real del archivo (HEAD request)
     async function getRealFileSize(url) {
@@ -189,6 +204,7 @@ $(function() {
     // LÓGICA DE ORDENAMIENTO UNIVERSAL
     $('#arena-table thead th[data-column]').on('click', function() {
         const column = $(this).data('column');
+        const isNumeric = $(this).data('numeric') === true;
         const $tbody = $('#arena-tbody');
         const $rows = $tbody.find('tr').get();
 
@@ -203,11 +219,14 @@ $(function() {
         $(this).find('.sort-arrow').text(isAscending ? '↑' : '↓');
 
         $rows.sort(function(a, b) {
-            let valA = $(a).children('td').eq(column).text().replace(/\./g, '').split(' ')[0].toLowerCase();
-            let valB = $(b).children('td').eq(column).text().replace(/\./g, '').split(' ')[0].toLowerCase();
+            let valA = $(a).children('td').eq(column).text().replace(/[.,;:—\-]/g, '').split(' ')[0].toLowerCase();
+            let valB = $(b).children('td').eq(column).text().replace(/[.,;:—\-]/g, '').split(' ')[0].toLowerCase();
 
-            if ($.isNumeric(valA) && $.isNumeric(valB)) {
-                return isAscending ? valA - valB : valB - valA;
+            // If column is marked as numeric, or if both values are numeric, sort numerically
+            if (isNumeric || ($.isNumeric(valA) && $.isNumeric(valB))) {
+                const numA = parseInt(valA) || 0;
+                const numB = parseInt(valB) || 0;
+                return isAscending ? numA - numB : numB - numA;
             }
             return isAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
         });
@@ -244,6 +263,7 @@ $(function() {
 
     $('#go-back').on('click', renderIndex);
 
+    formatLastUpdated();
     init();
 });
     </script>
