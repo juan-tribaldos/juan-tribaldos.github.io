@@ -141,12 +141,21 @@ $(function() {
     }
 
     // Extraer etiquetas de la descripción del canal
-    function extractFromDescription(desc, key, defaultValue) {
-        if (!desc || typeof desc !== 'string') return defaultValue;
-        const regex = new RegExp(`${key}_\\s*([^\\n\\r<]+)`, 'i');
-        const match = desc.match(regex);
-        return match ? match[1].trim().replace(/\*\*/g, '').replace(/[*_]/g, '') : defaultValue;
+  function extractFromDescription(desc, key, defaultValue) {
+    if (!desc || typeof desc !== 'string') return defaultValue;
+    
+    // Busca la clave (ej. Keywords), seguida de un guion bajo, 
+    // y captura todo hasta el final de la línea o el siguiente tag.
+    const regex = new RegExp(`${key}_\\s*([^\\n\\r<]+)`, 'i');
+    const match = desc.match(regex);
+    
+    if (match && match[1]) {
+        return match[1]
+            .replace(/\*\*/g, '') // Quita negritas markdown
+            .trim();
     }
+    return defaultValue;
+}
 
     async function init() {
         const $tbody = $('#arena-tbody');
@@ -196,7 +205,10 @@ $(function() {
         const $tbody = $('#arena-tbody').empty();
 
         allData.forEach((channel, index) => {
-            const rawDesc = channel.metadata?.description || channel.description?.plain || "";
+            // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
+            const rawDesc = channel.metadata?.description || 
+                 channel.description || 
+                 (channel.metadata && typeof channel.metadata === 'string' ? channel.metadata : "");
             const artist = extractFromDescription(rawDesc, 'Artist', "---");
             const location = extractFromDescription(rawDesc, 'Location', "---");
             const year = extractFromDescription(rawDesc, 'Year', "---");
@@ -230,7 +242,10 @@ $(function() {
 
         const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
         
-        const rawDesc = channel.metadata?.description || channel.description?.plain || "";
+        // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
+        const rawDesc = channel.metadata?.description || 
+                 channel.description || 
+                 (channel.metadata && typeof channel.metadata === 'string' ? channel.metadata : "");
         const artist = extractFromDescription(rawDesc, 'Artist', "---");
         const location = extractFromDescription(rawDesc, 'Location', "---");
         const year = extractFromDescription(rawDesc, 'Year', "---");
