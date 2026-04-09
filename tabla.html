@@ -163,14 +163,15 @@ $(function() {
 
     try {
         // Creamos un array de promesas de fetch
+        // Añadimos ?t= y la fecha actual en milisegundos para engañar al caché
         const promises = CHANNELS_SLUGS.map(slug => 
-            fetch(`${API_BASE}/channels/${slug}?per=100`)
-                .then(res => res.ok ? res.json() : null)
-                .catch(err => {
-                    console.error(`Error cargando canal ${slug}:`, err);
-                    return null;
-                })
-        );
+        fetch(`${API_BASE}/channels/${slug}?per=100&nocache=${new Date().getTime()}`)
+        .then(res => res.ok ? res.json() : null)
+        .catch(err => {
+            console.error(`Error cargando canal ${slug}:`, err);
+            return null;
+        })
+    );
 
         // Esperamos a que todas se resuelvan simultáneamente
         const results = await Promise.all(promises);
