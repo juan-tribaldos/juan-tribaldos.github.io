@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/IMG_9979.ico">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        main { padding: 100px 20px; max-width: 950px; margin: 0 auto; }
+        #arena-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', Times, serif; font-size: 12px; border: 1px solid #000; background-color: #fff; margin-top: 80px; }
+        
+        #arena-table thead th { 
+            background-color: #d1d1d1; 
+            border: 1px solid #000; 
+            padding: 8px 12px; 
+            text-align: left; 
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .sort-arrow { font-size: 10px; margin-left: 5px; opacity: 1; }
+        #arena-table td { border: 1px solid #000000; padding: 6px 12px; vertical-align: middle; color: #000; }
+        .table-thumb { width: 35px; height: 35px; object-fit: cover; display: block; border: 0px solid #999; }
+        #arena-table tbody tr:hover { background-color: #dad8d8; }
+        
+        .view-link, .view-link-img { color: #0800ff; text-decoration: underline; cursor: pointer; }
+        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #000 !important; text-decoration: underline; font-weight: bold; }
+
+        /* Estado cuando una imagen está siendo visualizada */
+        .viewing-status { 
+            color: #8f8f8f !important; 
+            text-decoration: none !important; 
+            cursor: default; 
+        }
+
+        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 80px; margin-bottom: 40px; padding-top: 20px; }
+        #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
+        #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
+        
+        #table-container { position: relative; margin-bottom: 20px; padding-top: 46px; }
+        #table-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: #d1d1d1;
+            border: 1px solid #000;
+            margin-bottom: 8px;
+            font-family: 'Times New Roman', serif;
+            font-size: 12px;
+        }
+        #search-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+        #search-wrapper label { font-size: 12px; color: #000; }
+        #search-bar { width: 240px; }
+        #last-updated { font-family: 'Times New Roman', serif; font-size: 11px; color: #666; }
+    </style>
+    <style>
+        @media (max-width: 768px) {
+            #table-scroll-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #table-top-row {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            #search-wrapper {
+                width: 100%;
+            }
+            #last-updated {
+                width: 100%;
+                text-align: right;
+            }
+             #search-bar {
+                 flex: 1;
+             }
+             #table-container {
+                 padding-top: 0;
+             }
+        }
+    </style>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main>
+        <div class="back-btn" id="go-back">← Back</div>
+        
+        <div id="table-container">
+            <div id="table-top-row">
+                <div id="search-wrapper">
+                     <label for="search-bar">Search:</label>
+                     <input type="text" id="search-bar" placeholder="Database search...">
+                 </div>
+                <div id="last-updated"></div>
+            </div>
+             <div id="table-scroll-wrapper"><table id="arena-table">
+            <thead>
+                <tr id="header-row">
+                    <th style="width: 40px;">*</th>
+                    <th data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
+                    <th data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
+                    <th data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
+                    <th data-column="4" data-numeric="false" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
+                    <th style="width: 100px;" data-column="5" data-numeric="true" id="h-items">Items <span class="sort-arrow">↕</span></th>
+                    <th style="width: 80px;" data-column="6" data-numeric="true" id="h-year">Year <span class="sort-arrow">↕</span></th>
+                    <th style="width: 80px;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="arena-tbody"></tbody>
+            </table></div>
+        </div>
+        
+        <div id="image-display-area">
+            <h3 id="display-title"></h3>
+            <img id="active-image" src="" alt="Selected content">
+        </div>
+    </main>  
+
+    <script> 
+$(function() {
+    const CHANNELS_SLUGS = ['archivo-residencia-salita-2025', 'period-underscore-period-period-period-period-dash', 'exploraciones_materia-prima', 'prvw-msc', 'my-memes', 
+    'energy-spheres-w1kpy7uc2hy', 'images-to-remember-q5fbnnb18wo', 'interface-shoebox', 'empty-billboards', 'my-computer-and-i', 'freak-hacks', 'skateboarding-thinkpieces', 'i-m-looking-at-this-in-2026', 'the-secret-agent', 'object-oriented-painting', 'glenn-o-brien',
+     'computer-landscapes', 'a-promise', 'i-m-looking-at-this-in-2023', 'respite-1482385420', 'ann-craven', 'everything-is-a-collaboration']; 
+    const API_BASE = 'https://api.are.na/v2';
+    let allData = [];
+    let isAscending = true;
+    let currentSortCol = -1;
+    
+    // Format and display last updated date
+    function formatLastUpdated() {
+        const lastMod = new Date(document.lastModified);
+        const month = String(lastMod.getMonth() + 1).padStart(2, '0');
+        const day = String(lastMod.getDate()).padStart(2, '0');
+        const year = lastMod.getFullYear();
+        $('#last-updated').text(`Last updated ${month}/${day}/${year}`);
+    }
+
+    // Obtener tamaño real del archivo (HEAD request)
+    async function getRealFileSize(url) {
+        try {
+            const response = await fetch(url, { method: 'HEAD' });
+            const size = response.headers.get('content-length');
+            return size ? parseInt(size).toLocaleString('de-DE') : "---";
+        } catch (e) { return "---"; }
+    }
+
+    // Extraer etiquetas de la descripción del canal
+  function extractFromDescription(desc, key, defaultValue) {
+    if (!desc || typeof desc !== 'string') return defaultValue;
+    
+    // Busca la clave (ej. Keywords), seguida de un guion bajo, 
+    // y captura todo hasta el final de la línea o el siguiente tag.
+    const regex = new RegExp(`${key}_\\s*([^\\n\\r<]+)`, 'i');
+    const match = desc.match(regex);
+    
+    if (match && match[1]) {
+        return match[1]
+            .replace(/\*\*/g, '') // Quita negritas markdown
+            .trim();
+    }
+    return defaultValue;
+}
+
+    async function init() {
+    const $tbody = $('#arena-tbody');
+    $tbody.html('<tr><td colspan="8">Consultando archivo...</td></tr>');
+
+    try {
+        // Creamos un array de promesas de fetch
+        // Añadimos ?t= y la fecha actual en milisegundos para engañar al caché
+        const promises = CHANNELS_SLUGS.map(slug => 
+        fetch(`${API_BASE}/channels/${slug}?per=100&nocache=${new Date().getTime()}`)
+        .then(res => res.ok ? res.json() : null)
+        .catch(err => {
+            console.error(`Error cargando canal ${slug}:`, err);
+            return null;
+        })
+    );
+
+        // Esperamos a que todas se resuelvan simultáneamente
+        const results = await Promise.all(promises);
+
+        // Filtramos los resultados nulos (errores) y guardamos en allData
+        allData = results.filter(data => data !== null);
+
+        renderIndex();
+    } catch (e) {
+        console.error("Error general en la inicialización:", e);
+        $tbody.html('<tr><td colspan="8">Error al cargar el archivo.</td></tr>');
+    }
+}
+
+    function resetSortArrows() {
+        $('.sort-arrow').text('↕');
+        currentSortCol = -1;
+    }
+
+    // Función de búsqueda
+    function applySearchFilter() {
+        const searchTerm = $('#search-bar').val().toLowerCase();
+        const $rows = $('#arena-tbody tr');
+        if (searchTerm === '') {
+            $rows.show();
+        } else {
+            $rows.each(function() {
+                const rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    }
+
+    // VISTA 1: ÍNDICE GENERAL
+    function renderIndex() {
+        $('#go-back').hide();
+        $('#image-display-area').hide();
+        $('#h-title').html('Project Title <span class="sort-arrow">↕</span>');
+        $('#h-items').html('Items <span class="sort-arrow">↕</span>');
+        resetSortArrows();
+        
+        const $tbody = $('#arena-tbody').empty();
+
+        allData.forEach((channel, index) => {
+            // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
+            const rawDesc = channel.metadata?.description || 
+                 channel.description || 
+                 (channel.metadata && typeof channel.metadata === 'string' ? channel.metadata : "");
+            const artist = extractFromDescription(rawDesc, 'Artist', "---");
+            const location = extractFromDescription(rawDesc, 'Location', "---");
+            const year = extractFromDescription(rawDesc, 'Year', "---");
+            const keywords = extractFromDescription(rawDesc, 'Keywords', "---");
+            const firstImage = channel.contents.find(b => b.class === 'Image');
+
+            const row = `
+                <tr>
+                    <td><img src="${firstImage?.image.thumb.url}" class="table-thumb"></td>
+                    <td><strong>${channel.title}</strong></td>
+                    <td>${artist}</td>
+                    <td>${location}</td>
+                    <td>${keywords}</td>
+                    <td>${channel.length}</td>
+                    <td>${year}</td>
+                    <td><span class="view-link" data-index="${index}">Load project</span></td>
+                </tr>`;
+            $tbody.append(row);
+        });
+        applySearchFilter();
+    }
+
+    // VISTA 2: CONTENIDO DEL CANAL
+    async function renderChannel(index) {
+        const channel = allData[index];
+        $('#go-back').show();
+        $('#image-display-area').hide(); // Reset visor al entrar
+        $('#h-title').html('File Title <span class="sort-arrow">↕</span>');
+        $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
+        resetSortArrows();
+
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
+        
+        // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
+        const rawDesc = channel.metadata?.description || 
+                 channel.description || 
+                 (channel.metadata && typeof channel.metadata === 'string' ? channel.metadata : "");
+        const artist = extractFromDescription(rawDesc, 'Artist', "---");
+        const location = extractFromDescription(rawDesc, 'Location', "---");
+        const year = extractFromDescription(rawDesc, 'Year', "---");
+        const keywords = extractFromDescription(rawDesc, 'Keywords', "---");
+
+        let rowsHtml = '';
+        for (const block of channel.contents) {
+            if (block.class !== 'Image') continue;
+            const blockTitle = block.title || "Untitled";
+            const realSize = await getRealFileSize(block.image.display.url);
+
+            rowsHtml += `
+                <tr>
+                    <td><img src="${block.image.thumb.url}" class="table-thumb"></td>
+                    <td>${blockTitle}</td>
+                    <td>${artist}</td>
+                    <td>${location}</td>
+                    <td>${keywords}</td>
+                    <td>${realSize}</td>
+                    <td>${year}</td>
+                    <td><span class="view-link-img" data-url="${block.image.display.url}" data-title="${blockTitle}">View</span></td>
+                </tr>`;
+        }
+        $tbody.empty().append(rowsHtml);
+        applySearchFilter();
+    }
+
+    // LÓGICA DE ORDENAMIENTO UNIVERSAL
+    $('#arena-table thead th[data-column]').on('click', function() {
+        const column = $(this).data('column');
+        const isNumeric = $(this).data('numeric') === true;
+        const $tbody = $('#arena-tbody');
+        const $rows = $tbody.find('tr').get();
+
+        if (currentSortCol === column) {
+            isAscending = !isAscending;
+        } else {
+            isAscending = true;
+            currentSortCol = column;
+        }
+
+        $('.sort-arrow').text('↕');
+        $(this).find('.sort-arrow').text(isAscending ? '↑' : '↓');
+
+        $rows.sort(function(a, b) {
+            let valA = $(a).children('td').eq(column).text().replace(/[.,;:—\-]/g, '').split(' ')[0].toLowerCase();
+            let valB = $(b).children('td').eq(column).text().replace(/[.,;:—\-]/g, '').split(' ')[0].toLowerCase();
+
+            // If column is marked as numeric, or if both values are numeric, sort numerically
+            if (isNumeric || ($.isNumeric(valA) && $.isNumeric(valB))) {
+                const numA = parseInt(valA) || 0;
+                const numB = parseInt(valB) || 0;
+                return isAscending ? numA - numB : numB - numA;
+            }
+            return isAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        });
+
+        $.each($rows, function(index, row) { $tbody.append(row); });
+        applySearchFilter();
+    });
+
+    // CLIC EN PROYECTO (ÍNDICE)
+    $(document).on('click', '.view-link', function() { 
+        renderChannel($(this).data('index')); 
+    });
+
+    // CLIC EN IMAGEN (DENTRO DEL PROYECTO)
+    $(document).on('click', '.view-link-img', function() {
+        const $btn = $(this);
+        const url = $btn.data('url');
+        const title = $btn.data('title');
+
+        // Reset de textos de acción
+        $('.view-link-img').text('View').removeClass('viewing-status');
+        
+        // Aplicar estado "Viewing"
+        $btn.text('Viewing').addClass('viewing-status');
+
+        $('#display-title').text(title);
+        $('#active-image').attr('src', url);
+        $('#image-display-area').css('display', 'flex');
+
+        window.scrollTo({ 
+            top: $('#image-display-area').offset().top - 20, 
+            behavior: 'smooth' 
+        });
+    });
+
+    $('#go-back').on('click', renderIndex);
+
+    // Event listener for search bar
+    $('#search-bar').on('keyup', applySearchFilter);
+
+    formatLastUpdated();
+    init();
+});
+    </script>
+</body>
+</html>
