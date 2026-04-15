@@ -88,7 +88,7 @@
 #scroll-percentage {
     font-family: 'Times New Roman', serif;
     font-size: 3rem;
-    color: rgba(0, 0, 0, 0.2); /* Texto muy suave */
+    color: rgba(0, 0, 0, 0.5); /* Texto muy suave */
     font-weight: bold;
 }
 
@@ -221,7 +221,7 @@ $(function() {
 
 async function init() {
     const $tbody = $('#arena-tbody');
-    $tbody.html('<tr><td colspan="8">Consultando archivo...</td></tr>');
+    $tbody.html('<tr><td colspan="8">Please, wait for data to load...</td></tr>');
 
     const results = [];
     for (const slug of CHANNELS_SLUGS) {
