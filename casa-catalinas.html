@@ -192,7 +192,9 @@ $(function() {
 
     async function fetchArenaBlocks() {
         try {
-            const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`);
+            const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`, {
+                headers: { 'Authorization': 'Bearer TU_TOKEN' }
+            });
             const data = await response.json();
             return data.contents.filter(block => block.class === 'Image');
         } catch (error) { return []; }

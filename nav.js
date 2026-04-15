@@ -32,8 +32,7 @@ function loadNavbar() {
             <div class="select-trigger">Research / Archive</div>
             <ul class="select-options">
                 <li data-value="residencia-salita-2025.html">Residencia Salita Temporal 2025</li>
-                <li data-value="tabla.html">Archive</li>
-                <li data-value="tabla02.html">archivo para pruebas</li>
+                <li data-value="tabla02.html">archivo en pruebas</li>
             </ul>
         </div>
         

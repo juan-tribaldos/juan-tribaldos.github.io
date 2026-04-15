@@ -177,33 +177,28 @@ $(function() {
     return defaultValue;
 }
 
-    async function init() {
+async function init() {
     const $tbody = $('#arena-tbody');
     $tbody.html('<tr><td colspan="8">Consultando archivo...</td></tr>');
 
-    try {
-        // Creamos un array de promesas de fetch
-        // Añadimos ?t= y la fecha actual en milisegundos para engañar al caché
-        const promises = CHANNELS_SLUGS.map(slug => 
-        fetch(`${API_BASE}/channels/${slug}?per=100&nocache=${new Date().getTime()}`)
-        .then(res => res.ok ? res.json() : null)
-        .catch(err => {
+    const results = [];
+    for (const slug of CHANNELS_SLUGS) {
+        try {
+            const res = await fetch(`${API_BASE}/channels/${slug}?per=100`, {
+                headers: { 'Authorization': 'Bearer TU_TOKEN' }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                results.push(data);
+            }
+        } catch (err) {
             console.error(`Error cargando canal ${slug}:`, err);
-            return null;
-        })
-    );
-
-        // Esperamos a que todas se resuelvan simultáneamente
-        const results = await Promise.all(promises);
-
-        // Filtramos los resultados nulos (errores) y guardamos en allData
-        allData = results.filter(data => data !== null);
-
-        renderIndex();
-    } catch (e) {
-        console.error("Error general en la inicialización:", e);
-        $tbody.html('<tr><td colspan="8">Error al cargar el archivo.</td></tr>');
+        }
+        await new Promise(r => setTimeout(r, 300));
     }
+
+    allData = results;
+    renderIndex();
 }
 
     function resetSortArrows() {
