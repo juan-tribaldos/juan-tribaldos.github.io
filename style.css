@@ -228,6 +228,23 @@ main {
         .side-controls-wrapper { 
             right: 10px; 
         }
+
+        /* Creamos el margen derecho visual dentro del scroll */
+    .mobile-margin-spacer {
+        display: table-cell !important;
+        width: 20px !important; /* El padding que deseas a la derecha */
+        min-width: 20px;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+}
+
+/* Ocultamos el espaciador en escritorio para no alterar el diseño */
+@media (min-width: 769px) {
+    .mobile-margin-spacer {
+        display: none;
+    }
 }
 
 
