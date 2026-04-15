@@ -234,7 +234,7 @@
             async function fetchArenaBlocks() {
                 try {
                     const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`, {
-                        headers: { 'Authorization': 'Bearer TU_TOKEN' }
+                        headers: { 'Authorization': 'Bearer MK79DychUcC3cqHY1dryGEOQjnCM4frc05tzFRZGcPU' }
                     });
                     if (!response.ok) throw new Error("Canal no encontrado");
                     const data = await response.json();

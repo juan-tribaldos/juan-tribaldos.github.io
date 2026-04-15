@@ -227,7 +227,7 @@ async function init() {
     for (const slug of CHANNELS_SLUGS) {
         try {
             const res = await fetch(`${API_BASE}/channels/${slug}?per=100`, {
-                headers: { 'Authorization': 'Bearer TU_TOKEN' }
+                headers: { 'Authorization': 'Bearer MK79DychUcC3cqHY1dryGEOQjnCM4frc05tzFRZGcPU' }
             });
             if (res.ok) {
                 const data = await res.json();
