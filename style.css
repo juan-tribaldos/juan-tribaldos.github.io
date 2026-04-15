@@ -217,7 +217,19 @@ main {
     }
     .custom-select-container { max-width: 100%; }
     .image-selector-wrapper { max-width: 100%; } 
+
+            #arena-container { 
+            grid-template-columns: 1fr; 
+            padding-top: 120px; 
+        }
+        .mode-wide-titles .image-title { 
+            font-size: 15vw; 
+        }
+        .side-controls-wrapper { 
+            right: 10px; 
+        }
 }
+
 
 main {
       
