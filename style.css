@@ -210,46 +210,40 @@ main {
 
 
 @media (max-width: 768px) {
-    .header-nav { 
-        position: static; /* Esto anula el fixed */
-        flex-direction: column; 
-        width: 45%; 
-    }
     .custom-select-container { max-width: 100%; }
     .image-selector-wrapper { max-width: 100%; } 
 
-            #arena-container { 
-            grid-template-columns: 1fr; 
-            padding-top: 120px; 
-        }
-        .mode-wide-titles .image-title { 
-            font-size: 15vw; 
-        }
-        .side-controls-wrapper { 
-            right: 10px; 
-        }
+    #arena-container { 
+        grid-template-columns: 1fr; 
+        padding-top: 120px; 
+    }
+    .mode-wide-titles .image-title { 
+        font-size: 15vw; 
+    }
+    .side-controls-wrapper { 
+        right: 10px; 
+    }
 
-        /* Creamos el margen derecho visual dentro del scroll */
+    /* Creamos el margen derecho visual dentro del scroll */
     .mobile-margin-spacer {
         display: table-cell !important;
-        width: 20px !important; /* El padding que deseas a la derecha */
+        width: 20px !important;
         min-width: 20px;
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
     }
-}
 
-/* Ocultamos el espaciador en escritorio para no alterar el diseño */
-@media (min-width: 769px) {
-    .mobile-margin-spacer {
-        display: none;
+    .header-nav {
+        position: relative;
+        top: 0;
+        flex-direction: column;
+        width: 180px;
+        margin-top: -20px;
+        z-index: 10;
     }
-}
 
-
-main {
-      
+    main {
         flex-direction: column-reverse; 
         margin: 10rem auto; 
         gap: 1rem; 
@@ -265,5 +259,13 @@ main {
     }
 
     .about-text {
-       max-width: 90%;
+        max-width: 90%;
     }
+}
+
+/* Ocultamos el espaciador en escritorio para no alterar el diseño */
+@media (min-width: 769px) {
+    .mobile-margin-spacer {
+        display: none;
+    }
+}

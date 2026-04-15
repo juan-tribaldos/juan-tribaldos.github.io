@@ -75,14 +75,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.4); /* Muy tenue */
+   /* background: rgba(255, 255, 255, 0.4);  Muy tenue */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     pointer-events: none; /* Permite tocar a través de él si fuera necesario */
     opacity: 0;
-    transition: opacity 0.3s ease;
+    
 }
 
 #scroll-percentage {
@@ -119,6 +119,12 @@
              }
              #table-container {
                  padding-top: 0;
+             }
+             .header-nav {
+                 position: relative;
+                 flex-direction: column;
+                 width: 180px;
+                 margin-top: -20px;
              }
         }
     </style>
@@ -411,7 +417,7 @@ async function init() {
     // --- Lógica del Overlay de Progreso ---
     let lastScrollTop = 0;
     let scrollTimeout;
-    const threshold = 10; // Margen de movimiento mínimo en píxeles
+    const threshold = 20; // Margen de movimiento mínimo en píxeles
     const $overlay = $('#scroll-overlay');
     const $percentText = $('#scroll-percentage');
 
