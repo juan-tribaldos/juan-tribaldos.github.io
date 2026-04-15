@@ -24,11 +24,11 @@
 
         .sort-arrow { font-size: 10px; margin-left: 5px; opacity: 1; }
         #arena-table td { border: 1px solid #000000; padding: 6px 12px; vertical-align: middle; color: #000; }
-        .table-thumb { width: 35px; height: 35px; object-fit: cover; display: block; border: 0px solid #999; }
+        .table-thumb { width:35px; height: 35px; object-fit: cover; display: block; border: 0px solid #999; }
         #arena-table tbody tr:hover { background-color: #dad8d8; }
         
         .view-link, .view-link-img { color: #0800ff; text-decoration: underline; cursor: pointer; }
-        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #000 !important; text-decoration: underline; font-weight: bold; }
+        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #0800ff; text-decoration: underline; font-weight: bold; }
 
         /* Estado cuando una imagen está siendo visualizada */
         .viewing-status { 
@@ -112,14 +112,14 @@
              <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
                 <tr id="header-row">
-                    <th style="width: 40px;">*</th>
-                    <th data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
-                    <th data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
-                    <th data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
-                    <th data-column="4" data-numeric="false" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
-                    <th style="width: 100px;" data-column="5" data-numeric="true" id="h-items">Items <span class="sort-arrow">↕</span></th>
-                    <th style="width: 80px;" data-column="6" data-numeric="true" id="h-year">Year <span class="sort-arrow">↕</span></th>
-                    <th style="width: 80px;">Action</th>
+    <th style="width: 45px;">*</th>
+    <th style="width: 25%;" data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
+    <th style="width: 15%;" data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
+    <th style="width: 22%;" data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
+    <th style="width: 20%;" data-column="4" data-numeric="false" id="h-keywords">Keywords <span class="sort-arrow">↕</span></th>
+    <th style="width: 10%;" data-column="5" data-numeric="true" id="h-items">Items <span class="sort-arrow">↕</span></th>
+    <th style="width: 10%;" data-column="6" data-numeric="true" id="h-year">Year <span class="sort-arrow">↕</span></th>
+    <th style="width: 10%;">Action</th>
                 </tr>
             </thead>
             <tbody id="arena-tbody"></tbody>
