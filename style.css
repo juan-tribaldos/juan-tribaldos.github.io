@@ -210,7 +210,11 @@ main {
 
 
 @media (max-width: 768px) {
-    .header-nav { flex-direction: column; width: auto; }
+    .header-nav { 
+        position: static; /* Esto anula el fixed */
+        flex-direction: column; 
+        width: 35%; 
+    }
     .custom-select-container { max-width: 100%; }
     .image-selector-wrapper { max-width: 100%; } 
 }

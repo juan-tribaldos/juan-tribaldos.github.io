@@ -119,23 +119,33 @@
         }
 
         /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
-        @media (max-width: 900px) {
-            main {
-                flex-direction: column;
-                height: auto;
-                overflow: visible;
-                margin-top: 60px;
-            }
-            .text-column, .gallery-column {
-                height: auto;
-                overflow: visible;
-                flex: none;
-                width: 100%;
-            }
-            #arena-container {
-                grid-template-columns: 1fr; /* Una foto por fila en móvil */
-            }
-        }
+
+@media (max-width: 900px) {
+    /* Permitimos que el scroll vuelva al cuerpo de la página en móviles */
+    body, html {
+        overflow: visible !important;
+        height: auto;
+    }
+
+    main {
+        display: block; /* Cambiamos flex por block para un flujo natural */
+        height: auto;
+        overflow: visible;
+        margin-top: 60px;
+    }
+
+    .text-column, .gallery-column {
+        height: auto;
+        overflow: visible; /* Desactivamos el scroll interno de columna */
+        flex: none;
+        width: 100%;
+        padding: 40px 20px; /* Ajustamos padding para pantallas pequeñas */
+    }
+
+    #arena-container {
+        grid-template-columns: 1fr; /* Una foto por fila en móvil */
+    }
+}
 
         /* 6. VISOR FULLSCREEN */
         #fullscreen-viewer {
