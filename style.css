@@ -213,7 +213,7 @@ main {
     .header-nav { 
         position: static; /* Esto anula el fixed */
         flex-direction: column; 
-        width: 35%; 
+        width: 45%; 
     }
     .custom-select-container { max-width: 100%; }
     .image-selector-wrapper { max-width: 100%; } 
