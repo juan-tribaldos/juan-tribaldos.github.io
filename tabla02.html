@@ -67,6 +67,35 @@
         #search-wrapper label { font-size: 12px; color: #000; }
         #search-bar { font-family: 'Times New Roman', serif; width: 240px; border: 1px solid #000; }
         #last-updated { font-family: 'Times New Roman', serif; font-size: 12px; color: #666; }
+
+        /* Overlay de progreso de scroll */
+#scroll-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4); /* Muy tenue */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    pointer-events: none; /* Permite tocar a través de él si fuera necesario */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#scroll-percentage {
+    font-family: 'Times New Roman', serif;
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.2); /* Texto muy suave */
+    font-weight: bold;
+}
+
+/* Solo se activa en dispositivos móviles/tablets */
+@media (min-width: 768px) {
+    #scroll-overlay { display: none !important; }
+}
     </style>
     <style>
         @media (max-width: 768px) {
@@ -97,6 +126,8 @@
 <body>
 
     <script src="nav.js"></script>
+
+    <div id="scroll-overlay"><div id="scroll-percentage">0%</div></div>
 
     <main>
         <div class="back-btn" id="go-back">← Back</div>
@@ -135,6 +166,11 @@
     <script> 
 $(function() {
     const CHANNELS_SLUGS = ['archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
+    'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
+    'archivo_javier-calvo', 
+    'archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
+    'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
+    'archivo_javier-calvo', 'archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
     'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
     'archivo_javier-calvo']; 
     const API_BASE = 'https://api.are.na/v2';
@@ -371,6 +407,41 @@ async function init() {
 
     formatLastUpdated();
     init();
+
+    // --- Lógica del Overlay de Progreso ---
+    let lastScrollTop = 0;
+    let scrollTimeout;
+    const threshold = 10; // Margen de movimiento mínimo en píxeles
+    const $overlay = $('#scroll-overlay');
+    const $percentText = $('#scroll-percentage');
+
+    $(window).on('scroll', function() {
+        const scrollTop = $(window).scrollTop();
+        const docHeight = $(document).height();
+        const winHeight = $(window).height();
+        
+        // Calcular diferencia de movimiento
+        const scrollDiff = Math.abs(scrollTop - lastScrollTop);
+
+        if (scrollDiff > threshold) {
+            // Calcular porcentaje real
+            const scrollPercent = Math.round((scrollTop / (docHeight - winHeight)) * 100);
+            
+            // Actualizar texto y mostrar overlay
+            $percentText.text(scrollPercent + '%');
+            $overlay.css('opacity', '1');
+
+            // Limpiar el temporizador si se sigue scrolleando
+            clearTimeout(scrollTimeout);
+
+            // Ocultar tras 600ms de inactividad
+            scrollTimeout = setTimeout(function() {
+                $overlay.css('opacity', '0');
+            }, 600);
+
+            lastScrollTop = scrollTop;
+        }
+    });
 });
     </script>
 </body>
