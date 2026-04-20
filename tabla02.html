@@ -37,7 +37,7 @@
             cursor: default; 
         }
 
-        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 80px; margin-bottom: 40px; padding-top: 20px; }
+        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 0; margin-bottom: 40px; padding-top: 0; }
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
         
@@ -137,7 +137,7 @@
 
     <main>
         <div class="back-btn" id="go-back">← Back</div>
-        
+
         <div id="table-container">
             <div id="table-top-row">
                 <div id="search-wrapper">
@@ -145,6 +145,10 @@
                      <input type="text" id="search-bar" placeholder="Database search...">
                  </div>
                 <div id="last-updated"></div>
+            </div>
+            <div id="image-display-area">
+                <h3 id="display-title"></h3>
+                <img id="active-image" src="" alt="Selected content">
             </div>
              <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
@@ -163,10 +167,6 @@
             </table></div>
         </div>
         
-        <div id="image-display-area">
-            <h3 id="display-title"></h3>
-            <img id="active-image" src="" alt="Selected content">
-        </div>
     </main>  
 
     <script> 
@@ -307,7 +307,7 @@ async function init() {
         $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
         resetSortArrows();
 
-        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculating file sizes...</td></tr>');
         
         // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
         const rawDesc = channel.metadata?.description || 
