@@ -24,7 +24,7 @@ function loadNavbar() {
         <div class="custom-select-container">
             <div class="select-trigger">Explorations</div>
             <ul class="select-options">
-                <li data-value="notas-al-margen.html">Notas al Margen</li>
+                <li data-value="notas-al-margen.html">Notas al Márgen</li>
                 <li data-value="liminal.html">Liminal</li>
             </ul>
         </div>
