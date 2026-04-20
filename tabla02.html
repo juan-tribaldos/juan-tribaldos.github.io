@@ -322,7 +322,7 @@ async function init() {
         for (const block of channel.contents) {
             if (block.class !== 'Image') continue;
             const blockTitle = block.title || "Untitled";
-            const realSize = await getRealFileSize(block.image.display.url);
+            const realSize = await getRealFileSize(block.image.large.url);
 
             rowsHtml += `
                 <tr>
@@ -333,7 +333,7 @@ async function init() {
                     <td>${keywords}</td>
                     <td>${realSize}</td>
                     <td>${year}</td>
-                    <td><span class="view-link-img" data-url="${block.image.display.url}" data-title="${blockTitle}">View</span></td>
+                    <td><span class="view-link-img" data-url="${block.image.large.url}" data-title="${blockTitle}">View</span></td>
                 </tr>`;
         }
         $tbody.empty().append(rowsHtml);
