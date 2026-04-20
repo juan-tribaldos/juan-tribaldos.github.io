@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/IMG_9979.ico">
+    
+    <style>
+        body {
+            overflow: hidden;
+            background-color: #ededed;
+            animation: colorToBlack 120s infinite;
+        }
+        
+        @keyframes colorToBlack {
+            0% { background-color: #ededed; }
+            50% { background-color: #b30808; }
+            100% { background-color: #00ff4c; }
+        }
+        
+        @media (max-width: 768px) {
+            .header-nav {
+                position: fixed;
+                flex-direction: column;
+                width: 180px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main id="main-content"></main>
+
+    <div class="time-selector-wrapper">
+        <div class="custom-select-container">
+            <div class="select-trigger" id="current-time-trigger">Cargando hora...</div>
+            <ul class="select-options" id="time-options">
+                <li id="opt-sj" data-city="sj">Cargando San José...</li>
+                <li id="opt-bcn" data-city="bcn">Cargando Barcelona...</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="draw.js"></script>
+    <script>
+        // Variables para el Reloj Dual
+        const optSJ = document.getElementById('opt-sj');
+        const optBCN = document.getElementById('opt-bcn');
+        const timeTrigger = document.getElementById('current-time-trigger');
+        const wrapper = document.querySelector('.time-selector-wrapper');
+
+        // LÓGICA DE SELECCIÓN PARA EL RELOJ
+        // Escuchamos específicamente los clics en las opciones del reloj para no chocar con nav.js
+        document.querySelectorAll('#time-options li').forEach(option => {
+            option.addEventListener('click', (e) => {
+                const city = option.getAttribute('data-city');
+
+                if (city === 'sj') {
+                    wrapper.classList.add('mode-sj');
+                    wrapper.classList.remove('mode-bcn');
+                } else if (city === 'bcn') {
+                    wrapper.classList.add('mode-bcn');
+                    wrapper.classList.remove('mode-sj');
+                }
+
+                // Cerramos el menú después de seleccionar
+                option.parentElement.classList.remove('open');
+                e.stopPropagation(); // Evita que otros scripts interfieran
+                updateClocks(); // Actualización inmediata visual
+            });
+        });
+
+        // FUNCIÓN DEL RELOJ
+        function updateClocks() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            
+            // Obtener horas de las dos zonas
+            const timeSJ = new Intl.DateTimeFormat('es-CR', { ...options, timeZone: 'America/Costa_Rica' }).format(now);
+            const timeBCN = new Intl.DateTimeFormat('es-ES', { ...options, timeZone: 'Europe/Madrid' }).format(now);
+
+            const textSJ = `${timeSJ} - San José (CR)`;
+            const textBCN = `${timeBCN} - Barcelona (ES)`;
+
+            // Actualizar el texto dentro de la lista desplegable
+            if (optSJ) optSJ.textContent = textSJ;
+            if (optBCN) optBCN.textContent = textBCN;
+            
+            // Actualizar lo que se ve en el botón (trigger) según el modo activo
+            if (wrapper.classList.contains('mode-bcn')) {
+                timeTrigger.textContent = textBCN;
+            } else {
+                // San José por defecto
+                timeTrigger.textContent = textSJ;
+                if (!wrapper.classList.contains('mode-sj')) wrapper.classList.add('mode-sj');
+            }
+        }
+
+        // Iniciar el reloj
+        setInterval(updateClocks, 1000);
+        updateClocks();
+    </script>
+</body>
+</html>
