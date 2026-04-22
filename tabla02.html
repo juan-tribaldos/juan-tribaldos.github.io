@@ -11,8 +11,7 @@
 
     <style>
         main { padding: 100px 20px; max-width: 950px; margin: 0 auto; }
-        html { overflow-y: scroll; }
-        #arena-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', Times, serif; font-size: 12px; border: 1px solid #000; background-color: #fff; margin-top: 80px; table-layout: fixed; }
+        #arena-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', Times, serif; font-size: 12px; border: 1px solid #000; background-color: #fff; margin-top: 80px; }
         
         #arena-table thead th { 
             background-color: #d1d1d1; 
@@ -25,11 +24,11 @@
 
         .sort-arrow { font-size: 10px; margin-left: 5px; opacity: 1; }
         #arena-table td { border: 1px solid #000000; padding: 6px 12px; vertical-align: middle; color: #000; }
-        .table-thumb { width:25px; height: 25px; object-fit: cover; display: block; border: 0px solid #999; }
+        .table-thumb { width:35px; height: 35px; object-fit: cover; display: block; border: 0px solid #999; }
         #arena-table tbody tr:hover { background-color: #dad8d8; }
         
         .view-link, .view-link-img { color: #0800ff; text-decoration: underline; cursor: pointer; }
-        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #0800ff; text-decoration: underline; font-weight: bold; cursor: pointer; }
+        .back-btn { display: none; margin-bottom: 12px; font-family: 'Times New Roman', serif; font-size: 13px; color: #0800ff; text-decoration: underline; font-weight: bold; }
 
         /* Estado cuando una imagen está siendo visualizada */
         .viewing-status { 
@@ -38,7 +37,7 @@
             cursor: default; 
         }
 
-        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 0; margin-bottom: 40px; padding-top: 0; }
+        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 80px; margin-bottom: 40px; padding-top: 20px; }
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
         
@@ -68,7 +67,6 @@
         #search-wrapper label { font-size: 12px; color: #000; }
         #search-bar { font-family: 'Times New Roman', serif; width: 240px; border: 1px solid #000; }
         #last-updated { font-family: 'Times New Roman', serif; font-size: 12px; color: #666; }
-        #arena-tbody { min-height: 500px; }
 
         /* Overlay de progreso de scroll */
 #scroll-overlay {
@@ -139,7 +137,7 @@
 
     <main>
         <div class="back-btn" id="go-back">← Back</div>
-
+        
         <div id="table-container">
             <div id="table-top-row">
                 <div id="search-wrapper">
@@ -148,14 +146,10 @@
                  </div>
                 <div id="last-updated"></div>
             </div>
-            <div id="image-display-area">
-                <h3 id="display-title"></h3>
-                <img id="active-image" src="" alt="Selected content">
-            </div>
              <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
                 <tr id="header-row">
-    <th style="width: 6%;">*</th>
+    <th style="width: 45px;">*</th>
     <th style="width: 25%;" data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
     <th style="width: 15%;" data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
     <th style="width: 22%;" data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
@@ -169,11 +163,20 @@
             </table></div>
         </div>
         
+        <div id="image-display-area">
+            <h3 id="display-title"></h3>
+            <img id="active-image" src="" alt="Selected content">
+        </div>
     </main>  
 
     <script> 
 $(function() {
     const CHANNELS_SLUGS = ['archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
+    'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
+    'archivo_javier-calvo', 
+    'archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
+    'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
+    'archivo_javier-calvo', 'archivo_luciano-goizueta', 'archivo_ignacio-quiros', 'archivo_mariela-alvarez', 'archivo_carlo-daque', 'archivo_playball-art-studio', 'archivo_rebeca-palida', 'archivo_emmanuel-rodriguez', 
     'archivo_rastros-y-existencia', 'archivo_irene-calderon', 'archivo_emmanuel-rodriguez-ne4e2h39krm', 'archivo_leo-urena', 'archivo_camila-capra',
     'archivo_javier-calvo']; 
     const API_BASE = 'https://api.are.na/v2';
@@ -309,7 +312,7 @@ async function init() {
         $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
         resetSortArrows();
 
-        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculating file sizes...</td></tr>');
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
         
         // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
         const rawDesc = channel.metadata?.description || 
@@ -324,7 +327,7 @@ async function init() {
         for (const block of channel.contents) {
             if (block.class !== 'Image') continue;
             const blockTitle = block.title || "Untitled";
-            const realSize = await getRealFileSize(block.image.large.url);
+            const realSize = await getRealFileSize(block.image.display.url);
 
             rowsHtml += `
                 <tr>
@@ -335,7 +338,7 @@ async function init() {
                     <td>${keywords}</td>
                     <td>${realSize}</td>
                     <td>${year}</td>
-                    <td><span class="view-link-img" data-url="${block.image.large.url}" data-title="${blockTitle}">View</span></td>
+                    <td><span class="view-link-img" data-url="${block.image.display.url}" data-title="${blockTitle}">View</span></td>
                 </tr>`;
         }
         $tbody.empty().append(rowsHtml);

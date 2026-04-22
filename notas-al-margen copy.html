@@ -65,7 +65,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        width: 110px; /* Ancho consistente para selectores */
+        width: 110px;
     }
 
     /* --- MODOS DE DISEÑO --- */
@@ -113,14 +113,14 @@
             width: 180px;
             margin-top: -20px;
         }
+        #arena-container {
+            grid-template-columns: 1fr !important;
+        }
         .side-controls-wrapper {
             top: auto;
             bottom: 20px;
             right: 20px;
             transform: none;
-        }
-        #arena-container {
-            grid-template-columns: 1fr !important;
         }
     }
 
@@ -188,7 +188,7 @@ $(function() {
     });
 
     /* --- INTEGRACIÓN ARE.NA --- */
-    const CHANNEL_SLUG = 'surf-cottage'; 
+    const CHANNEL_SLUG = 'notas-al-margen'; 
     const API_BASE = 'https://api.are.na/v2';
 
     async function fetchArenaBlocks() {
