@@ -224,6 +224,13 @@ main {
         right: 10px; 
     }
 
+    .side-controls-wrapper .select-options {
+        top: auto;
+        bottom: 100%;
+        border-top: 1px solid #000;
+        border-bottom: none;
+    }
+
     /* Creamos el margen derecho visual dentro del scroll */
     .mobile-margin-spacer {
         display: table-cell !important;
