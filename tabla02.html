@@ -10,8 +10,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
+        html { overflow-y: scroll; }
         main { padding: 100px 20px; max-width: 950px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
-        #arena-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', Times, serif; font-size: 12px; border: 1px solid #000; background-color: #fff; margin-top: 80px; }
+        #arena-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', Times, serif; font-size: 12px; border: 1px solid #000; background-color: #fff; margin-top: 80px; table-layout: fixed; }
         
         #arena-table thead th { 
             background-color: #d1d1d1; 
@@ -37,7 +38,7 @@
             cursor: default; 
         }
 
-        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 80px; margin-bottom: 40px; padding-top: 20px; }
+        #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 0; margin-bottom: 40px; padding-top: 0; }
         #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
         
@@ -67,6 +68,7 @@
         #search-wrapper label { font-size: 12px; color: #000; }
         #search-bar { font-family: 'Times New Roman', serif; width: 240px; border: 1px solid #000; }
         #last-updated { font-family: 'Times New Roman', serif; font-size: 12px; color: #666; }
+        #arena-tbody { min-height: 500px; }
 
         /* Overlay de progreso de scroll */
 #scroll-overlay {
@@ -146,10 +148,14 @@
                  </div>
                 <div id="last-updated"></div>
             </div>
+            <div id="image-display-area">
+                <h3 id="display-title"></h3>
+                <img id="active-image" src="" alt="Selected content">
+            </div>
              <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
                 <tr id="header-row">
-    <th style="width: 45px;">*</th>
+    <th style="width: 8%;">*</th>
     <th style="width: 25%;" data-column="1" data-numeric="false" id="h-title">Project Title <span class="sort-arrow">↕</span></th>
     <th style="width: 15%;" data-column="2" data-numeric="false" id="h-artist">Artist <span class="sort-arrow">↕</span></th>
     <th style="width: 22%;" data-column="3" data-numeric="false" id="h-location">Location <span class="sort-arrow">↕</span></th>
@@ -163,10 +169,6 @@
             </table></div>
         </div>
         
-        <div id="image-display-area">
-            <h3 id="display-title"></h3>
-            <img id="active-image" src="" alt="Selected content">
-        </div>
     </main>  
 
     <script> 
@@ -312,7 +314,7 @@ async function init() {
         $('#h-items').html('Size (bytes) <span class="sort-arrow">↕</span>');
         resetSortArrows();
 
-        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculando tamaños de archivo...</td></tr>');
+        const $tbody = $('#arena-tbody').empty().append('<tr><td colspan="8">Calculating file sizes...</td></tr>');
         
         // Buscamos en todas las posibles ubicaciones donde Are.na guarda el texto
         const rawDesc = channel.metadata?.description || 
