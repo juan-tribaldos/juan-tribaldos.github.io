@@ -1,11 +1,10 @@
-/* VARIABLES Y RESET */
+
 :root {
     --body-font-size: 1.4rem;
     --body-line-height: 1.214em;
     --color-background: #ededed;
     --color-foreground: #000000;
     --white: #ffffff;
-    /* Optimizado: Agrupamos el tamaño de fuente para inputs si lo usas luego */
     --input-font-size: max(var(--body-font-size), 1.6rem);
     --caret-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
@@ -231,7 +230,6 @@ main {
         border-bottom: none;
     }
 
-    /* Creamos el margen derecho visual dentro del scroll */
     .mobile-margin-spacer {
         display: table-cell !important;
         width: 20px !important;
@@ -270,7 +268,6 @@ main {
     }
 }
 
-/* Ocultamos el espaciador en escritorio para no alterar el diseño */
 @media (min-width: 769px) {
     .mobile-margin-spacer {
         display: none;
