@@ -11,28 +11,34 @@ function loadNavbar() {
             </ul>
         </div>
         <div class="custom-select-container">
+            
             <div class="select-trigger">Commissions</div>
+
             <ul class="select-options">
                 <li data-value="casa-harmony.html">Harmony</li>
                 <li data-value="atipus.html">Atipus</li>
-                <li data-value="casa-aromo.html">Aromo</li>
+                <li data-value="casa-aromo.html">Aromo</li>  
                 <li data-value="casa-bahia.html">Bahia</li>
                 <li data-value="casa-catalinas.html">Catalinas</li>                
                 <li data-value="surf-cottage.html">Surf Cottage</li>                
             </ul>
         </div> 
         <div class="custom-select-container">
+
             <div class="select-trigger">Explorations</div>
+
             <ul class="select-options">
                 <li data-value="notas-al-margen.html">Notas al Márgen</li>
                 <li data-value="liminal.html">Liminal</li>
             </ul>
         </div>
         <div class="custom-select-container">
+
             <div class="select-trigger">Research / Archive</div>
+
             <ul class="select-options">
                 <li data-value="residencia-salita-2025.html">Salita Temporal 2025</li>
-                <li data-value="tabla02.html">archivo en pruebas</li>
+                <li data-value="tabla02.html">Archive</li>
             </ul>
         </div>
         
