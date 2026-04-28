@@ -236,7 +236,7 @@ $(function() {
     
     if (match && match[1]) {
         return match[1]
-            .replace(/\*\*/g, '') // Quita negritas markdown
+            .replace(/\*\*/g, '') 
             .trim();
     }
     return defaultValue;
