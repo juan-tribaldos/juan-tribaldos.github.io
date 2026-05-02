@@ -21,6 +21,8 @@ function loadNavbar() {
                 <li data-value="casa-catalinas.html">Catalinas</li>                
                 <li data-value="surf-cottage.html">Surf Cottage</li>
                 <li data-value="atipus.html">Atipus</li>
+                <li data-value="playball26.html">Payball</li>
+
             </ul>
         </div> 
         <div class="custom-select-container">
