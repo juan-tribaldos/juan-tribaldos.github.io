@@ -39,7 +39,7 @@ function loadNavbar() {
 
             <ul class="select-options">
                 <li data-value="salita-2025.html">Salita Temporal 2025</li>
-                <li data-value="tabla02.html">Archive</li>
+                <li data-value="archivo.html">Archive</li>
             </ul>
         </div>
         
