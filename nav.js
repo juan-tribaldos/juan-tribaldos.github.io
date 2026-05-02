@@ -34,7 +34,7 @@ function loadNavbar() {
         </div>
         <div class="custom-select-container">
 
-            <div class="select-trigger">Research / Archive</div>
+            <div class="select-trigger">Research/Archive</div>
 
             <ul class="select-options">
                 <li data-value="salita-2025.html">Salita Temporal 2025</li>
