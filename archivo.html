@@ -39,7 +39,11 @@
         }
 
         #image-display-area { width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 0; margin-bottom: 40px; padding-top: 0; }
-        #active-image { width: 100%; height: auto; border: 0px solid #000; max-width: 100%; }
+        #image-nav-row { display: flex; align-items: center; justify-content: center; width: 100%; gap: 12px; }
+        #active-image { flex: 1; width: 100%; height: auto; border: 0px solid #000; max-width: 100%; min-width: 0; }
+        .img-nav-btn { font-family: 'Times New Roman', serif; font-size: 22px; background: none; border: none; cursor: pointer; padding: 8px 14px; user-select: none; flex-shrink: 0; color: #0800ff; font-weight: bold; transition: opacity 0.15s; }
+        .img-nav-btn:hover { opacity: 0.7; }
+        .img-nav-btn:disabled { opacity: 0.2; cursor: default; }
         #display-title { font-family: 'Times New Roman', serif; font-size: 16px; margin-bottom: 10px; }
         
         #table-container { position: relative; margin-bottom: 20px; padding-top: 46px; overflow-x: hidden; }
@@ -164,7 +168,11 @@
             </div>
             <div id="image-display-area">
                 <h3 id="display-title"></h3>
-                <img id="active-image" src="" alt="Selected content">
+                <div id="image-nav-row">
+                    <button class="img-nav-btn" id="img-prev">&#8592;</button>
+                    <img id="active-image" src="" alt="Selected content">
+                    <button class="img-nav-btn" id="img-next">&#8594;</button>
+                </div>
             </div>
              <div id="table-scroll-wrapper"><table id="arena-table">
             <thead>
@@ -207,6 +215,8 @@ $(function() {
     let allData = [];
     let isAscending = true;
     let currentSortCol = -1;
+    let channelImages = [];
+    let currentImageIndex = -1;
     
     // Format and display last updated date
     function formatLastUpdated() {
@@ -327,9 +337,25 @@ async function init() {
         applySearchFilter();
     }
 
+    function showImage(idx) {
+        if (idx < 0 || idx >= channelImages.length) return;
+        currentImageIndex = idx;
+        const { url, title } = channelImages[idx];
+        $('.view-link-img').text('View').removeClass('viewing-status');
+        $(`.view-link-img[data-url="${url}"]`).text('Viewing').addClass('viewing-status');
+        $('#display-title').text(title);
+        $('#active-image').attr('src', url);
+        $('#image-display-area').css('display', 'flex');
+        $('#img-prev').prop('disabled', currentImageIndex === 0);
+        $('#img-next').prop('disabled', currentImageIndex === channelImages.length - 1);
+        window.scrollTo({ top: $('#image-display-area').offset().top - 20, behavior: 'smooth' });
+    }
+
     // VISTA 2: CONTENIDO DEL CANAL
     async function renderChannel(index) {
         const channel = allData[index];
+        channelImages = [];
+        currentImageIndex = -1;
         $('#go-back').show();
         $('#image-display-area').hide(); // Reset visor al entrar
         $('#h-title').html('File Title <span class="sort-arrow">↕</span>');
@@ -351,6 +377,7 @@ async function init() {
         for (const block of channel.contents) {
             if (block.class !== 'Image') continue;
             const blockTitle = block.title || "Untitled";
+            channelImages.push({ url: block.image.large.url, title: blockTitle });
             const realSize = await getRealFileSize(block.image.large.url);
 
             rowsHtml += `
@@ -410,25 +437,13 @@ async function init() {
 
     // CLIC EN IMAGEN (DENTRO DEL PROYECTO)
     $(document).on('click', '.view-link-img', function() {
-        const $btn = $(this);
-        const url = $btn.data('url');
-        const title = $btn.data('title');
-
-        // Reset de textos de acción
-        $('.view-link-img').text('View').removeClass('viewing-status');
-        
-        // Aplicar estado "Viewing"
-        $btn.text('Viewing').addClass('viewing-status');
-
-        $('#display-title').text(title);
-        $('#active-image').attr('src', url);
-        $('#image-display-area').css('display', 'flex');
-
-        window.scrollTo({ 
-            top: $('#image-display-area').offset().top - 20, 
-            behavior: 'smooth' 
-        });
+        const url = $(this).data('url');
+        const idx = channelImages.findIndex(img => img.url === url);
+        showImage(idx !== -1 ? idx : 0);
     });
+
+    $('#img-prev').on('click', function() { showImage(currentImageIndex - 1); });
+    $('#img-next').on('click', function() { showImage(currentImageIndex + 1); });
 
     $('#go-back').on('click', renderIndex);
 
