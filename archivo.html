@@ -172,6 +172,15 @@ website designed by martamatroska.github.io
              }
         }
     </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+
+<script>
+function utrack(event, props) {
+    if (typeof umami !== 'undefined') {
+        props ? umami.track(event, props) : umami.track(event);
+    }
+}
+</script>
 </head>
 <body>
 
@@ -436,6 +445,7 @@ async function init() {
 
         $('.sort-arrow').text('↕');
         $(this).find('.sort-arrow').text(isAscending ? '↑' : '↓');
+        utrack('archivo_sort', {column: $(this).text().replace(/[↕↑↓]/g,'').trim(), asc: isAscending});
 
         $rows.sort(function(a, b) {
             let valA = $(a).children('td').eq(column).text().replace(/[.,;:—\-]/g, '').split(' ')[0].toLowerCase();
@@ -455,8 +465,11 @@ async function init() {
     });
 
     // CLIC EN PROYECTO (ÍNDICE)
-    $(document).on('click', '.view-link', function() { 
-        renderChannel($(this).data('index')); 
+    $(document).on('click', '.view-link', function() {
+        const idx = $(this).data('index');
+        const title = $(this).closest('tr').find('td:eq(1)').text();
+        utrack('archivo_open_project', {project: title});
+        renderChannel(idx);
     });
 
     // CLIC EN IMAGEN (DENTRO DEL PROYECTO)
@@ -472,7 +485,12 @@ async function init() {
     $('#go-back').on('click', renderIndex);
 
     // Event listener for search bar
-    $('#search-bar').on('keyup', applySearchFilter);
+    $('#search-bar').on('keyup', function() {
+        applySearchFilter();
+        if ($(this).val().length === 3) {
+            utrack('archivo_search', {term: $(this).val()});
+        }
+    });
 
     formatLastUpdated();
     init();

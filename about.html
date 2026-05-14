@@ -41,6 +41,15 @@ website designed by martamatroska.github.io
             }
         }
     </style>    
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+
+<script>
+function utrack(event, props) {
+    if (typeof umami !== 'undefined') {
+        props ? umami.track(event, props) : umami.track(event);
+    }
+}
+</script>
 </head>
 <body>
 
@@ -113,6 +122,7 @@ website designed by martamatroska.github.io
                 // Cerrar el menú (manejado también por nav.js pero reforzamos)
                 option.parentElement.classList.remove('open');
                 e.stopPropagation();
+                utrack('language_switch', {lang: lang});
             });
         });
 
@@ -140,6 +150,7 @@ website designed by martamatroska.github.io
                     // Actualizar clases del contenedor para el CSS
                     container.classList.remove('mode-invert');
                     container.classList.add('mode-normal');
+                    utrack('portrait_filter', {action: action});
                 }
 
                 // Cerrar el menú desplegable

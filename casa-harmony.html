@@ -125,6 +125,15 @@
     }
 
 </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+
+<script>
+function utrack(event, props) {
+    if (typeof umami !== 'undefined') {
+        props ? umami.track(event, props) : umami.track(event);
+    }
+}
+</script>
 </head>
 <body>
 
@@ -176,6 +185,7 @@ $(function() {
             $('#view-trigger').text(label);
             $('body').removeClass('mode-wide-titles mode-compact');
             if (mode !== 'default') $('body').addClass(mode);
+            utrack('view_mode_change', {page: 'casa-harmony', mode: mode});
         } else if (type === 'filter') {
             $('#filter-trigger').text(label);
             $('body').removeClass('filter-th-1 filter-th-2 filter-th-3');
@@ -235,6 +245,7 @@ $(function() {
             
             $newItem.on('click', function() {
                 $('#fullscreen-viewer').html(`<img src="${imageUrl}" style="max-width:90%; max-height:90%;">`).css('display', 'flex');
+                utrack('image_fullscreen', {page: 'casa-harmony', title: title});
             });
         });
     }

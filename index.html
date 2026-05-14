@@ -45,6 +45,15 @@ website designed by martamatroska.github.io
             }
         }
     </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+
+<script>
+function utrack(event, props) {
+    if (typeof umami !== 'undefined') {
+        props ? umami.track(event, props) : umami.track(event);
+    }
+}
+</script>
 </head>
 <body>
 
@@ -86,8 +95,9 @@ website designed by martamatroska.github.io
 
                 // Cerramos el menú después de seleccionar
                 option.parentElement.classList.remove('open');
-                e.stopPropagation(); // Evita que otros scripts interfieran
-                updateClocks(); // Actualización inmediata visual
+                e.stopPropagation();
+                utrack('clock_city_switch', {city: city});
+                updateClocks();
             });
         });
 
