@@ -1,0 +1,5 @@
+User-agent: aisearchindex
+Disallow: /
+
+User-agent: *
+Allow: /
