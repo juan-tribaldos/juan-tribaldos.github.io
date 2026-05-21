@@ -38,7 +38,7 @@ function loadNavbar() {
             <div class="select-trigger">Research/Archive</div>
 
             <ul class="select-options">
-                <li data-value="Entrevista-Carlo Daque.html">Carlo Daque: momentos y grises</li>
+                <li data-value="entrevista-carlo-daque.html">Carlo Daque: momentos y grises</li>
                 <li data-value="salita-2025.html">Salita Temporal 2025</li>
                 <li data-value="archivo.html">Archive</li>
             </ul>
