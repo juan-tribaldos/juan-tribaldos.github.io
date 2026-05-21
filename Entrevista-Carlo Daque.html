@@ -118,35 +118,106 @@
             letter-spacing: 1px;
         }
 
-        /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
+        /* 5. RESPONSIVE MOBILE / TABLET */
 
 @media (max-width: 900px) {
-    /* Permitimos que el scroll vuelva al cuerpo de la página en móviles */
+
     body, html {
-        overflow: visible !important;
+        overflow-y: auto;
+        overflow-x: hidden;
         height: auto;
     }
 
     main {
-        display: block; /* Cambiamos flex por block para un flujo natural */
+        display: flex;
+        flex-direction: column;
         height: auto;
-        overflow: visible;
         margin-top: 60px;
+        overflow: visible;
     }
 
-    .text-column, .gallery-column {
-        height: auto;
-        overflow: visible; /* Desactivamos el scroll interno de columna */
-        flex: none;
+    .text-column {
         width: 100%;
-        padding: 40px 20px; /* Ajustamos padding para pantallas pequeñas */
+        height: auto;
+        overflow: visible;
+        flex: none;
+        padding: 36px 24px 24px;
+        background-color: #c2c2c2;
+    }
+
+    .gallery-column {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        flex: none;
+        padding: 24px;
+        background-color: #c2c2c2;
+    }
+
+    .text-content {
+        max-width: 680px;
+        margin: 0 auto;
+        font-size: 15px;
+        line-height: 1.75;
+        text-align: left;
+    }
+
+    .text-content h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .text-content h2 {
+        font-size: 15px;
+        font-weight: normal;
+        margin-bottom: 28px;
+        font-style: italic;
+    }
+
+    .references {
+        margin-top: 40px;
+        font-size: 11px;
+        color: #666;
+        padding-top: 20px;
     }
 
     #arena-container {
-        grid-template-columns: 1fr; /* Una foto por fila en móvil */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .caption {
+        font-size: 9px;
+        margin-top: 6px;
+    }
+
+    .work-item img {
+        border-radius: 2px;
     }
 }
 
+/* Extra para pantallas pequeñas tipo iPhone */
+
+@media (max-width: 480px) {
+    #arena-container {
+        grid-template-columns: 1fr;
+    }
+
+    .text-column {
+        padding: 30px 20px 20px;
+    }
+
+    .gallery-column {
+        padding: 20px;
+    }
+
+    .text-content {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+}
         /* 6. VISOR FULLSCREEN */
         #fullscreen-viewer {
             display:none; 
