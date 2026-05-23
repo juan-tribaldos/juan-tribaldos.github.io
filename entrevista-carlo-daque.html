@@ -387,41 +387,45 @@ function utrack(event, props) {
 
             async function init() {
                 const blocks = await fetchArenaBlocks();
-                const $container = $('#arena-container');
+                const $desktopContainer = $('#arena-container');
+                const $mobileContainer = $('#arena-container-mobile');
 
                 if (blocks.length === 0) {
                     $container.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
                     return;
                 }
+blocks.forEach((block) => {
+    const imageUrl = block.image.original.url;
+    const title = block.title || "";
+    
+    const html = `
+        <li class="work-item">
+            <img src="${imageUrl}" alt="${title}" loading="lazy" />
+            <div class="caption">
+                <div>${title}</div>
+            </div>
+        </li>`;
+    
+    const $newItem = $(html);
+    $desktopContainer.append($newItem);
 
-                blocks.forEach((block) => {
-                    const imageUrl = block.image.original.url;
-                    const title = block.title || "";
-                    
-                    const html = `
-                        <li class="work-item">
-                            <img src="${imageUrl}" alt="${title}" loading="lazy" />
-                            <div class="caption">
-                                <div>${title}</div>
-                            </div>
-                        </li>`;
-                    
-                    const $newItem = $(html);
-                    $container.append($newItem);
-                    
-                    $newItem.on('click', function() {
-                        $('#fullscreen-viewer').html(`<img src="${imageUrl}">`).css('display', 'flex');
-                        utrack('image_fullscreen', {page: 'salita-2025', title: title});
-                    });
-                });
-            }
+    $newItem.on('click', function() {
+        $('#fullscreen-viewer').html(`<img src="${imageUrl}">`).css('display', 'flex');
+        utrack('image_fullscreen', {page: 'salita-2025', title: title});
+    });
 
-            $('#fullscreen-viewer').on('click', function() { 
-                $(this).hide().empty(); 
-            });
+    const $mobileItem = $newItem.clone(true);
+    $mobileContainer.append($mobileItem);
+});
 
-            init();
-        });
-    </script>
+}
+
+$('#fullscreen-viewer').on('click', function() { 
+    $(this).hide().empty(); 
+});
+
+init();
+});
+</script>
 </body>
 </html>
