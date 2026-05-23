@@ -125,7 +125,6 @@
         /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
 
 @media (max-width: 900px) {
-
     body, html {
         overflow: visible !important;
         height: auto;
@@ -143,7 +142,7 @@
         overflow: visible;
         flex: none;
         width: 100%;
-        padding: 40px 20px;
+        padding: 40px 16px;
     }
 
     .gallery-column {
@@ -152,7 +151,18 @@
 
     .gallery-mobile {
         display: block;
-        margin: 32px 0;
+        width: 100%;
+        margin: 32px auto;
+    }
+
+    .gallery-mobile ul {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .gallery-mobile .work-item {
+        margin: 0 auto;
     }
 
     #arena-container {
