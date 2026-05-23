@@ -44,14 +44,18 @@
             
         }
 
-        /* Columna Derecha: Galería */
-        .gallery-column {
-            flex: 1; /* Ocupa el otro 50% del ancho */
-            height: 100%;
-            overflow-y: auto; /* Scroll independiente */
-            padding: 40px;
-            background-color: #c2c2c2;
-        }
+     /* Columna Derecha: Galería */
+.gallery-column {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 40px;
+    background-color: #c2c2c2;
+}
+
+.gallery-mobile {
+    display: none;
+}
 
         /* 3. ESTILOS DE CONTENIDO */
         .text-content {
@@ -121,14 +125,14 @@
         /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
 
 @media (max-width: 900px) {
-    /* Permitimos que el scroll vuelva al cuerpo de la página en móviles */
+
     body, html {
         overflow: visible !important;
         height: auto;
     }
 
     main {
-        display: block; /* Cambiamos flex por block para un flujo natural */
+        display: block;
         height: auto;
         overflow: visible;
         margin-top: 60px;
@@ -136,14 +140,23 @@
 
     .text-column, .gallery-column {
         height: auto;
-        overflow: visible; /* Desactivamos el scroll interno de columna */
+        overflow: visible;
         flex: none;
         width: 100%;
-        padding: 40px 20px; /* Ajustamos padding para pantallas pequeñas */
+        padding: 40px 20px;
+    }
+
+    .gallery-column {
+        display: none;
+    }
+
+    .gallery-mobile {
+        display: block;
+        margin: 32px 0;
     }
 
     #arena-container {
-        grid-template-columns: 1fr; /* Una foto por fila en móvil */
+        grid-template-columns: 1fr;
     }
 }
 
@@ -207,6 +220,13 @@ function utrack(event, props) {
 <p>Decía que el paisaje es tímido porque no se puede pintar con ruido, con música de fondo; tampoco se puede atrapar para estudiar y pintar en un estudio (cualquier persona que haya intentado hacer un paisaje a partir de una foto sabrá que no es lo mismo), tal vez por eso es que los ejercicios obligan a los artistas a pintar encuadres tan lejanos. Sin embargo, aquí tenemos un artista que, como los pájaros de sus pinturas, cae libremente hacia espacios únicos. Más adelante, Carlo dirá que un ejercicio que le gusta poner en práctica es pintar paisajes desde la memoria, sin referencias visuales. A lo mejor y esa es la mejor manera de retratarlo: poniéndole atención cuando se está frente a él y confiar en que la memoria sea capaz de actuar por encima del asombro y enamoramiento.</p>
 
 <p><em>Estudié animación digital ahí en La Veritas. Voy más atrás todavía. Mi primera exposición a la pintura fue tal vez como a los 12 o 13 años, que mis tatas me meten en un curso, en un taller que daba un artista que se llamaba Aquino...</em></p>
+ </article>
+
+<section class="gallery-mobile">
+    <ul id="arena-container-mobile"></ul>
+</section>
+
+<article class="text-content">
                 <p><strong>¿Sentís que has tenido un momento en que decís, “wow, soy artista”? Como de decir, “lo logré”</strong></p>
 
 <p><em>Sí, pero también como que uno tiene ese momento e inmediatamente después hay un momento en el que es como, “me falta demasiado”.</em></p>
