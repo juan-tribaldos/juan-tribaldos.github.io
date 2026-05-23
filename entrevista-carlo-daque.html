@@ -389,50 +389,61 @@ function utrack(event, props) {
                 }
             }
 
-            async function init() {
-                const blocks = await fetchArenaBlocks();
-                const $desktopContainer = $('#arena-container');
-                const $mobileContainer = $('#arena-container-mobile');
+    async function init() {
+    const blocks = await fetchArenaBlocks();
+    const $desktopContainer = $('#arena-container');
+    const $mobile1 = $('#arena-mobile-1');
+    const $mobile2 = $('#arena-mobile-2');
+    const $mobile3 = $('#arena-mobile-3');
 
-                if (blocks.length === 0) {
-                    $container.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
-                    return;
-                }
-blocks.forEach((block, index) => {
-    const imageUrl = block.image.original.url;
-    const title = block.title || "";
-    
-    const html = `
-        <li class="work-item">
-            <img src="${imageUrl}" alt="${title}" loading="lazy" />
-            <div class="caption">
-                <div>${title}</div>
-            </div>
-        </li>`;
-    
-    const $newItem = $(html);
-    $desktopContainer.append($newItem);
-
-    $newItem.on('click', function() {
-        $('#fullscreen-viewer').html(`<img src="${imageUrl}">`).css('display', 'flex');
-        utrack('image_fullscreen', {page: 'salita-2025', title: title});
-    });
-
-    const $mobileItem = $newItem.clone(true);
-
-    if (index < 2) {
-        $mobile1.append($mobileItem);
-    } else if (index < 5) {
-        $mobile2.append($mobileItem);
-    } else if (index < 7) {
-        $mobile3.append($mobileItem);
+    if (blocks.length === 0) {
+        $desktopContainer.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
+        return;
     }
-});
 
+    blocks.forEach((block, index) => {
+        const imageUrl = block.image.original.url;
+        const title = block.title || "";
+        
+        const html = `
+            <li class="work-item">
+                <img src="${imageUrl}" alt="${title}" loading="lazy" />
+                <div class="caption">
+                    <div>${title}</div>
+                </div>
+            </li>`;
+        
+        const $newItem = $(html);
+
+        $desktopContainer.append($newItem);
+
+        $newItem.on('click', function() {
+            $('#fullscreen-viewer')
+                .html(`<img src="${imageUrl}">`)
+                .css('display', 'flex');
+
+            utrack('image_fullscreen', {
+                page: 'salita-2025',
+                title: title
+            });
+        });
+
+        const $mobileItem = $newItem.clone(true);
+
+        if (index < 2) {
+            $mobile1.append($mobileItem);
+        } else if (index < 5) {
+            $mobile2.append($mobileItem);
+        } else if (index < 7) {
+            $mobile3.append($mobileItem);
+        }
+    });
 }
+
 $('#fullscreen-viewer').on('click', function() { 
     $(this).hide().empty(); 
 });
+
 init();
 });
 </script>
