@@ -223,7 +223,7 @@ function utrack(event, props) {
  </article>
 
 <section class="gallery-mobile">
-    <ul id="arena-container-mobile"></ul>
+    <ul id="arena-mobile-1"></ul>
 </section>
 
 <article class="text-content">
@@ -263,7 +263,9 @@ function utrack(event, props) {
 <p><strong>¿Has hecho El camino del artista (2002), ahora que decís eso de pasar pensando en ideas?</strong></p>
 
 <p><em>Guillermo lo recomendó un rato y yo nada. Creo que la primera parte la había leído, o el primer ejercicio, escribir todos los días en una página. Lo intenté un par de veces, pero no sé, también quiero mi propio camino del artista.</em></p>
-
+<section class="gallery-mobile">
+    <ul id="arena-mobile-2"></ul>
+</section>
 <p><em>Yo escribo todos los días, pero a modo de diario y ya como emocional, así. Tengo un cuaderno de dibujo que también uso todos los días. Yo divido mi vida con demasiados cuadernos, una maña residual de las materias de la escuela.</em></p>
 
 <p><strong>¿Qué te influencia?</strong></p>
@@ -310,7 +312,9 @@ function utrack(event, props) {
 <p><strong>Te preguntaba porque me pareció interesante que todo esto se siente muy de montaña. Tiene sentido que vivás en tu propia esquina natural de Santo Domingo.</strong></p>
 
 <p><em>Me ha pasado eso. Mucha gente me pregunta si no soy de Coro o de Guana, pero no, no. Tal vez el mismo hecho de que yo sea de Chepe me remite a romantizar el paisaje.</em></p>
-
+<section class="gallery-mobile">
+    <ul id="arena-mobile-3"></ul>
+</section>
 <p>En ese momento había empezado a hacer calor en el estudio y decidimos salir por un café. A dos cuadras de Informal está Casa Clara. Me contó Carlo que ahí va de vez en cuando a leer o hacer sus páginas diarias de dibujo. Nuestro traslado también coincidió con el atardecer, que nos encandiló un rato cuando llegamos.</p>
 
 <p><strong>¿Qué tal ha sido trabajar en Informal?</strong></p>
@@ -394,7 +398,7 @@ function utrack(event, props) {
                     $container.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
                     return;
                 }
-blocks.forEach((block) => {
+blocks.forEach((block, index) => {
     const imageUrl = block.image.original.url;
     const title = block.title || "";
     
@@ -415,15 +419,20 @@ blocks.forEach((block) => {
     });
 
     const $mobileItem = $newItem.clone(true);
-    $mobileContainer.append($mobileItem);
+
+    if (index < 2) {
+        $mobile1.append($mobileItem);
+    } else if (index < 5) {
+        $mobile2.append($mobileItem);
+    } else if (index < 7) {
+        $mobile3.append($mobileItem);
+    }
 });
 
 }
-
 $('#fullscreen-viewer').on('click', function() { 
     $(this).hide().empty(); 
 });
-
 init();
 });
 </script>
