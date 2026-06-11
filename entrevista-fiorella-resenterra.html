@@ -339,6 +339,9 @@ function utrack(event, props) {
     const $mobile1 = $('#arena-mobile-1');
     const $mobile2 = $('#arena-mobile-2');
     const $mobile3 = $('#arena-mobile-3');
+    const $mobile4 = $('#arena-mobile-4');
+    const $mobile5 = $('#arena-mobile-5');
+    const $mobile6 = $('#arena-mobile-6');
 
     if (blocks.length === 0) {
         $desktopContainer.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
@@ -374,13 +377,24 @@ function utrack(event, props) {
 
         const $mobileItem = $newItem.clone(true);
 
-        if (index < 2) {
-            $mobile1.append($mobileItem);
-        } else if (index < 5) {
-            $mobile2.append($mobileItem);
-        } else if (index < 7) {
-            $mobile3.append($mobileItem);
-        }
+        if (index < 3) {
+    $mobile1.append($mobileItem);
+}
+else if (index < 6) {
+    $mobile2.append($mobileItem);
+}
+else if (index < 9) {
+    $mobile3.append($mobileItem);
+}
+else if (index < 12) {
+    $mobile4.append($mobileItem);
+}
+else if (index < 15) {
+    $mobile5.append($mobileItem);
+}
+else {
+    $mobile6.append($mobileItem);
+}
     });
 }
 
