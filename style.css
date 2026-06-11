@@ -114,7 +114,9 @@ body {
     cursor: default;
     pointer-events: none;
 }
-
+.select-options li[data-value] {
+    padding-left: 1.5rem;
+}
 .time-selector-wrapper {
     position: fixed;
     bottom: 2rem;
