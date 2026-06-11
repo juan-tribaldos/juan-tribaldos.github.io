@@ -107,7 +107,15 @@ body {
     cursor: default;
     font-style: italic;
 }
-
+.menu-label {
+    padding: .6rem .7rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666;
+    cursor: default;
+    pointer-events: none;
+}
 
 .time-selector-wrapper {
     position: fixed;
