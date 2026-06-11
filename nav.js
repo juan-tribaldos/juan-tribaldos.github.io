@@ -38,11 +38,19 @@ function loadNavbar() {
             <div class="select-trigger">Research/Archive</div>
 
             <ul class="select-options">
-                <li data-value="entrevista-carlo-daque.html">Carlo Daque: momentos y grises</li>
-                <li data-value="entrevista-fiorella-resenterra.html">Fiorella Resenterra: Una curaduría personal</li>
-                <li data-value="salita-2025.html">Salita Temporal 2025</li>
-                <li data-value="archivo.html">Archive</li>
-            </ul>
+    <li class="menu-label">Interviews</li>
+
+    <li data-value="entrevista-carlo-daque.html">Carlo Daque: momentos y grises</li>
+    <li data-value="entrevista-fiorella-resenterra.html">Fiorella Resenterra: Una curaduría personal</li>
+
+    <li class="menu-label">Projects</li>
+
+    <li data-value="salita-2025.html">Salita Temporal 2025</li>
+
+    <li class="menu-label">Archive</li>
+
+    <li data-value="archivo.html">Archive</li>
+</ul>
         </div>
         
     </header>`;
