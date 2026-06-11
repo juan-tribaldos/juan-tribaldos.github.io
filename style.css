@@ -108,10 +108,8 @@ body {
     font-style: italic;
 }
 .menu-label {
-    padding: .6rem .7rem;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    padding: .4rem .7rem;
+    font-style: italic;
     color: #666;
     cursor: default;
     pointer-events: none;
