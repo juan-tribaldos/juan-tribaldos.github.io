@@ -215,6 +215,14 @@ main {
     bottom: 100%;
 }
 
+.watermark {
+    font-size: 10px;    
+    color: black;      
+    position: relative;
+    bottom: -380px;
+    right: 15px;
+    text-align: right;
+}
 
 @media (max-width: 768px) {
     .custom-select-container { max-width: 100%; }
