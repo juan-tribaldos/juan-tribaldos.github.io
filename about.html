@@ -104,7 +104,7 @@ function utrack(event, props) {
 
 
     <div class="watermark"> 
-    <i>Website designed by <a href="https://martamatroska.github.io/" style="color: gray" target="_blank">@marta.mkv</a></i>
+    <i>Website designed by <a href="https://martamatroska.github.io/" style="color: gray" target="_blank" onclick="utrack('watermark_click')">@marta.mkv</a></i>
     </div>
     
     <script>
@@ -147,6 +147,7 @@ function utrack(event, props) {
                     // Actualizar clases del contenedor para el CSS
                     container.classList.remove('mode-normal');
                     container.classList.add('mode-invert');
+                    utrack('portrait_filter', {action: action}); // ← corregido
                 } else {
                     // Quitar Filtro (Normal)
                     img.classList.remove('inverted');
