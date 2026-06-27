@@ -1,1 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/Generic PC.ico">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <style>
+        /* 1. RESET Y ESTRUCTURA BASE */
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Evita el scroll global de la ventana */
+            
+        }
+
+        /* 2. LAYOUT DE COLUMNAS */
+        main {
+            display: flex; 
+            flex-direction: row; /* Fuerza la disposición en horizontal */
+            height: calc(100vh - 60px); /* Altura total menos el nav */
+            margin-top: 60px; /* Espacio para el nav fijo */
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Columna Izquierda: Texto */
+        .text-column {
+            flex: 1; /* Ocupa el 50% del ancho */
+            height: 100%;
+            overflow-y: auto; /* Scroll independiente */
+            padding: 60px 40px;
+            background-color: #c2c2c2;
+            
+        }
+
+     /* Columna Derecha: Galería */
+.gallery-column {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 40px;
+    background-color: #c2c2c2;
+}
+
+.gallery-mobile {
+    display: none;
+}
+
+        /* 3. ESTILOS DE CONTENIDO */
+        .text-content {
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-size: 14px;
+            text-align: justify;
+        }
+
+        .text-content h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+ .text-content h2 {
+    font-size: 21px;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+.article-meta-top {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #000;
+}
+
+        .references {
+            margin-top: 60px;
+            font-size: 11px;
+            color: #666;
+            
+            padding-top: 20px;
+        }
+
+        /* 4. GRID DE ARE.NA */
+        #arena-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 fotos por fila dentro de la columna */
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .work-item {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .work-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .work-item img:hover {
+            opacity: 0.8;
+        }
+
+        .caption {
+            font-size: 10px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 5. RESPONSIVE (A partir de tablets/móviles se apilan) */
+
+@media (max-width: 900px) {
+    body, html {
+        overflow: visible !important;
+        height: auto;
+    }
+
+    main {
+        display: block;
+        height: auto;
+        overflow: visible;
+        margin-top: 60px;
+    }
+
+    .text-column, .gallery-column {
+        height: auto;
+        overflow: visible;
+        flex: none;
+        width: 100%;
+        padding: 40px 16px;
+    }
+
+    .gallery-column {
+        display: none;
+    }
+
+    .gallery-mobile {
+        display: block;
+        width: 100%;
+        margin: 32px auto;
+    }
+
+    .gallery-mobile ul {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .gallery-mobile .work-item {
+        margin: 0 auto;
+    }
+
+    #arena-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+        /* 6. VISOR FULLSCREEN */
+        #fullscreen-viewer {
+            display:none; 
+            position: fixed; 
+            top:0; left:0; 
+            width:100%; height:100%; 
+            background:rgba(255,255,255,0.98); 
+            z-index:9999; 
+            cursor:pointer; 
+            align-items:center; 
+            justify-content:center;
+        }
+        #fullscreen-viewer img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                position: relative;
+                flex-direction: column;
+                width: 180px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+
+<script>
+function utrack(event, props) {
+    if (typeof umami !== 'undefined') {
+        props ? umami.track(event, props) : umami.track(event);
+    }
+}
+</script>
+</head>
+<body>
+
+    <script src="nav.js"></script>
+
+    <main>
+        <section class="text-column">
+            <article class="text-content">
+                
+    <h2>María de la Paz Alice: Que brillen el paisaje y las personas</h2>
+
+                <div class="article-meta-top">
+    <span>Entrevista por Oscar Ruiz-Schmidt</span>
+    <br>
+    <span>25 de mayo de 2026</span>
+</div>
+
+               <p>María de la Paz Alice es arquitecta y coleccionista de arte. Desde hace más de una década ha acompañado de cerca el desarrollo de mi trabajo, convirtiéndose en una interlocutora fundamental dentro de mi práctica.</p>
+
+<p>Nuestra historia comenzó en el 2001, cuando, mientras iniciaba mis estudios en Bellas Artes, participé por primera vez en la Bienarte. Uno de los dos cuadros que presenté fue adquirido por Ronald Zürcher, su esposo. Sin saberlo entonces, ese sería el inicio de un vínculo que, años más tarde, me llevaría a conocer a quien se convertiría no solo en mi principal coleccionista, sino también en una gran amiga.</p>
+
+<p>Existe una relación estrecha entre mi manera de pensar el cuerpo y la forma en que éste se construye y reconstruye constantemente. No es casual que varias arquitectas formen parte de quienes han acompañado mi trabajo a través de sus colecciones.</p>
+
+<p>Cuando imaginaba una figura que pudiera acompañar y orientar mi desarrollo artístico, María de la Paz representaba ese ideal. Desde que visitó mi taller en 2015, hemos construido un diálogo continuo que ha contribuido a dar forma y dirección a mi propuesta.</p>
+
+<section class="gallery-mobile">
+    <ul id="arena-mobile-1"></ul>
+</section>
+<p><strong>ORS: ¿Desde cuándo te interesó el arte y la arquitectura?</strong></p>
+
+<p><em>MPA: Creo que a quien le gusta el arte lo trae en su ADN. Desde niña me encantaba ir a museos, trabajar en cerámica en el taller de mi tía. Ya en el cole tuve el privilegio de tener al maestro Rafael Otton Solís de profesor de arte. Me dijo que era buena y me lo creí.</em></p>
+
+<p><em>Una crisis económica familiar, la necesidad de algo más práctico y un viaje a Washington donde conocí el edificio de I. M. Pei para la expansión del National Gallery fue suficiente para decidirme por la arquitectura.</em></p>
+
+     <section class="gallery-mobile">
+    <ul id="arena-mobile-2"></ul>
+</section>
+   <p><strong>ORS: ¿Cómo es para vos asumir un nuevo proyecto?</strong></p>
+
+<p><em>MPA: Primero estudio el sitio, sus condiciones y posibilidades. Luego hago una introspección para estar clara sobre mi visión del mundo en ese momento, mis posturas estéticas, éticas y filosóficas. Eso es el preámbulo para entrar en estado de total obsesión por días y semanas sin parar. Es un trance doloroso y estimulante a la vez. Racional e intuitivo al mismo tiempo. Y ese momento cuando uno cree que tiene resuelto el proyecto y que logró algo especial, es el éxtasis. Uno vive para ese momento.</em></p>
+<section class="gallery-mobile">
+    <ul id="arena-mobile-3"></ul>
+</section>
+<p><strong>ORS: Si tenés que pensar de forma purista con materiales y colores, ¿cuáles son tus favoritos?</strong></p>
+
+<p><em>MPA: En mi trabajo procuro usar materiales modestos y naturales: piedra, madera, barro. Lo más honesto posible. Me gusta que las texturas se expresen tal cual y que el color sea intrínseco del material.</em></p>
+
+<p><em>De alguna manera eso se traduce también a mi estética al vestir. Mi arquitectura es casi como un contenedor — un fondo para que sean el paisaje, el arte y las personas las que brillen.</em></p>
+
+<section class="gallery-mobile">
+    <ul id="arena-mobile-4"></ul>
+</section>
+              <p><strong>ORS: Cuando pensás en una pieza de arte para tu colección, ¿en qué te fijás?</strong></p>
+
+<p><em>MPA: Está el arte que uno quisiera para la colección, para vivir con él, y está el que me emociona todavía más: el que no puedo tener. El más experiencial, el de gran escala. Soy una turista de arte total.</em></p>
+
+<p><em>Nuestra colección es principalmente arte latinoamericano contemporáneo. Independientemente de si la obra calza en la colección, si te encanta, te divierte o te conmueve — no podés dejar de pensar en ella — se vale incluirla en tu vida. Poco como con la gente.</em></p>
+
+<section class="gallery-mobile">
+    <ul id="arena-mobile-5"></ul>
+</section>
+  <p><strong>ORS: ¿Qué encontraste en Obra Gris?</strong></p>
+
+<p><em>MPA: Me identifico con la propuesta desde lo conceptual y lo estético. Partir de la geometría y del zero waste, y que eso al mismo tiempo responda al cuerpo, no es fácil de lograr. Hay algo muy honesto en cómo los materiales y la construcción de cada pieza son inseparables — igual que en la arquitectura que me interesa.</em></p>
+
+<p><em>Te ponés un vestido increíble y te sentís invencible. Y todo estaba planeado por el diseñador.</em></p>
+
+<section class="gallery-mobile">
+    <ul id="arena-mobile-6"></ul>
+</section>
+            </article>
+        </section>
+
+        <section class="gallery-column">
+            <ul id="arena-container">
+                </ul>
+        </section>
+
+        <div id="fullscreen-viewer"></div>
+    </main>
+
+    <script>
+        $(function() {
+            // Verifica que este slug sea idéntico al de tu URL en Are.na
+            const CHANNEL_SLUG = 'maria-de-la-paz-alice-zurcher'; 
+            const API_BASE = 'https://api.are.na/v2';
+
+            async function fetchArenaBlocks() {
+                try {
+                    const response = await fetch(`${API_BASE}/channels/${CHANNEL_SLUG}/contents?per=100&direction=desc`, {
+                        headers: { 'Authorization': 'Bearer MK79DychUcC3cqHY1dryGEOQjnCM4frc05tzFRZGcPU' }
+                    });
+                    if (!response.ok) throw new Error("Canal no encontrado");
+                    const data = await response.json();
+                    return data.contents.filter(block => block.class === 'Image');
+                } catch (error) {
+                    console.error("Error cargando Are.na:", error);
+                    return [];
+                }
+            }
+
+    async function init() {
+    const blocks = await fetchArenaBlocks();
+    const $desktopContainer = $('#arena-container');
+    const $mobile1 = $('#arena-mobile-1');
+    const $mobile2 = $('#arena-mobile-2');
+    const $mobile3 = $('#arena-mobile-3');
+    const $mobile4 = $('#arena-mobile-4');
+    const $mobile5 = $('#arena-mobile-5');
+    const $mobile6 = $('#arena-mobile-6');
+
+    if (blocks.length === 0) {
+        $desktopContainer.append('<p>No se pudieron cargar imágenes. Revisa el slug del canal.</p>');
+        return;
+    }
+
+    blocks.forEach((block, index) => {
+        const imageUrl = block.image.original.url;
+        const title = block.title || "";
+        
+        const html = `
+            <li class="work-item">
+                <img src="${imageUrl}" alt="${title}" loading="lazy" />
+                <div class="caption">
+                    <div>${title}</div>
+                </div>
+            </li>`;
+        
+        const $newItem = $(html);
+
+        $desktopContainer.append($newItem);
+
+        $newItem.on('click', function() {
+            $('#fullscreen-viewer')
+                .html(`<img src="${imageUrl}">`)
+                .css('display', 'flex');
+
+            utrack('image_fullscreen', {
+                page: 'salita-2025',
+                title: title
+            });
+        });
+
+        const $mobileItem = $newItem.clone(true);
+
+        if (index < 3) {
+    $mobile1.append($mobileItem);
+}
+else if (index < 6) {
+    $mobile2.append($mobileItem);
+}
+else if (index < 9) {
+    $mobile3.append($mobileItem);
+}
+else if (index < 12) {
+    $mobile4.append($mobileItem);
+}
+else if (index < 15) {
+    $mobile5.append($mobileItem);
+}
+else {
+    $mobile6.append($mobileItem);
+}
+    });
+}
+
+$('#fullscreen-viewer').on('click', function() { 
+    $(this).hide().empty(); 
+});
+
+init();
+});
+</script>
+</body>
+</html>
