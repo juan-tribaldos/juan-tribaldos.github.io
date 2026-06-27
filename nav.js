@@ -42,6 +42,7 @@ function loadNavbar() {
 
     <li data-value="entrevista-carlo-daque.html">Carlo Daque: momentos y grises</li>
     <li data-value="entrevista-fiorella-resenterra.html">Fiorella Resenterra: Una curaduría personal</li>
+    <li data-value="entrevista-maria de la paz.html">María de la Paz Alice: Que brillen el paisaje y las personas</li>
 
     <li class="menu-label">Projects</li>
 
