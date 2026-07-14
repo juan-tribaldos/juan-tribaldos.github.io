@@ -51,7 +51,16 @@ function loadNavbar() {
     <li data-value="archivo.html">Archive</li>
 </ul>
         </div>
-        
+        <div class="custom-select-container">
+
+            <div class="select-trigger">Shop</div>
+
+            <ul class="select-options">
+                <li data-value="shop/index.html">Prints</li>
+                <li data-value="shop/index.html?category=services">Servicios</li>
+            </ul>
+        </div>
+
     </header>`;
 
     document.body.insertAdjacentHTML('afterbegin', navHTML);

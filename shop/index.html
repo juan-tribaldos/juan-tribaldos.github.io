@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!-- AI-generated: shop browse page — grid of prints from the Are.na catalog. -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos — Shop</title>
+    <link rel="stylesheet" href="shop.css">
+    <link rel="icon" href="../assets/Generic PC.ico">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+    <script>
+        function utrack(event, props) {
+            if (typeof umami !== 'undefined') {
+                props ? umami.track(event, props) : umami.track(event);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <script src="js/cart.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/whatsapp.js"></script>
+    <script src="js/catalog.js"></script>
+
+    <main class="shop-main">
+        <div class="category-switcher">
+            <button type="button" class="shop-button category-button category-active" id="category-prints">Prints</button>
+            <button type="button" class="shop-button category-button" id="category-services">Servicios</button>
+        </div>
+        <div class="shop-page-label" id="category-label">Prints — impresión fine art, entrega coordinada personalmente</div>
+        <ul class="print-grid" id="print-grid"></ul>
+        <div id="grid-status"></div>
+    </main>
+
+    <script>
+        // Escapes catalog text before it lands in markup — titles come from Are.na and can
+        // legitimately contain quotes (e.g. a print named 12" study).
+        function escapeHtml(value) {
+            return String(value)
+                .split('&').join('&amp;')
+                .split('<').join('&lt;')
+                .split('>').join('&gt;')
+                .split('"').join('&quot;');
+        }
+
+        // AI-generated: cards render in batches; an IntersectionObserver on the last card
+        // appends the next batch as it nears the viewport, so a 50-print channel never
+        // downloads all its thumbnails at once. renderToken guards against a stale fetch
+        // or observer writing into the grid after the user switched category.
+        const GRID_BATCH_SIZE = 16;
+        let gridObserver = null;
+        let renderToken = 0;
+
+        function clearGrid() {
+            renderToken = renderToken + 1;
+            if (gridObserver !== null) {
+                gridObserver.disconnect();
+                gridObserver = null;
+            }
+            document.getElementById('print-grid').innerHTML = '';
+            document.getElementById('grid-status').textContent = '';
+            return renderToken;
+        }
+
+        function buildCardImage(item) {
+            // width/height let the browser reserve each card's space before the thumbnail
+            // arrives (no layout shift); the CSS keeps it fluid (width:100%, height:auto).
+            const sourceUrl = item.thumbUrl !== '' ? item.thumbUrl : item.displayUrl;
+            let attributes = `src="${escapeHtml(sourceUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async"`;
+            if (item.thumbUrl2x !== '') {
+                attributes += ` srcset="${escapeHtml(sourceUrl)} 1x, ${escapeHtml(item.thumbUrl2x)} 2x"`;
+            }
+            if (item.thumbWidth > 0 && item.thumbHeight > 0) {
+                attributes += ` width="${item.thumbWidth}" height="${item.thumbHeight}"`;
+            }
+            return `<img ${attributes}>`;
+        }
+
+        function renderCardsInBatches(items, buildCard, token) {
+            const grid = document.getElementById('print-grid');
+            let rendered = 0;
+
+            function appendNextBatch() {
+                if (token !== renderToken) {
+                    return;
+                }
+                const limit = Math.min(rendered + GRID_BATCH_SIZE, items.length);
+                for (let index = rendered; index < limit; index++) {
+                    grid.appendChild(buildCard(items[index]));
+                }
+                rendered = limit;
+                if (rendered < items.length) {
+                    watchLastCard();
+                }
+            }
+
+            function watchLastCard() {
+                const lastCard = grid.lastElementChild;
+                if (lastCard === null) {
+                    return;
+                }
+                gridObserver = new IntersectionObserver((entries) => {
+                    if (entries.some((entry) => entry.isIntersecting)) {
+                        gridObserver.disconnect();
+                        gridObserver = null;
+                        appendNextBatch();
+                    }
+                }, { rootMargin: '600px 0px' });
+                gridObserver.observe(lastCard);
+            }
+
+            appendNextBatch();
+        }
+
+        function buildPrintCard(product) {
+            const item = document.createElement('li');
+            item.className = 'print-card';
+            item.innerHTML = `
+                ${buildCardImage(product)}
+                <div class="print-title">${escapeHtml(product.title)}</div>
+                <div class="print-price">desde $${product.fromPriceUsd} USD</div>`;
+            item.addEventListener('click', () => {
+                window.location.href = `product.html?id=${product.id}`;
+            });
+            return item;
+        }
+
+        function buildServiceCard(service) {
+            const item = document.createElement('li');
+            item.className = 'print-card';
+            item.innerHTML = `
+                ${buildCardImage(service)}
+                <div class="print-title">${escapeHtml(service.title)}</div>
+                <div class="print-price">$${service.priceUsd} USD — ${escapeHtml(service.area)}</div>`;
+            item.addEventListener('click', () => {
+                window.location.href = `service.html?id=${service.id}`;
+            });
+            return item;
+        }
+
+        async function renderPrintsGrid() {
+            const token = clearGrid();
+            const status = document.getElementById('grid-status');
+            status.textContent = 'Cargando…';
+            try {
+                const products = await JTCatalog.fetchCatalog();
+                if (token !== renderToken) {
+                    return;
+                }
+                status.textContent = '';
+                if (products.length === 0) {
+                    status.textContent = 'No hay prints disponibles por el momento.';
+                    return;
+                }
+                renderCardsInBatches(products, buildPrintCard, token);
+            } catch (error) {
+                if (token === renderToken) {
+                    status.textContent = 'No se pudo cargar el catálogo. Intentá de nuevo más tarde.';
+                }
+            }
+        }
+
+        async function renderServicesGrid() {
+            const token = clearGrid();
+            const status = document.getElementById('grid-status');
+            status.textContent = 'Cargando…';
+            try {
+                const services = await JTServiceCatalog.fetchServices();
+                if (token !== renderToken) {
+                    return;
+                }
+                status.textContent = '';
+                if (services.length === 0) {
+                    status.textContent = 'No hay servicios disponibles por el momento.';
+                    return;
+                }
+                renderCardsInBatches(services, buildServiceCard, token);
+            } catch (error) {
+                if (token === renderToken) {
+                    status.textContent = 'No se pudo cargar los servicios. Intentá de nuevo más tarde.';
+                }
+            }
+        }
+
+        // AI-generated: applyCategory renders a category without analytics, so the initial
+        // page load (including the nav's index.html?category=services deep link) reuses it;
+        // the switcher buttons go through switchCategory to also record the switch event.
+        function applyCategory(category) {
+            const printsButton = document.getElementById('category-prints');
+            const servicesButton = document.getElementById('category-services');
+            const label = document.getElementById('category-label');
+            if (category === 'services') {
+                printsButton.classList.remove('category-active');
+                servicesButton.classList.add('category-active');
+                label.textContent = 'Servicios — sesiones fotográficas con reserva de fecha y hora';
+                renderServicesGrid();
+            } else {
+                servicesButton.classList.remove('category-active');
+                printsButton.classList.add('category-active');
+                label.textContent = 'Prints — impresión fine art, entrega coordinada personalmente';
+                renderPrintsGrid();
+            }
+        }
+
+        function switchCategory(category) {
+            applyCategory(category);
+            utrack('shop_category_switch', { category: category });
+        }
+
+        document.getElementById('category-prints').addEventListener('click', () => {
+            switchCategory('prints');
+        });
+
+        document.getElementById('category-services').addEventListener('click', () => {
+            switchCategory('services');
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            applyCategory(params.get('category') === 'services' ? 'services' : 'prints');
+            utrack('shop_view');
+        });
+    </script>
+</body>
+</html>

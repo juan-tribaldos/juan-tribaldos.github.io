@@ -1,0 +1,510 @@
+/* AI-generated: shop styles for juantribaldos.com/shop.
+   The token block and dropdown component are copied from the site's style.css so the shop
+   reads as the same website; everything below the SHOP marker is new. */
+
+:root {
+    --body-font-size: 1.4rem;
+    --body-line-height: 1.214em;
+    --color-background: #ededed;
+    --color-foreground: #000000;
+    --white: #ffffff;
+    --input-font-size: max(var(--body-font-size), 1.6rem);
+    --caret-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 15 12 20 17 15'%3E%3C/polyline%3E%3Cpolyline points='7 9 12 4 17 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: "Times New Roman", Times, serif;
+    font-size: var(--body-font-size);
+    line-height: var(--body-line-height);
+    margin: 0;
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    padding-top: 30px;
+    overflow-x: hidden;
+}
+
+.header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: transparent;
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.custom-select-container {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    user-select: none;
+}
+
+.select-trigger {
+    background: var(--white) var(--caret-icon) no-repeat right .9rem center / 1.5rem auto;
+    border: 1px solid #000;
+    padding: .5rem 3.5rem .5rem .7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    font-size: 1.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.select-options {
+    position: absolute;
+    top: 95%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1px solid #000;
+    border-top: none;
+    display: none;
+    z-index: 1001;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.select-options.open { display: block; }
+
+.select-options li {
+    padding: .6rem .7rem;
+    cursor: pointer;
+    background: var(--white);
+    font-size: 1.4rem;
+    color: #000;
+}
+
+.select-options li:hover { background-color: #f0f0f0; }
+
+.menu-label {
+    padding: .4rem .7rem;
+    font-style: italic;
+    color: #666;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ---------------------------------- SHOP ---------------------------------- */
+
+.shop-main {
+    max-width: 1400px;
+    margin: 9rem auto;
+    padding: 0 2rem;
+}
+
+/* Category switcher (Prints | Servicios) */
+.category-switcher {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.category-button {
+    padding: .5rem 1.6rem;
+    color: #666;
+}
+
+.category-active {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: underline;
+}
+
+/* Service booking selectors: long date lists scroll instead of covering the page,
+   and taken slots use the site's disabled-option look. */
+.slot-options {
+    max-height: 24rem;
+    overflow-y: auto;
+}
+
+.select-options li[disabled] {
+    color: #999;
+    cursor: default;
+    font-style: italic;
+    pointer-events: none;
+}
+
+.quantity-fixed {
+    border: 1px solid #000;
+}
+
+.shop-page-label {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* Browse grid */
+.print-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.print-card {
+    cursor: pointer;
+}
+
+/* AI-generated: every grid card gets the same 2:3 portrait box (the ratio of the print
+   mockups); smaller or landscape images letterbox centered inside it, so titles and
+   prices align across the row regardless of each photo's own proportions. */
+.print-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+}
+
+.print-card .print-title {
+    margin-top: .6rem;
+    font-size: 1.4rem;
+}
+
+.print-card .print-price {
+    font-style: italic;
+    color: #666;
+    font-size: 1.3rem;
+}
+
+/* Product page */
+.product-layout {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.product-image {
+    flex: 1 1 60%;
+    min-width: 0;
+}
+
+.product-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.product-details {
+    flex: 1 1 35%;
+    min-width: 26rem;
+}
+
+.product-details h1 {
+    font-size: 1.8rem;
+    font-weight: normal;
+    margin: 0 0 1rem 0;
+}
+
+.product-story {
+    margin-bottom: 2rem;
+    white-space: pre-line;
+}
+
+.product-edition {
+    font-style: italic;
+    color: #666;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+}
+
+.product-field-label {
+    font-style: italic;
+    color: #666;
+    font-size: 1.3rem;
+    margin-bottom: .4rem;
+}
+
+.size-select {
+    margin-bottom: 2rem;
+    max-width: 100%;
+}
+
+/* Quantity stepper */
+.quantity-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+}
+
+.quantity-button {
+    background: var(--white);
+    border: 1px solid #000;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.6rem;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+.quantity-button:hover { background-color: #f0f0f0; }
+
+.quantity-value {
+    border: 1px solid #000;
+    border-left: none;
+    border-right: none;
+    height: 3rem;
+    width: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    font-size: 1.4rem;
+}
+
+.product-total {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+}
+
+.shop-button {
+    background: var(--white);
+    border: 1px solid #000;
+    padding: .8rem 2rem;
+    font-family: inherit;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.shop-button:hover { background-color: #f0f0f0; }
+
+.shop-button:disabled {
+    color: #999;
+    cursor: default;
+    font-style: italic;
+}
+
+/* AI-generated: shared footer (terms link) and the terms page content. */
+.shop-footer {
+    max-width: 1400px;
+    margin: 8rem auto 2.4rem;
+    padding: 1.6rem 2rem 0;
+    border-top: 1px solid #000;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #666;
+}
+
+.shop-footer a {
+    color: #666;
+}
+
+.terms-content {
+    max-width: 72rem;
+}
+
+.terms-content h2 {
+    font-size: 1.5rem;
+    margin: 2.8rem 0 .8rem;
+}
+
+.terms-content p {
+    margin: 0 0 1rem;
+    line-height: 1.55;
+}
+
+/* AI-generated: floating WhatsApp contact button (TradeIn's support pattern — official
+   green, Material-FAB sizing, CSS-only hover elevation). */
+.whatsapp-fab {
+    position: fixed;
+    right: 1.8rem;
+    bottom: 1.8rem;
+    z-index: 50;
+    width: 5.6rem;
+    height: 5.6rem;
+    border-radius: 50%;
+    background-color: #25d366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+    transition: transform .15s ease;
+}
+
+.whatsapp-fab:hover {
+    transform: scale(1.05);
+}
+
+.whatsapp-fab svg {
+    width: 55%;
+    height: 55%;
+    fill: #fff;
+}
+
+/* AI-generated: back-to-shop control on the print and service detail pages — the
+   .shop-button border look, rendered as a navigation link. Scoped under .shop-main to
+   out-rank the ".shop-main a" underline rule. */
+.shop-main a.back-link {
+    display: inline-block;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    color: #000;
+}
+
+.delivery-note {
+    font-style: italic;
+    color: #666;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+}
+
+.added-feedback {
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.added-feedback a {
+    color: #0d00ff;
+    text-decoration: underline;
+}
+
+/* Checkout */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3rem;
+}
+
+.cart-table th {
+    text-align: left;
+    font-weight: normal;
+    font-style: italic;
+    color: #666;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #000;
+    padding: .6rem .4rem;
+}
+
+.cart-table td {
+    border-bottom: 1px solid #999;
+    padding: .8rem .4rem;
+    vertical-align: middle;
+}
+
+.cart-table img {
+    display: block;
+    width: 6rem;
+    height: auto;
+}
+
+.cart-remove {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    font-family: inherit;
+    cursor: pointer;
+    padding: .2rem .6rem;
+}
+
+.cart-remove:hover { background-color: #f0f0f0; }
+
+.cart-total-row {
+    font-size: 1.6rem;
+    text-align: right;
+    margin-bottom: 3rem;
+}
+
+.checkout-form {
+    max-width: 48rem;
+}
+
+.checkout-form label {
+    display: block;
+    font-style: italic;
+    color: #666;
+    font-size: 1.3rem;
+    margin-bottom: .4rem;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+    display: block;
+    width: 100%;
+    border: 1px solid #000;
+    background: var(--white);
+    font-family: inherit;
+    font-size: var(--input-font-size);
+    padding: .6rem .7rem;
+    margin-bottom: 1.6rem;
+}
+
+.checkout-form textarea {
+    min-height: 8rem;
+    resize: vertical;
+}
+
+.form-error {
+    color: #0d00ff;
+    font-size: 1.3rem;
+    margin-bottom: 1.6rem;
+    min-height: 1.6rem;
+}
+
+.empty-cart {
+    margin: 4rem 0;
+}
+
+.empty-cart a,
+.shop-main a {
+    color: #0d00ff;
+    text-decoration: underline;
+}
+
+/* Thank-you */
+.thanks-block {
+    max-width: 60rem;
+    margin-top: 4rem;
+}
+
+.thanks-order-number {
+    font-size: 1.8rem;
+    margin: 1rem 0 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .custom-select-container { max-width: 100%; }
+
+    .header-nav {
+        position: relative;
+        top: 0;
+        flex-direction: column;
+        width: 180px;
+        margin-top: -20px;
+        z-index: 10;
+    }
+
+    .shop-main { margin: 3rem auto; }
+
+    .print-grid { grid-template-columns: 1fr; }
+
+    .product-layout { flex-direction: column; }
+
+    .product-details { min-width: 0; width: 100%; }
+
+    .cart-table img { width: 4rem; }
+}

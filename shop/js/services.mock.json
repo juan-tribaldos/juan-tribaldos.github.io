@@ -1,0 +1,31 @@
+{
+  "_comment": "AI-generated: mock services channel in Are.na v3 shape. MUST stay in sync with the backend MockServiceCatalogService (same ids, prices, dates, times, durations) so checkout re-pricing and availability agree. Swapped for the real channel when Juan creates it.",
+  "data": [
+    {
+      "id": 90000001,
+      "type": "Image",
+      "title": "Sesión de retrato",
+      "description": {
+        "plain": "Sesión de retrato en exteriores, 90 minutos de shooting y 15 fotos editadas.\nprice: 250\narea: San José y alrededores\ndates: 2026-07-15 a 2026-09-30\ntimes: 09:00, 13:00, 17:00\nduration: 4h"
+      },
+      "image": {
+        "src": "https://d2w9rnfcy7mm78.cloudfront.net/44146584/original_880a9a5fd3e98fcc6b1e462eb2634870.jpg?1772655557?bc=0",
+        "small": { "src": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjU4NC9vcmlnaW5hbF84ODBhOWE1ZmQzZTk4ZmNjNmIxZTQ2MmViMjYzNDg3MC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "large": { "src": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjU4NC9vcmlnaW5hbF84ODBhOWE1ZmQzZTk4ZmNjNmIxZTQ2MmViMjYzNDg3MC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" }
+      }
+    },
+    {
+      "id": 90000002,
+      "type": "Image",
+      "title": "Sesión inmobiliaria",
+      "description": {
+        "plain": "Fotografía de propiedades: interiores, exteriores y detalles. Entrega en 48 horas.\nprice: 150\narea: Valle Central\ndates: 2026-07-15 a 2026-09-30\ntimes: 10:00, 15:00\nduration: 2.5h"
+      },
+      "image": {
+        "src": "https://d2w9rnfcy7mm78.cloudfront.net/44146635/original_3f67bd6274646bc889f05d03ca74be46.jpg?1772655587?bc=0",
+        "small": { "src": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjYzNS9vcmlnaW5hbF8zZjY3YmQ2Mjc0NjQ2YmM4ODlmMDVkMDNjYTc0YmU0Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "large": { "src": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjYzNS9vcmlnaW5hbF8zZjY3YmQ2Mjc0NjQ2YmM4ODlmMDVkMDNjYTc0YmU0Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" }
+      }
+    }
+  ]
+}
