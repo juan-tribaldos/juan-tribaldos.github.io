@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!-- AI-generated: product page — image, story, size dropdown (site component), quantity, add to cart. -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos — Print</title>
+    <link rel="stylesheet" href="shop.css">
+    <link rel="icon" href="../assets/Generic PC.ico">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+    <script>
+        function utrack(event, props) {
+            if (typeof umami !== 'undefined') {
+                props ? umami.track(event, props) : umami.track(event);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <script src="js/cart.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/whatsapp.js"></script>
+    <script src="js/catalog.js"></script>
+
+    <main class="shop-main">
+        <a class="shop-button back-link" href="index.html">← Volver a la tienda</a>
+        <div id="product-status"></div>
+        <div class="product-layout" id="product-layout" style="display: none;">
+            <div class="product-image">
+                <img id="product-img" src="" alt="">
+            </div>
+            <div class="product-details">
+                <h1 id="product-title"></h1>
+                <div class="product-story" id="product-story"></div>
+                <div class="product-edition" id="product-edition"></div>
+
+                <div class="product-field-label">Tamaño</div>
+                <div class="custom-select-container size-select">
+                    <div class="select-trigger" id="size-trigger">Elegí un tamaño</div>
+                    <ul class="select-options" id="size-options"></ul>
+                </div>
+
+                <div class="product-field-label">Cantidad</div>
+                <div class="quantity-row">
+                    <button type="button" class="quantity-button" id="qty-minus">−</button>
+                    <div class="quantity-value" id="qty-value">1</div>
+                    <button type="button" class="quantity-button" id="qty-plus">+</button>
+                </div>
+
+                <div class="product-total" id="product-total"></div>
+
+                <button type="button" class="shop-button" id="add-button" disabled>Agregar al carrito</button>
+                <div class="added-feedback" id="added-feedback"></div>
+                <div class="delivery-note">Impreso a pedido. Juan coordina la entrega personalmente después de la compra.</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Production API (go-live 2026-07-14). For local backend testing, point temporarily
+        // back at http://localhost:8080.
+        const API_BASE = 'https://api.juantribaldos.com';
+
+        let currentProduct = null;
+        let selectedSize = null;
+        let quantity = 1;
+        // AI-generated: edition stock state — maxQuantity shrinks to the remaining copies and
+        // soldOut blocks the add-to-cart button entirely.
+        let maxQuantity = 20;
+        let soldOut = false;
+
+        function formatUsd(value) {
+            // Rounds away float artifacts (e.g. 3 × 120.99) before display.
+            return `$${Math.round(value * 100) / 100} USD`;
+        }
+
+        function refreshTotal() {
+            const total = document.getElementById('product-total');
+            if (selectedSize === null) {
+                total.textContent = '';
+                return;
+            }
+            total.textContent = `Total: ${formatUsd(selectedSize.priceUsd * quantity)}`;
+        }
+
+        function selectSize(size) {
+            selectedSize = size;
+            document.getElementById('size-trigger').textContent = `${size.label} — ${formatUsd(size.priceUsd)}`;
+            if (!soldOut) {
+                document.getElementById('add-button').disabled = false;
+            }
+            refreshTotal();
+        }
+
+        // AI-generated: edition availability — shows "quedan N" and blocks buying at zero.
+        // Failures degrade silently: the page keeps working and checkout still enforces stock.
+        async function loadAvailability(product) {
+            try {
+                const response = await fetch(`${API_BASE}/api/prints/${product.id}/availability`);
+                if (!response.ok) {
+                    return;
+                }
+                const availability = await response.json();
+                if (!availability.limited) {
+                    return;
+                }
+                const editionBox = document.getElementById('product-edition');
+                if (availability.remaining <= 0) {
+                    soldOut = true;
+                    editionBox.textContent = `Edición de ${availability.editionSize} — agotada`;
+                    const addButton = document.getElementById('add-button');
+                    addButton.disabled = true;
+                    addButton.textContent = 'Agotado';
+                    return;
+                }
+                editionBox.textContent = `Edición de ${availability.editionSize} — quedan ${availability.remaining}`;
+                maxQuantity = Math.min(20, availability.remaining);
+                if (quantity > maxQuantity) {
+                    quantity = maxQuantity;
+                    document.getElementById('qty-value').textContent = String(quantity);
+                    refreshTotal();
+                }
+            } catch (error) {
+                // Network hiccup — leave the page usable; the backend still enforces stock.
+            }
+        }
+
+        function renderProduct(product) {
+            currentProduct = product;
+            document.title = `Juan Tribaldos — ${product.title}`;
+            document.getElementById('product-img').src = product.displayUrl;
+            document.getElementById('product-img').alt = product.title;
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-story').textContent = product.story;
+            document.getElementById('product-edition').textContent =
+                product.edition !== '' ? `Edición: ${product.edition}` : '';
+
+            const options = document.getElementById('size-options');
+            for (const size of product.sizes) {
+                const option = document.createElement('li');
+                option.textContent = `${size.label} — ${formatUsd(size.priceUsd)}`;
+                option.addEventListener('click', () => {
+                    selectSize(size);
+                    options.classList.remove('open');
+                });
+                options.appendChild(option);
+            }
+
+            document.getElementById('product-layout').style.display = '';
+            utrack('product_view', { id: product.id, title: product.title });
+        }
+
+        async function loadProduct() {
+            const status = document.getElementById('product-status');
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+            if (productId === null) {
+                status.innerHTML = 'Print no encontrado. <a href="index.html">Volver a la tienda</a>.';
+                return;
+            }
+            try {
+                const product = await JTCatalog.fetchProduct(productId);
+                if (product === null) {
+                    status.innerHTML = 'Print no encontrado. <a href="index.html">Volver a la tienda</a>.';
+                    return;
+                }
+                renderProduct(product);
+                await loadAvailability(product);
+            } catch (error) {
+                status.textContent = 'No se pudo cargar el print. Intentá de nuevo más tarde.';
+            }
+        }
+
+        document.getElementById('qty-minus').addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                document.getElementById('qty-value').textContent = String(quantity);
+                refreshTotal();
+            }
+        });
+
+        document.getElementById('qty-plus').addEventListener('click', () => {
+            if (quantity < maxQuantity) {
+                quantity++;
+                document.getElementById('qty-value').textContent = String(quantity);
+                refreshTotal();
+            }
+        });
+
+        document.getElementById('add-button').addEventListener('click', () => {
+            if (currentProduct === null || selectedSize === null || soldOut) {
+                return;
+            }
+            JTCart.addItem(currentProduct, selectedSize.label, selectedSize.priceUsd, quantity);
+            document.getElementById('added-feedback').innerHTML =
+                'Agregado al carrito. <a href="checkout.html">Finalizar compra</a> o seguí mirando.';
+            utrack('add_to_cart', {
+                id: currentProduct.id,
+                title: currentProduct.title,
+                size: selectedSize.label,
+                quantity: quantity
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- AI-generated: post-payment landing. The backend callback 302s here with ?order=JT-XXXX
+     after validating the Tilopay hash. Clears the cart on arrival. -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Tribaldos — Gracias</title>
+    <link rel="stylesheet" href="shop.css">
+    <link rel="icon" href="../assets/Generic PC.ico">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+    <script>
+        function utrack(event, props) {
+            if (typeof umami !== 'undefined') {
+                props ? umami.track(event, props) : umami.track(event);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <script src="js/cart.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/whatsapp.js"></script>
+
+    <main class="shop-main">
+        <div class="thanks-block">
+            <div class="shop-page-label">Compra confirmada</div>
+            <div class="thanks-order-number" id="order-number"></div>
+            <p>
+                ¡Gracias! Tu pedido está confirmado y ya le llegó el aviso a Juan.
+                En breve vas a recibir un email con el detalle de tu compra, y Juan
+                se pondrá en contacto para coordinar la entrega.
+            </p>
+            <p><a href="index.html">Volver a la tienda</a></p>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const orderNumber = params.get('order');
+            if (orderNumber !== null && orderNumber !== '') {
+                document.getElementById('order-number').textContent = `Pedido ${orderNumber}`;
+                utrack('payment_succeeded', { order: orderNumber });
+            }
+            JTCart.clear();
+        });
+    </script>
+</body>
+</html>

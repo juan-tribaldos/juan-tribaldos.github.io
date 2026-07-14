@@ -1,0 +1,71 @@
+{
+  "_comment": "AI-generated: LEGACY v2-shaped mock, kept only as sample data. The shop now reads the live v3 channel (online-shop-carozesp2xy); if you re-enable MOCK_MODE in catalog.js, reshape this file to the v3 contract first ({data:[{type:'Image', image:{src, small:{src}, large:{src}}}]}).",
+  "contents": [
+    {
+      "id": 44146584,
+      "class": "Image",
+      "title": "Bahía I — Amanecer",
+      "description": "Amanecer sobre la bahía, marea baja. Impresión giclée sobre papel de algodón, firmada.\n\nsizes: 30 × 20 cm = 80, 45 × 30 cm = 120, 60 × 40 cm = 180\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjU4NC9vcmlnaW5hbF84ODBhOWE1ZmQzZTk4ZmNjNmIxZTQ2MmViMjYzNDg3MC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjU4NC9vcmlnaW5hbF84ODBhOWE1ZmQzZTk4ZmNjNmIxZTQ2MmViMjYzNDg3MC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44146584/original_880a9a5fd3e98fcc6b1e462eb2634870.jpg?1772655557?bc=0" }
+      }
+    },
+    {
+      "id": 44146635,
+      "class": "Image",
+      "title": "Bahía II — Bruma",
+      "description": "La bruma de la mañana entrando por la costa.\n\nsizes: 30 × 20 cm = 80, 45 × 30 cm = 120, 60 × 40 cm = 180\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjYzNS9vcmlnaW5hbF8zZjY3YmQ2Mjc0NjQ2YmM4ODlmMDVkMDNjYTc0YmU0Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjYzNS9vcmlnaW5hbF8zZjY3YmQ2Mjc0NjQ2YmM4ODlmMDVkMDNjYTc0YmU0Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44146635/original_3f67bd6274646bc889f05d03ca74be46.jpg?1772655587?bc=0" }
+      }
+    },
+    {
+      "id": 44146907,
+      "class": "Image",
+      "title": "Bahía III — Mediodía",
+      "description": "Luz vertical de mediodía sobre el agua.\n\nsizes: 30 × 20 cm = 80, 45 × 30 cm = 120\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjkwNy9vcmlnaW5hbF8yMjc3NTI0N2I4YmMyYzhlZGFhOTgyYzMwOTg3ODlkYi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjkwNy9vcmlnaW5hbF8yMjc3NTI0N2I4YmMyYzhlZGFhOTgyYzMwOTg3ODlkYi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44146907/original_22775247b8bc2c8edaa982c3098789db.jpg?1772655968?bc=0" }
+      }
+    },
+    {
+      "id": 44146251,
+      "class": "Image",
+      "title": "Bahía IV — Piedras",
+      "description": "Formaciones de piedra en la punta norte.\n\nsizes: 30 × 20 cm = 80, 45 × 30 cm = 120, 60 × 40 cm = 180, 90 × 60 cm = 260\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjI1MS9vcmlnaW5hbF9kZTVlMjhjMjA2MjJhM2IwN2JhMTk3OGYzOTdjYWRkNi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjI1MS9vcmlnaW5hbF9kZTVlMjhjMjA2MjJhM2IwN2JhMTk3OGYzOTdjYWRkNi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44146251/original_de5e28c20622a3b07ba1978f397cadd6.jpg?1772655228?bc=0" }
+      }
+    },
+    {
+      "id": 44146811,
+      "class": "Image",
+      "title": "Bahía V — Atardecer",
+      "description": "Último sol sobre la línea de marea.\n\nsizes: 45 × 30 cm = 120, 60 × 40 cm = 180\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjgxMS9vcmlnaW5hbF9hZjE3ZmQzNjE3NTJmNmRlODMyMTYzNmExM2NiNWE1Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NjgxMS9vcmlnaW5hbF9hZjE3ZmQzNjE3NTJmNmRlODMyMTYzNmExM2NiNWE1Ni5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44146811/original_af17fd361752f6de8321636a13cb5a56.jpg?1772655886?bc=0" }
+      }
+    },
+    {
+      "id": 44147014,
+      "class": "Image",
+      "title": "Bahía VI — Nocturna",
+      "description": "Exposición larga después del anochecer.\n\nsizes: 30 × 20 cm = 90, 45 × 30 cm = 140\nedition: abierta",
+      "image": {
+        "thumb": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NzAxNC9vcmlnaW5hbF8wZTg1MWVjYzY2MDY4OWIyYmZlNzhlNWEwOWQ0Y2Q1Yi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6NzV9LCJqcGVnIjp7InF1YWxpdHkiOjc1fSwicm90YXRlIjpudWxsfX0=?bc=0" },
+        "display": { "url": "https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiI0NDE0NzAxNC9vcmlnaW5hbF8wZTg1MWVjYzY2MDY4OWIyYmZlNzhlNWEwOWQ0Y2Q1Yi5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEyMDAsImhlaWdodCI6MTIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfSwid2VicCI6eyJxdWFsaXR5Ijo3NX0sImpwZWciOnsicXVhbGl0eSI6NzV9LCJyb3RhdGUiOm51bGx9fQ==?bc=0" },
+        "original": { "url": "https://d2w9rnfcy7mm78.cloudfront.net/44147014/original_0e851ecc660689b2bfe78e5a09d4cd5b.jpg?1772656101?bc=0" }
+      }
+    }
+  ]
+}
