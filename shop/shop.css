@@ -3,6 +3,9 @@
    reads as the same website; everything below the SHOP marker is new. */
 
 :root {
+    /* AI-generated: the shop is light-only — without this, iOS dark mode paints UA form
+       colors (button/input text) white on our white controls, e.g. a blank Pagar button. */
+    color-scheme: light;
     --body-font-size: 1.4rem;
     --body-line-height: 1.214em;
     --color-background: #ededed;
@@ -280,8 +283,14 @@ body {
 }
 
 .shop-button {
+    /* AI-generated: appearance/color/radius pinned explicitly — iOS otherwise applies its
+       native button chrome and theme-dependent text color (invisible in dark mode). */
+    -webkit-appearance: none;
+    appearance: none;
     background: var(--white);
     border: 1px solid #000;
+    border-radius: 0;
+    color: #000;
     padding: .8rem 2rem;
     font-family: inherit;
     font-size: 1.4rem;
@@ -447,6 +456,8 @@ body {
     width: 100%;
     border: 1px solid #000;
     background: var(--white);
+    /* AI-generated: explicit text color for the same iOS dark-mode reason as .shop-button. */
+    color: #000;
     font-family: inherit;
     font-size: var(--input-font-size);
     padding: .6rem .7rem;

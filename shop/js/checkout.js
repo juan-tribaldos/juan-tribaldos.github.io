@@ -1,9 +1,11 @@
 // AI-generated: checkout page logic — renders the cart, validates the buyer form, and starts
 // the payment by POSTing to the backend, which answers with the Tilopay redirect URL.
 (function () {
-    // Production API (go-live 2026-07-14). For local backend testing, point temporarily
-    // back at http://localhost:8080.
-    const API_BASE = 'https://api.juantribaldos.com';
+    // AI-generated: local pages talk to the local backend, the live site talks to prod —
+    // a localhost session can never create real orders by accident.
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:8080'
+        : 'https://api.juantribaldos.com';
 
     function formatUsd(value) {
         // Rounds away float artifacts (e.g. 3 × 120.99) before display.
