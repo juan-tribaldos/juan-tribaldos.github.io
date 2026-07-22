@@ -305,6 +305,27 @@ body {
     font-style: italic;
 }
 
+/* AI-generated: custom order request — the toggle reads as a quiet text link under the
+   buy area; the section stays hidden until opened. */
+.custom-request-toggle {
+    display: block;
+    margin-top: 2.4rem;
+    padding: 0;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.custom-request-section {
+    display: none;
+    margin-top: 1.6rem;
+}
+
 /* AI-generated: shared footer (terms link) and the terms page content. */
 .shop-footer {
     max-width: 1400px;
@@ -497,6 +518,52 @@ body {
     margin: 1rem 0 2rem 0;
 }
 
+/* AI-generated: ES | EN language toggle in the nav (markup injected by nav.js, choice
+   persisted by i18n.js). Sized to sit level with the dropdown triggers. */
+.lang-toggle {
+    margin-left: auto;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    padding: 0 .4rem;
+    background: var(--white);
+    border: 1px solid #000;
+}
+
+.lang-toggle button {
+    background: none;
+    border: none;
+    padding: 0 .4rem;
+    font-family: inherit;
+    font-size: 1.3rem;
+    color: #666;
+    cursor: pointer;
+}
+
+.lang-toggle button.lang-active {
+    color: #000;
+    text-decoration: underline;
+}
+
+.lang-toggle .lang-separator {
+    color: #999;
+}
+
+/* AI-generated: terms page note shown only in English — the legal text stays Spanish
+   until Juan provides the translated version. html[lang] is set by i18n.js. */
+.terms-en-note {
+    display: none;
+}
+
+html[lang="en"] .terms-en-note {
+    display: block;
+    font-style: italic;
+    color: #666;
+    margin-bottom: 2rem;
+    max-width: 72rem;
+}
+
 @media (max-width: 768px) {
     .custom-select-container { max-width: 100%; }
 
@@ -518,4 +585,8 @@ body {
     .product-details { min-width: 0; width: 100%; }
 
     .cart-table img { width: 4rem; }
+
+    /* AI-generated: the stacked mobile nav is a narrow column — keep the toggle on
+       the left edge with the dropdowns instead of pushed to the far right. */
+    .lang-toggle { margin-left: 0; }
 }

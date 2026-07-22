@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- AI-generated: custom order quote page — reached from the emailed pay link
+     (custom.html?t=<token>). Shows Juan's quote and starts the Tilopay payment; paying
+     accepts the quote and creates a regular order. -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="custom.pageTitle">Juan Tribaldos — Cotización</title>
+    <link rel="stylesheet" href="shop.css?v=2">
+    <link rel="icon" href="../assets/Generic PC.ico">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
+    <script>
+        function utrack(event, props) {
+            if (typeof umami !== 'undefined') {
+                props ? umami.track(event, props) : umami.track(event);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <script src="js/i18n.js?v=2"></script>
+    <script src="js/cart.js?v=2"></script>
+    <script src="js/nav.js?v=2"></script>
+    <script src="js/whatsapp.js?v=2"></script>
+    <script src="js/catalog.js?v=2"></script>
+
+    <main class="shop-main">
+        <div class="shop-page-label" data-i18n="custom.yourQuote">Tu cotización</div>
+        <div id="quote-status"></div>
+
+        <div class="product-layout" id="quote-layout" style="display: none;">
+            <div class="product-image">
+                <img id="quote-img" src="" alt="">
+            </div>
+            <div class="product-details">
+                <h1 id="quote-title"></h1>
+                <div class="product-story" id="quote-request"></div>
+                <div class="product-edition" id="quote-note"></div>
+                <div class="product-total" id="quote-total"></div>
+                <div class="product-edition" id="quote-expiry"></div>
+
+                <button type="button" class="shop-button" id="pay-button" data-i18n="common.pay">Pagar</button>
+                <div class="form-error" id="pay-error"></div>
+                <div class="delivery-note" data-i18n="common.tilopayNote">El pago se procesa de forma segura con Tilopay (tarjetas, SINPE Móvil).</div>
+                <div class="delivery-note" data-i18n-html="custom.termsNote">Al pagar aceptás los <a href="terminos.html">Términos y Condiciones</a> y confirmás tu reserva.</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // AI-generated: local pages talk to the local backend, the live site talks to prod —
+        // a localhost session can never create real orders by accident.
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:8080'
+            : 'https://api.juantribaldos.com';
+
+        let quoteToken = '';
+
+        function formatUsd(value) {
+            return `$${Math.round(value * 100) / 100} USD`;
+        }
+
+        // Costa Rica local date (fixed UTC-6), matching the quote email.
+        function formatCostaRicaDate(isoUtc) {
+            const utcMilliseconds = new Date(isoUtc).getTime() - (6 * 60 * 60 * 1000);
+            const local = new Date(utcMilliseconds);
+            const day = String(local.getUTCDate()).padStart(2, '0');
+            const month = String(local.getUTCMonth() + 1).padStart(2, '0');
+            return `${day}/${month}/${local.getUTCFullYear()}`;
+        }
+
+        function showMessage(html) {
+            document.getElementById('quote-status').innerHTML = html;
+            document.getElementById('quote-layout').style.display = 'none';
+        }
+
+        async function renderQuote(view) {
+            document.getElementById('quote-title').textContent = `${view.printTitle} ×${view.quantity}`;
+            document.getElementById('quote-request').textContent = view.requestText;
+            document.getElementById('quote-note').textContent =
+                view.quoteNote !== '' ? t('custom.noteFromJuan', { note: view.quoteNote }) : '';
+            document.getElementById('quote-total').textContent = `Total: ${formatUsd(view.totalUsd)}`;
+            document.getElementById('quote-expiry').textContent =
+                t('custom.validUntil', { date: formatCostaRicaDate(view.expiresAtUtc) });
+            document.getElementById('quote-layout').style.display = '';
+
+            // The image comes straight from the live catalog; a print Juan already removed
+            // simply renders without one.
+            try {
+                const product = await JTCatalog.fetchProduct(view.arenaBlockId);
+                if (product !== null && product.displayUrl !== '') {
+                    const image = document.getElementById('quote-img');
+                    image.src = product.displayUrl;
+                    image.alt = view.printTitle;
+                }
+            } catch (error) {
+                // Sin imagen — la cotización sigue siendo válida.
+            }
+        }
+
+        async function startPayment() {
+            const payButton = document.getElementById('pay-button');
+            const errorBox = document.getElementById('pay-error');
+            errorBox.textContent = '';
+            payButton.disabled = true;
+            payButton.textContent = t('common.processing');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/custom-orders/${quoteToken}/checkout`, {
+                    method: 'POST'
+                });
+                if (!response.ok) {
+                    let backendMessage = '';
+                    try {
+                        const failure = await response.json();
+                        backendMessage = failure.errorMessage || '';
+                    } catch (parseError) {
+                        backendMessage = '';
+                    }
+                    payButton.disabled = false;
+                    payButton.textContent = t('common.pay');
+                    errorBox.textContent = backendMessage !== ''
+                        ? backendMessage
+                        : t('custom.paymentError');
+                    return;
+                }
+                const result = await response.json();
+                utrack('custom_quote_pay_started');
+                window.location.href = result.redirectUrl;
+            } catch (error) {
+                payButton.disabled = false;
+                payButton.textContent = t('common.pay');
+                errorBox.textContent = t('custom.paymentNetworkError');
+            }
+        }
+
+        async function loadQuote() {
+            const params = new URLSearchParams(window.location.search);
+            quoteToken = params.get('t') || '';
+            if (quoteToken === '') {
+                showMessage(t('custom.notFound'));
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/custom-orders/${quoteToken}`);
+                if (!response.ok) {
+                    showMessage(t('custom.notFound'));
+                    return;
+                }
+                const view = await response.json();
+                utrack('custom_quote_view', { status: view.status });
+
+                if (view.status === 'cotizada') {
+                    await renderQuote(view);
+                    return;
+                }
+                if (view.status === 'pagada') {
+                    showMessage(t('custom.alreadyPaid'));
+                    return;
+                }
+                if (view.status === 'vencida') {
+                    showMessage(t('custom.expired'));
+                    return;
+                }
+                if (view.status === 'nueva') {
+                    showMessage(t('custom.pending'));
+                    return;
+                }
+                showMessage(t('custom.unavailable'));
+            } catch (error) {
+                showMessage(t('custom.loadError'));
+            }
+        }
+
+        document.getElementById('pay-button').addEventListener('click', startPayment);
+        document.addEventListener('DOMContentLoaded', loadQuote);
+    </script>
+</body>
+</html>

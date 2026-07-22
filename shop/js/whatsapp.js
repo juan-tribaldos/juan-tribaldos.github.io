@@ -21,26 +21,27 @@ const JTWhatsApp = (function () {
         '.943-.049-.084-.182-.133-.38-.232z"/></svg>';
 
     // The prefilled text adapts to where the visitor is standing.
+    // AI-generated: strings come from the shared i18n dictionary (ES/EN).
     function buildMessage() {
         const path = window.location.pathname;
         const pageUrl = window.location.href;
         if (path.indexOf('product.html') >= 0) {
-            return `Hola, tengo una pregunta sobre este print: ${pageUrl}`;
+            return t('whatsapp.print', { url: pageUrl });
         }
         if (path.indexOf('service.html') >= 0) {
-            return `Hola, tengo una pregunta sobre este servicio: ${pageUrl}`;
+            return t('whatsapp.service', { url: pageUrl });
         }
         if (path.indexOf('checkout.html') >= 0) {
-            return 'Hola, necesito ayuda con mi compra.';
+            return t('whatsapp.checkout');
         }
         if (path.indexOf('thank-you.html') >= 0) {
             const orderNumber = new URLSearchParams(window.location.search).get('order');
             if (orderNumber !== null && orderNumber !== '') {
-                return `Hola, tengo una consulta sobre mi pedido ${orderNumber}.`;
+                return t('whatsapp.orderNumbered', { order: orderNumber });
             }
-            return 'Hola, tengo una consulta sobre mi pedido.';
+            return t('whatsapp.order');
         }
-        return 'Hola, tengo una consulta sobre la tienda.';
+        return t('whatsapp.shop');
     }
 
     function buildWhatsAppUrl() {
@@ -53,7 +54,7 @@ const JTWhatsApp = (function () {
         link.href = buildWhatsAppUrl();
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-label', 'Chateá con Juan por WhatsApp');
+        link.setAttribute('aria-label', t('whatsapp.aria'));
         link.innerHTML = WHATSAPP_ICON;
         document.body.appendChild(link);
     }
