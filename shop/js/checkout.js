@@ -29,7 +29,7 @@
 
         if (items.length === 0) {
             container.innerHTML =
-                '<div class="empty-cart">Tu carrito está vacío. <a href="index.html">Ver prints</a>.</div>';
+                '<div class="empty-cart">' + t('checkout.emptyCart') + '</div>';
             form.style.display = 'none';
             return;
         }
@@ -49,7 +49,7 @@
                             <button type="button" class="quantity-button" data-action="plus"
                                 data-product="${safeProduct}" data-size="${safeSize}">+</button>
                         </div>`;
-            const detailLabel = isService ? `Reserva: ${safeSize}` : safeSize;
+            const detailLabel = isService ? t('checkout.bookingLabel', { slot: safeSize }) : safeSize;
             rows += `
                 <tr>
                     <td><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}"></td>
@@ -58,7 +58,7 @@
                     <td>${quantityCell}</td>
                     <td>${formatUsd(item.unitPriceUsd * item.quantity)}</td>
                     <td>
-                        <button type="button" class="cart-remove" title="Quitar" data-action="remove"
+                        <button type="button" class="cart-remove" title="${t('checkout.remove')}" data-action="remove"
                             data-product="${safeProduct}" data-size="${safeSize}">×</button>
                     </td>
                 </tr>`;
@@ -68,7 +68,7 @@
             <table class="cart-table">
                 <thead>
                     <tr>
-                        <th></th><th>Print</th><th>Tamaño</th><th>Cantidad</th><th>Precio</th><th></th>
+                        <th></th><th>Print</th><th>${t('common.size')}</th><th>${t('common.quantity')}</th><th>${t('common.price')}</th><th></th>
                     </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -117,13 +117,13 @@
         const sessionDetails = document.getElementById('session-details').value.trim();
 
         if (name === '' || email === '' || phone === '' || address === '') {
-            return 'Completá todos los campos para continuar.';
+            return t('checkout.fillAllFields');
         }
         if (email.indexOf('@') < 1 || email.indexOf('.') < 0) {
-            return 'El email no parece válido.';
+            return t('common.emailInvalid');
         }
         if (cartHasService() && sessionDetails === '') {
-            return 'Contanos los detalles de la sesión para que Juan llegue preparado.';
+            return t('checkout.sessionDetailsRequired');
         }
         return '';
     }
@@ -168,7 +168,7 @@
         utrack('checkout_started', { itemCount: JTCart.getCount(), total: JTCart.getTotal() });
 
         payButton.disabled = true;
-        payButton.textContent = 'Procesando…';
+        payButton.textContent = t('common.processing');
 
         try {
             const response = await fetch(`${API_BASE}/api/checkout`, {
@@ -188,7 +188,7 @@
                 }
                 if (backendMessage !== '') {
                     payButton.disabled = false;
-                    payButton.textContent = 'Pagar';
+                    payButton.textContent = t('common.pay');
                     errorBox.textContent = backendMessage;
                     return;
                 }
@@ -198,9 +198,8 @@
             window.location.href = result.redirectUrl;
         } catch (error) {
             payButton.disabled = false;
-            payButton.textContent = 'Pagar';
-            errorBox.textContent =
-                'No se pudo iniciar el pago. Verificá tu conexión e intentá de nuevo.';
+            payButton.textContent = t('common.pay');
+            errorBox.textContent = t('checkout.paymentStartError');
         }
     }
 

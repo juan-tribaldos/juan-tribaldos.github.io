@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juan Tribaldos — Servicio</title>
-    <link rel="stylesheet" href="shop.css">
+    <title data-i18n="service.pageTitle">Juan Tribaldos — Servicio</title>
+    <link rel="stylesheet" href="shop.css?v=2">
     <link rel="icon" href="../assets/Generic PC.ico">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
     <script>
@@ -19,13 +19,14 @@
 </head>
 <body>
 
-    <script src="js/cart.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/whatsapp.js"></script>
-    <script src="js/catalog.js"></script>
+    <script src="js/i18n.js?v=2"></script>
+    <script src="js/cart.js?v=2"></script>
+    <script src="js/nav.js?v=2"></script>
+    <script src="js/whatsapp.js?v=2"></script>
+    <script src="js/catalog.js?v=2"></script>
 
     <main class="shop-main">
-        <a class="shop-button back-link" href="index.html?category=services">← Volver a la tienda</a>
+        <a class="shop-button back-link" href="index.html?category=services" data-i18n="common.backToShopArrow">← Volver a la tienda</a>
         <div id="service-status"></div>
         <div class="product-layout" id="service-layout" style="display: none;">
             <div class="product-image">
@@ -37,21 +38,21 @@
                 <div class="product-edition" id="service-meta"></div>
                 <div class="product-total" id="service-price"></div>
 
-                <div class="product-field-label">Fecha</div>
+                <div class="product-field-label" data-i18n="service.date">Fecha</div>
                 <div class="custom-select-container size-select">
-                    <div class="select-trigger" id="date-trigger">Elegí una fecha</div>
+                    <div class="select-trigger" id="date-trigger" data-i18n="service.chooseDate">Elegí una fecha</div>
                     <ul class="select-options slot-options" id="date-options"></ul>
                 </div>
 
-                <div class="product-field-label">Hora</div>
+                <div class="product-field-label" data-i18n="service.time">Hora</div>
                 <div class="custom-select-container size-select">
-                    <div class="select-trigger" id="time-trigger">Elegí una hora</div>
+                    <div class="select-trigger" id="time-trigger" data-i18n="service.chooseTime">Elegí una hora</div>
                     <ul class="select-options slot-options" id="time-options"></ul>
                 </div>
 
-                <button type="button" class="shop-button" id="book-button" disabled>Reservar</button>
+                <button type="button" class="shop-button" id="book-button" disabled data-i18n="service.book">Reservar</button>
                 <div class="added-feedback" id="added-feedback"></div>
-                <div class="delivery-note">
+                <div class="delivery-note" data-i18n="service.bookingNote">
                     La fecha y hora quedan reservadas al completar el pago. Juan se pondrá en
                     contacto para coordinar los detalles de la sesión.
                 </div>
@@ -112,7 +113,7 @@
             const options = document.getElementById('time-options');
             options.innerHTML = '';
             selectedTime = '';
-            document.getElementById('time-trigger').textContent = 'Elegí una hora';
+            document.getElementById('time-trigger').textContent = t('service.chooseTime');
             refreshBookButton();
 
             if (selectedDate === '') {
@@ -122,7 +123,7 @@
             for (const time of currentService.startTimes) {
                 const option = document.createElement('li');
                 if (isSlotUnavailable(selectedDate, time)) {
-                    option.textContent = `${time} — no disponible`;
+                    option.textContent = t('service.slotUnavailable', { time: time });
                     option.setAttribute('disabled', 'disabled');
                 } else {
                     option.textContent = time;
@@ -145,7 +146,7 @@
             for (const isoDate of offeredDates) {
                 const option = document.createElement('li');
                 if (isDateFullyUnavailable(isoDate)) {
-                    option.textContent = `${formatDateLabel(isoDate)} — completo`;
+                    option.textContent = t('service.dateFull', { date: formatDateLabel(isoDate) });
                     option.setAttribute('disabled', 'disabled');
                 } else {
                     option.textContent = formatDateLabel(isoDate);
@@ -180,11 +181,11 @@
             const durationDisplay = String(service.durationHours).replace('.5', '.5');
             const metaParts = [];
             if (service.area !== '') {
-                metaParts.push(`Zona: ${service.area}`);
+                metaParts.push(t('service.area', { area: service.area }));
             }
-            metaParts.push(`Duración: ${durationDisplay}h`);
+            metaParts.push(t('service.duration', { hours: durationDisplay }));
             document.getElementById('service-meta').textContent = metaParts.join(' — ');
-            document.getElementById('service-price').textContent = `Precio: $${service.priceUsd} USD`;
+            document.getElementById('service-price').textContent = t('service.price', { price: service.priceUsd });
 
             renderDateOptions();
             document.getElementById('service-layout').style.display = '';
@@ -196,19 +197,19 @@
             const params = new URLSearchParams(window.location.search);
             const serviceId = params.get('id');
             if (serviceId === null) {
-                status.innerHTML = 'Servicio no encontrado. <a href="index.html">Volver a la tienda</a>.';
+                status.innerHTML = t('service.notFound');
                 return;
             }
             try {
                 const service = await JTServiceCatalog.fetchService(serviceId);
                 if (service === null) {
-                    status.innerHTML = 'Servicio no encontrado. <a href="index.html">Volver a la tienda</a>.';
+                    status.innerHTML = t('service.notFound');
                     return;
                 }
                 unavailableSlots = await loadAvailability(serviceId);
                 renderService(service);
             } catch (error) {
-                status.textContent = 'No se pudo cargar el servicio. Intentá de nuevo más tarde.';
+                status.textContent = t('service.loadError');
             }
         }
 
@@ -220,11 +221,10 @@
             const added = JTCart.addServiceItem(currentService, selectedDate, selectedTime, slotLabel);
             const feedback = document.getElementById('added-feedback');
             if (!added) {
-                feedback.textContent = 'Esa reserva ya está en tu carrito.';
+                feedback.textContent = t('service.alreadyInCart');
                 return;
             }
-            feedback.innerHTML =
-                'Reserva agregada al carrito. <a href="checkout.html">Finalizar compra</a> — el horario queda tomado al pagar.';
+            feedback.innerHTML = t('service.added');
             utrack('add_to_cart', {
                 id: currentService.id,
                 title: currentService.title,

@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juan Tribaldos — Carrito</title>
-    <link rel="stylesheet" href="shop.css">
+    <title data-i18n="checkout.pageTitle">Juan Tribaldos — Carrito</title>
+    <link rel="stylesheet" href="shop.css?v=2">
     <link rel="icon" href="../assets/Generic PC.ico">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="4a839bbc-bc7e-4ccf-9121-51618eac4e73"></script>
     <script>
@@ -19,51 +19,52 @@
 </head>
 <body>
 
-    <script src="js/cart.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/whatsapp.js"></script>
+    <script src="js/i18n.js?v=2"></script>
+    <script src="js/cart.js?v=2"></script>
+    <script src="js/nav.js?v=2"></script>
+    <script src="js/whatsapp.js?v=2"></script>
 
     <main class="shop-main">
-        <div class="shop-page-label">Carrito</div>
+        <div class="shop-page-label" data-i18n="common.cart">Carrito</div>
 
-        <div id="payment-failed" class="form-error" style="display: none;">
+        <div id="payment-failed" class="form-error" style="display: none;" data-i18n="checkout.paymentFailed">
             El pago no se completó. Podés intentarlo de nuevo.
         </div>
 
         <div id="cart-contents"></div>
 
         <form class="checkout-form" id="checkout-form" style="display: none;" novalidate>
-            <div class="shop-page-label">Datos de entrega</div>
+            <div class="shop-page-label" data-i18n="checkout.deliveryDetails">Datos de entrega</div>
 
-            <label for="buyer-name">Nombre completo</label>
+            <label for="buyer-name" data-i18n="common.fullName">Nombre completo</label>
             <input type="text" id="buyer-name" name="buyerName" autocomplete="name" required>
 
             <label for="buyer-email">Email</label>
             <input type="email" id="buyer-email" name="buyerEmail" autocomplete="email" required>
 
-            <label for="buyer-phone">Teléfono</label>
+            <label for="buyer-phone" data-i18n="common.phone">Teléfono</label>
             <input type="tel" id="buyer-phone" name="buyerPhone" autocomplete="tel" required>
 
-            <label for="delivery-address">Dirección de entrega</label>
+            <label for="delivery-address" data-i18n="common.deliveryAddress">Dirección de entrega</label>
             <textarea id="delivery-address" name="deliveryAddress" autocomplete="street-address" required></textarea>
 
             <!-- AI-generated: session notes for bookings — only shown when the cart has a service. -->
             <div id="session-details-field" style="display: none;">
-                <label for="session-details">Detalles de la sesión</label>
+                <label for="session-details" data-i18n="checkout.sessionDetails">Detalles de la sesión</label>
                 <!-- Placeholder wording from Juan's terms document, adapted to the site's voseo. -->
-                <textarea id="session-details" name="sessionDetails"
+                <textarea id="session-details" name="sessionDetails" data-i18n-placeholder="checkout.sessionPlaceholder"
                     placeholder="Contanos un poco sobre tu proyecto. Describí el espacio, la ubicación o el tipo de fotografías que buscás. Esta información nos ayuda a preparar mejor tu sesión."></textarea>
             </div>
 
             <div class="form-error" id="form-error"></div>
 
-            <button type="submit" class="shop-button" id="pay-button">Pagar</button>
-            <div class="delivery-note">El pago se procesa de forma segura con Tilopay (tarjetas, SINPE Móvil).</div>
+            <button type="submit" class="shop-button" id="pay-button" data-i18n="common.pay">Pagar</button>
+            <div class="delivery-note" data-i18n="common.tilopayNote">El pago se procesa de forma segura con Tilopay (tarjetas, SINPE Móvil).</div>
             <!-- AI-generated: acceptance line — the terms themselves state that buying implies acceptance. -->
-            <div class="delivery-note">Al pagar aceptás los <a href="terminos.html">Términos y Condiciones</a>.</div>
+            <div class="delivery-note" data-i18n-html="checkout.termsNote">Al pagar aceptás los <a href="terminos.html">Términos y Condiciones</a>.</div>
         </form>
     </main>
 
-    <script src="js/checkout.js"></script>
+    <script src="js/checkout.js?v=2"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ function loadNavbar() {
                 <li data-value="../index.html">Home</li>
                 <li data-value="../about.html">About</li>
                 <li data-value="../guestbook.html">Guestbook</li>
-                <li data-value="terminos.html">Términos y Condiciones</li>
+                <li data-value="terminos.html">${t('common.terms')}</li>
             </ul>
         </div>
         <div class="custom-select-container">
@@ -48,9 +48,15 @@ function loadNavbar() {
             <div class="select-trigger">Shop</div>
             <ul class="select-options">
                 <li data-value="index.html">Prints</li>
-                <li data-value="index.html?category=services">Servicios</li>
-                <li data-value="checkout.html">Carrito (<span id="jt-cart-count">0</span>)</li>
+                <li data-value="index.html?category=services">${t('common.services')}</li>
+                <li data-value="checkout.html">${t('common.cart')} (<span id="jt-cart-count">0</span>)</li>
             </ul>
+        </div>
+        <!-- AI-generated: ES | EN language switch, wired in initLanguageToggle. -->
+        <div class="lang-toggle" id="lang-toggle">
+            <button type="button" id="lang-es">ES</button>
+            <span class="lang-separator">|</span>
+            <button type="button" id="lang-en">EN</button>
         </div>
     </header>`;
 
@@ -60,15 +66,33 @@ function loadNavbar() {
     // terms link from one place.
     const footerHTML = `
     <footer class="shop-footer">
-        <a href="terminos.html">Términos y Condiciones</a>
+        <a href="terminos.html">${t('common.terms')}</a>
         <span>© ${new Date().getFullYear()} Juan Tribaldos</span>
     </footer>`;
     document.body.insertAdjacentHTML('beforeend', footerHTML);
 
     initNavLogic();
+    initLanguageToggle();
     if (typeof JTCart !== 'undefined') {
         JTCart.refreshBadge();
     }
+}
+
+// AI-generated: highlights the active language and switches on click. Switching saves the
+// choice (JTI18n) and reloads, so static markup and JS-rendered content re-translate together.
+function initLanguageToggle() {
+    const activeButtonId = JTI18n.getLanguage() === 'en' ? 'lang-en' : 'lang-es';
+    document.getElementById(activeButtonId).classList.add('lang-active');
+
+    const switchLanguage = (language) => {
+        if (typeof utrack === 'function') {
+            utrack('language_switch', { language: language });
+        }
+        JTI18n.setLanguage(language);
+    };
+
+    document.getElementById('lang-es').addEventListener('click', () => switchLanguage('es'));
+    document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
 }
 
 function initNavLogic() {
